@@ -33,7 +33,7 @@ const string API_IMAGES_IMAGEFILE_SRC = "AGE.bmp";
 const string API_IMAGES_MISSINGIMAGEFILE_SRC = "AGE_missing.bmp";
 const int API_IMAGES_MISSINGIMAGEFILE_W = 146;
 const int API_IMAGES_MISSINGIMAGEFILE_H = 60;
-const string API_VERSION = "0.4.2";
+const string API_VERSION = "0.4.2a";
 const string SDLLIB_VERSION = "2.0.3fix1";
 const string SDLLIB_IMAGE_VERSION = "2.0.0";
 
