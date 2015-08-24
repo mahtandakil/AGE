@@ -2,10 +2,11 @@
 * Created for: ArcadeBox C
 * Dev line: AGE v1
 * Creation day: 11/02/2014
-* Last change: 22/08/2015
+* Last change: 24/08/2015
 ****************************************************************************/
 
 
+#include "AGEAnimationIndex.h"
 #include "AGECollisionAreaIndex.h"
 #include "AGEPrefixedValues.h"
 #include "AGETextureListIndex.h"
@@ -77,6 +78,7 @@ class AGE
     protected:
 
     private:
+        AGEAnimationIndex* animation_index;
         AGECollisionAreaIndex* area_index;
         void drawCollisionArea(AGECollisionAreaElement* area, int mod_x, int mod_y);
         SDL_Event event_handler;

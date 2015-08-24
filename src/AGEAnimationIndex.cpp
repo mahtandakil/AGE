@@ -1,18 +1,18 @@
 /****************************************************************************
 * Created for: AGE
 * Dev line: AGE v1
-* Creation day: 13/08/2015
+* Creation day: 24/08/2015
 * Last change: 24/08/2015
-* Autogen: CListGen 1.0.3
+* Autogen: CListGen 1.0.7
 ****************************************************************************/
 
 
-#include "AGECollisionAreaIndex.h"
+#include "AGEAnimationIndex.h"
 
 
 //---------------------------------------------------------------------------
 
-AGECollisionAreaIndex::AGECollisionAreaIndex()
+AGEAnimationIndex::AGEAnimationIndex()
 {
 
 	this->counter = 0;
@@ -21,19 +21,17 @@ AGECollisionAreaIndex::AGECollisionAreaIndex()
 
 }
 
-AGECollisionAreaIndex::~AGECollisionAreaIndex()
+AGEAnimationIndex::~AGEAnimationIndex()
 {
-
-	this->freeList();
-
+	//dtor
 }
 
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::createRegister(string tag){
+int AGEAnimationIndex::createRegister(string tag){
 
-	AGECollisionAreaElement* pointer = new AGECollisionAreaElement();
+	AGEAnimationElement* pointer = new AGEAnimationElement();
 	pointer->setTag(tag);
 
 	if (this->counter == 0){
@@ -59,10 +57,38 @@ int AGECollisionAreaIndex::createRegister(string tag){
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::getId(int id){
+int AGEAnimationIndex::freeList(){
+
+	AGEAnimationElement* pointer;
+	AGEAnimationElement* next;
+	int result= 0;
+
+    if(this->first != nullptr){
+
+        pointer = this->first;
+
+        while(pointer != nullptr){
+
+            next = pointer->getNext();
+            counter++;
+            delete pointer;
+            pointer = next;
+
+        }
+
+    }
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGEAnimationIndex::getId(int id){
 
 	int result = 0;
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -82,10 +108,10 @@ int AGECollisionAreaIndex::getId(int id){
 
 //---------------------------------------------------------------------------
 
-string AGECollisionAreaIndex::getTag(int id){
+string AGEAnimationIndex::getTag(int id){
 
 	string result = "";
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -105,10 +131,10 @@ string AGECollisionAreaIndex::getTag(int id){
 
 //---------------------------------------------------------------------------
 
-bool AGECollisionAreaIndex::getAvailable(int id){
+bool AGEAnimationIndex::getAvailable(int id){
 
 	bool result = false;
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -128,10 +154,10 @@ bool AGECollisionAreaIndex::getAvailable(int id){
 
 //---------------------------------------------------------------------------
 
-AGECollisionAreaElement* AGECollisionAreaIndex::getNext(int id){
+AGEAnimationElement* AGEAnimationIndex::getNext(int id){
 
-	AGECollisionAreaElement* result = nullptr;
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* result = nullptr;
+	AGEAnimationElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -151,10 +177,10 @@ AGECollisionAreaElement* AGECollisionAreaIndex::getNext(int id){
 
 //---------------------------------------------------------------------------
 
-Uint8 AGECollisionAreaIndex::getType(int id){
+Uint8 AGEAnimationIndex::getElements(int id){
 
 	Uint8 result = 0;
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -163,7 +189,7 @@ Uint8 AGECollisionAreaIndex::getType(int id){
 ;
 
 	}else{
-		result = pointer->getType();
+		result = pointer->getElements();
 
 	}
 
@@ -174,41 +200,10 @@ Uint8 AGECollisionAreaIndex::getType(int id){
 
 //---------------------------------------------------------------------------
 
-SDL_Rect AGECollisionAreaIndex::getArea(int id){
-
-	SDL_Rect result;
-	AGECollisionAreaElement* pointer;
-
-    result.x = 0;
-    result.y = 0;
-    result.h = 0;
-    result.w = 0;
-
-	pointer = this->getElementById(id);
-
-	if ((pointer == nullptr) or (id < 0) or (id >= this->counter)){
-
-	    result.x = 0;
-        result.y = 0;
-        result.h = 0;
-        result.w = 0;
-
-	}else{
-		result = pointer->getArea();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-Uint8 AGECollisionAreaIndex::getColor1(int id){
+Uint8 AGEAnimationIndex::getInit(int id){
 
 	Uint8 result = 0;
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -217,7 +212,7 @@ Uint8 AGECollisionAreaIndex::getColor1(int id){
 ;
 
 	}else{
-		result = pointer->getColor1();
+		result = pointer->getInit();
 
 	}
 
@@ -228,19 +223,19 @@ Uint8 AGECollisionAreaIndex::getColor1(int id){
 
 //---------------------------------------------------------------------------
 
-Uint8 AGECollisionAreaIndex::getColor2(int id){
+AGETextureListIndex* AGEAnimationIndex::getTexture_index(int id){
 
-	Uint8 result = 0;
-	AGECollisionAreaElement* pointer;
+	AGETextureListIndex* result = nullptr;
+	AGEAnimationElement* pointer;
 
 	pointer = this->getElementById(id);
 
 	if ((pointer == nullptr) or (id < 0) or (id >= this->counter)){
-		result = 0;
+		result = nullptr;
 ;
 
 	}else{
-		result = pointer->getColor2();
+		result = pointer->getTexture_index();
 
 	}
 
@@ -251,34 +246,11 @@ Uint8 AGECollisionAreaIndex::getColor2(int id){
 
 //---------------------------------------------------------------------------
 
-Uint8 AGECollisionAreaIndex::getColor3(int id){
-
-	Uint8 result = 0;
-	AGECollisionAreaElement* pointer;
-
-	pointer = this->getElementById(id);
-
-	if ((pointer == nullptr) or (id < 0) or (id >= this->counter)){
-		result = 0;
-;
-
-	}else{
-		result = pointer->getColor3();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGECollisionAreaIndex::searchById(int id){
+int AGEAnimationIndex::searchById(int id){
 
 	int result = -1;
 	bool found = false;
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -307,13 +279,14 @@ int AGECollisionAreaIndex::searchById(int id){
 }
 
 
+
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::searchByTag(string tag){
+int AGEAnimationIndex::searchByTag(string tag){
 
 	int result = -1;
 	bool found = false;
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -345,11 +318,11 @@ int AGECollisionAreaIndex::searchByTag(string tag){
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::searchByAvailable(bool available){
+int AGEAnimationIndex::searchByAvailable(bool available){
 
 	int result = -1;
 	bool found = false;
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -381,11 +354,11 @@ int AGECollisionAreaIndex::searchByAvailable(bool available){
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::searchByNext(AGECollisionAreaElement* next){
+int AGEAnimationIndex::searchByNext(AGEAnimationElement* next){
 
 	int result = -1;
 	bool found = false;
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -417,11 +390,11 @@ int AGECollisionAreaIndex::searchByNext(AGECollisionAreaElement* next){
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::searchByType(Uint8 type){
+int AGEAnimationIndex::searchByElements(Uint8 elements){
 
 	int result = -1;
 	bool found = false;
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -432,7 +405,7 @@ int AGECollisionAreaIndex::searchByType(Uint8 type){
 
 		while (not ((pointer == nullptr) or (found))){
 
-			if (type == pointer->getType()){
+			if (elements == pointer->getElements()){
 
 				result = pointer->getId();
 				found = true;
@@ -450,13 +423,14 @@ int AGECollisionAreaIndex::searchByType(Uint8 type){
 }
 
 
+
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::searchByColor1(Uint8 color1){
+int AGEAnimationIndex::searchByInit(Uint8 init){
 
 	int result = -1;
 	bool found = false;
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -467,7 +441,7 @@ int AGECollisionAreaIndex::searchByColor1(Uint8 color1){
 
 		while (not ((pointer == nullptr) or (found))){
 
-			if (color1 == pointer->getColor1()){
+			if (init == pointer->getInit()){
 
 				result = pointer->getId();
 				found = true;
@@ -485,13 +459,14 @@ int AGECollisionAreaIndex::searchByColor1(Uint8 color1){
 }
 
 
+
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::searchByColor2(Uint8 color2){
+int AGEAnimationIndex::searchByTexture_index(AGETextureListIndex* texture_index){
 
 	int result = -1;
 	bool found = false;
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -502,7 +477,7 @@ int AGECollisionAreaIndex::searchByColor2(Uint8 color2){
 
 		while (not ((pointer == nullptr) or (found))){
 
-			if (color2 == pointer->getColor2()){
+			if (texture_index == pointer->getTexture_index()){
 
 				result = pointer->getId();
 				found = true;
@@ -520,46 +495,12 @@ int AGECollisionAreaIndex::searchByColor2(Uint8 color2){
 }
 
 
-//---------------------------------------------------------------------------
-
-int AGECollisionAreaIndex::searchByColor3(Uint8 color3){
-
-	int result = -1;
-	bool found = false;
-	AGECollisionAreaElement* pointer;
-
-	if (this->counter == 0){
-		result = -1;
-
-	}else{
-
-		pointer = this->first;
-
-		while (not ((pointer == nullptr) or (found))){
-
-			if (color3 == pointer->getColor3()){
-
-				result = pointer->getId();
-				found = true;
-
-			}
-
-			pointer = pointer->getNext();
-
-		}
-
-	}
-
-	return result;
-
-}
-
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::setElementData(int id, string tag, Uint8 type, SDL_Rect area, Uint8 color1, Uint8 color2, Uint8 color3){
+int AGEAnimationIndex::setElementData(int id, string tag, Uint8 elements, Uint8 init, AGETextureListIndex* texture_index){
 
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
@@ -567,11 +508,9 @@ int AGECollisionAreaIndex::setElementData(int id, string tag, Uint8 type, SDL_Re
 	if (pointer != nullptr){
 
 		pointer->setTag(tag);
-		pointer->setType(type);
-		pointer->setArea(area);
-		pointer->setColor1(color1);
-		pointer->setColor2(color2);
-		pointer->setColor3(color3);
+		pointer->setElements(elements);
+		pointer->setInit(init);
+		pointer->setTexture_index(texture_index);
 		result = pointer->getId();
 
 	}
@@ -583,20 +522,18 @@ int AGECollisionAreaIndex::setElementData(int id, string tag, Uint8 type, SDL_Re
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::setElementData(int id, Uint8 type, SDL_Rect area, Uint8 color1, Uint8 color2, Uint8 color3){
+int AGEAnimationIndex::setElementData(int id, Uint8 elements, Uint8 init, AGETextureListIndex* texture_index){
 
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
 
 	if (pointer != nullptr){
 
-		pointer->setType(type);
-		pointer->setArea(area);
-		pointer->setColor1(color1);
-		pointer->setColor2(color2);
-		pointer->setColor3(color3);
+		pointer->setElements(elements);
+		pointer->setInit(init);
+		pointer->setTexture_index(texture_index);
 		result = pointer->getId();
 
 	}
@@ -608,9 +545,9 @@ int AGECollisionAreaIndex::setElementData(int id, Uint8 type, SDL_Rect area, Uin
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::setTag(int id, string tag){
+int AGEAnimationIndex::setTag(int id, string tag){
 
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
@@ -629,9 +566,9 @@ int AGECollisionAreaIndex::setTag(int id, string tag){
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::setAvailable(int id, bool available){
+int AGEAnimationIndex::setAvailable(int id, bool available){
 
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
@@ -650,9 +587,9 @@ int AGECollisionAreaIndex::setAvailable(int id, bool available){
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::setNext(int id, AGECollisionAreaElement* next){
+int AGEAnimationIndex::setNext(int id, AGEAnimationElement* next){
 
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
@@ -671,16 +608,16 @@ int AGECollisionAreaIndex::setNext(int id, AGECollisionAreaElement* next){
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::setType(int id, Uint8 type){
+int AGEAnimationIndex::setElements(int id, Uint8 elements){
 
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
 
 	if (pointer != nullptr){
 
-		pointer->setType(type);
+		pointer->setElements(elements);
 		result = pointer->getId();
 
 	}
@@ -692,16 +629,16 @@ int AGECollisionAreaIndex::setType(int id, Uint8 type){
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::setArea(int id, SDL_Rect area){
+int AGEAnimationIndex::setInit(int id, Uint8 init){
 
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
 
 	if (pointer != nullptr){
 
-		pointer->setArea(area);
+		pointer->setInit(init);
 		result = pointer->getId();
 
 	}
@@ -713,38 +650,16 @@ int AGECollisionAreaIndex::setArea(int id, SDL_Rect area){
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::setColor(int id, Uint8 color1, Uint8 color2, Uint8 color3){
+int AGEAnimationIndex::setTexture_index(int id, AGETextureListIndex* texture_index){
 
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
 
 	if (pointer != nullptr){
 
-		pointer->setColor1(color1);
-		pointer->setColor2(color2);
-		pointer->setColor3(color3);
-		result = pointer->getId();
-
-	}
-
-	return result;
-
-}
-
-//---------------------------------------------------------------------------
-
-int AGECollisionAreaIndex::setColor1(int id, Uint8 color1){
-
-	AGECollisionAreaElement* pointer;
-	int result = -1;
-
-	pointer = this->getElementById(id);
-
-	if (pointer != nullptr){
-
-		pointer->setColor1(color1);
+		pointer->setTexture_index(texture_index);
 		result = pointer->getId();
 
 	}
@@ -756,54 +671,14 @@ int AGECollisionAreaIndex::setColor1(int id, Uint8 color1){
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::setColor2(int id, Uint8 color2){
+AGEAnimationElement* AGEAnimationIndex::getElementById(int id){
+	AGEAnimationElement* result;
+	AGEAnimationElement* pointer;
 
-	AGECollisionAreaElement* pointer;
-	int result = -1;
+	if (this->counter == 0){
+		result = nullptr;
 
-	pointer = this->getElementById(id);
-
-	if (pointer != nullptr){
-
-		pointer->setColor2(color2);
-		result = pointer->getId();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGECollisionAreaIndex::setColor3(int id, Uint8 color3){
-
-	AGECollisionAreaElement* pointer;
-	int result = -1;
-
-	pointer = this->getElementById(id);
-
-	if (pointer != nullptr){
-
-		pointer->setColor3(color3);
-		result = pointer->getId();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-AGECollisionAreaElement* AGECollisionAreaIndex::getElementById(int id){
-
-	AGECollisionAreaElement* result = nullptr;
-	AGECollisionAreaElement* pointer;
-
-	if (this->counter != 0){
+	}else{
 
 		pointer = this->first;
 
@@ -814,9 +689,7 @@ AGECollisionAreaElement* AGECollisionAreaIndex::getElementById(int id){
 			}
 
 		pointer = pointer->getNext();
-
 		}
-
 	}
 
 	return result;
@@ -826,12 +699,12 @@ AGECollisionAreaElement* AGECollisionAreaIndex::getElementById(int id){
 
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::searchAvailable(){
+int AGEAnimationIndex::searchAvailable(){
 
 	int result = -1;
 	int counter = 0;
 	bool found = false;
-	AGECollisionAreaElement* pointer;
+	AGEAnimationElement* pointer;
 
 	while((counter < this->counter) && (found == false)){
 
@@ -856,54 +729,4 @@ int AGECollisionAreaIndex::searchAvailable(){
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
-int AGECollisionAreaIndex::setPosition(int id, int x, int y){
 
-	AGECollisionAreaElement* pointer;
-    SDL_Rect area;
-	int result = -1;
-
-	pointer = this->getElementById(id);
-
-	if (pointer != nullptr){
-
-        area = pointer->getArea();
-		area.x = x;
-		area.y = y;
-        pointer->setArea(area);
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGECollisionAreaIndex::freeList(){
-
-    AGECollisionAreaElement* pointer;
-    AGECollisionAreaElement* next;
-    int result = 0;
-
-    if(this->first != nullptr){
-
-        pointer = this->first;
-
-        while(pointer != nullptr){
-
-            next = pointer->getNext();
-            counter++;
-            delete pointer;
-            pointer = next;
-
-        }
-
-    }
-
-    return result;
-
-}
-
-
-//---------------------------------------------------------------------------

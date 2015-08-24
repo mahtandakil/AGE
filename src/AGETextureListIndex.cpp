@@ -2,7 +2,7 @@
 * Created for: AGE v1
 * Dev line: AGE v1
 * Creation day: 02/08/2015
-* Last change: 21/08/2015
+* Last change: 24/08/2015
 ****************************************************************************/
 
 
@@ -22,7 +22,9 @@ AGETextureListIndex::AGETextureListIndex()
 
 AGETextureListIndex::~AGETextureListIndex()
 {
-    //dtor
+
+    this->freeList();
+
 }
 
 
@@ -152,16 +154,12 @@ int AGETextureListIndex::createRegister(string src){
 
 AGETextureListElement* AGETextureListIndex::getElementById(int id){
 
-    AGETextureListElement* result;
+    AGETextureListElement* result = nullptr;
     AGETextureListElement* pointer;
 
-    if (this->counter == 0){
-        result = nullptr;
-
-    }else{
+    if (this->counter != 0){
 
         pointer = this->first;
-
 
         while (pointer != nullptr){
 
@@ -457,6 +455,45 @@ int AGETextureListIndex::linkCollisionArea(int id, SDL_Rect area, string tag, in
         area_index->setColor1(result, color1);
         area_index->setColor2(result, color2);
         area_index->setColor3(result, color3);
+
+    }
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGETextureListIndex::freeList(){
+
+    AGETextureListElement* pointer;
+    AGETextureListElement* next;
+    int result = 0;
+
+    if(this->first != nullptr){
+
+        pointer = this->first;
+
+        while(pointer != nullptr){
+
+            next = pointer->getNext();
+            counter++;
+
+            if(pointer->getTexture() != nullptr){
+                SDL_DestroyTexture(pointer->getTexture());
+
+            }
+
+            if(pointer->getAreaIndex() != nullptr){
+                pointer->getAreaIndex()->freeList();
+
+            }
+
+            delete pointer;
+            pointer = next;
+
+        }
 
     }
 

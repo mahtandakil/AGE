@@ -2,7 +2,7 @@
 * Created for: ArcadeBox C
 * Dev line: AGE v1
 * Creation day: 11/02/2014
-* Last change: 22/8/2015
+* Last change: 24/8/2015
 ****************************************************************************/
 
 
@@ -11,8 +11,7 @@
 
 //---------------------------------------------------------------------------
 
-AGE::AGE()
-{
+AGE::AGE(){
 
     //this->event_handler;
 
@@ -23,6 +22,7 @@ AGE::AGE()
     this->window_title = "";
     this->wsurface = nullptr;
 
+    this->animation_index = new AGEAnimationIndex();
     this->area_index = new AGECollisionAreaIndex();
     this->texture_index = new AGETextureListIndex();
 
@@ -30,9 +30,12 @@ AGE::AGE()
 
 }
 
-AGE::~AGE()
-{
-    //dtor
+AGE::~AGE(){
+
+    this->animation_index->freeList();
+    this->area_index->freeList();
+    this->texture_index->freeList();
+
 }
 
 
@@ -226,6 +229,10 @@ void AGE::pause(int miliseconds){
 
 void AGE::terminate()
 {
+
+    this->animation_index->freeList();
+    this->area_index->freeList();
+    this->texture_index->freeList();
 
     SDL_DestroyWindow(this->window);
     SDL_Quit();

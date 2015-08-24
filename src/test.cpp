@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 17/07/2015
-* Last change: 21/08/2015
+* Last change: 24/08/2015
 ****************************************************************************/
 
 
@@ -39,6 +39,14 @@ test::test(int id){
             this->test5();
             break;
 
+        case 6:
+            this->test6();
+            break;
+
+        case 7:
+            this->test7();
+            break;
+
         default:
             cout << endl;
             cout << "Test 1: Six files are loaded and one is a missing file" << endl;
@@ -46,10 +54,11 @@ test::test(int id){
             cout << "Test 3: Fade screen & drawsquare function" << endl;
             cout << "Test 4: Moving an image to check collisions" << endl;
             cout << "Test 5: Area collision system example" << endl;
+            cout << "Test 6: Animation system example" << endl;
+            cout << "Test 7: Collision point system example" << endl;
 
-            cout << "Test 6: Animation system show" << endl;
-            cout << "Test 7: AGE button example" << endl;
-            cout << "Test 8: Music & FX" << endl;
+//            cout << "Test 7: AGE button example" << endl;
+//            cout << "Test 8: Music & FX" << endl;
             cout << endl;
     }
 
@@ -702,4 +711,48 @@ void test::test5(){
 
 //----------------------------------------------------------------------------
 
+void test::test6(){
 
+    bool keep = true;
+    bool show = false;
+    SDL_Event* event;
+
+
+    cout << "Test 6 - START" << endl << endl;
+    cout << "Animations are loaded & reproduced. Press button 'A' for attack and check collisions." << endl << endl;
+
+    this->api->configure(1200,700, "window", "Test 6");
+    this->api->loadAPI();
+    event = this->api->getEventHandler();
+    this->api->refresh();
+
+    this->api->terminate();
+
+    cout << "Test 6 - END" << endl;
+
+}
+
+
+//----------------------------------------------------------------------------
+
+void test::test7(){
+
+    bool keep = true;
+    bool show = false;
+    SDL_Event* event;
+
+    cout << "Test 7 - START" << endl << endl;
+    cout << "?????????????????" << endl << endl;
+
+    this->api->configure(1200,700, "window", "Test 7");
+    this->api->loadAPI();
+    event = this->api->getEventHandler();
+    this->api->refresh();
+
+    this->api->terminate();
+
+    cout << "Test 7 - END" << endl;
+
+}
+
+//----------------------------------------------------------------------------

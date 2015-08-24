@@ -2,7 +2,7 @@
 * Created for: AGE v1
 * Dev line: AGE v1
 * Creation day: 02/08/2015
-* Last change: 22/08/2015
+* Last change: 24/08/2015
 ****************************************************************************/
 
 
@@ -22,6 +22,7 @@ class AGETextureListIndex
         virtual ~AGETextureListIndex();
 
         int createRegister(string src); /**< Dynamically creates a register to store the image and its information. */
+        int freeList(); /**< Unloads all the registers stored in the list */
         bool getAvailable(int id); /**< Check if a register is available for use*/
         SDL_Rect getCollisionRect(int id); /**< Returns to SDL_Rect information of the image. This is needed for the collision system. */
         int getCounter(); /**< Returns the number of registers that are in usage. */
@@ -38,7 +39,6 @@ class AGETextureListIndex
         int setPosition(int id, int x, int y); /**< Modifies the 'x' & 'y' values for a specific register. This values are used to establish the exactly position of the image on the screen. */
         int setSrc(int id, string src); /**< Modifies the 'string' value for a specific register */
         int setTexture(int id, SDL_Texture* texture); /**< Modifies the pointer for the texture recorded in a specific register */
-
 
     protected:
 

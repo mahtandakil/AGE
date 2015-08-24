@@ -1,8 +1,18 @@
+//***************************************************************************
+/*!
+\mainpage The mainpage documentation
+
+AGE is a wrapper for SDL and other libraries to make a simple game engine.
+
+For build the project, you will the the following libraries:
+    - SDL2
+    - SDLI_image2
+*/
 /****************************************************************************
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 17/07/2015
-* Last change: 22/08/2015
+* Last change: 24/08/2015
 *
 *
 * REFERENCES
@@ -15,13 +25,14 @@
 *
 *
 * MILLESTONE
-* 0.4.3 - Better implementation of test examples
-* 0.5.0 - Check the hard delete functions for all the list systems & call it from terminate
 * 0.5.1 - Deploy animation list system
 * 0.5.2 - Load animation files
 * 0.5.3 - Get individual animation textures
-* 0.5.4 - Check animation system & area collision system
-* 0.6.0 - Create an human walk simulation
+* 0.5.4 - Reverse textures
+* 0.5.5 - Reverse animations
+* 0.5.6 - Check animation system & area collision system
+* 0.5.7 - Create an human walk simulation
+* 0.6.0 - Create collision points system
 * 0.6.1 - Label system from TTF
 * 0.7.0 - Label system from sprites
 * 0.7.1 - Create SDLApiButton list system
@@ -35,6 +46,7 @@
 * 0.10.4 - Dynamic load of the missing image
 * 0.10.5 - Texture resize function
 * 0.10.6 - Proper use of the destructor instructions
+* 0.10.7 - Recode the test examples to fit the new processes
 * 1.0.0 - TQ1: HD
 * 1.0.1 - Draw circles
 * 1.0.2 - Circular area collision system
@@ -63,7 +75,7 @@ int main(int argc, char* args[]){
         new test(opt);
 
     }else{
-        new test(5);
+        new test(6);
 
     }
 

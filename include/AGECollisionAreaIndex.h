@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 13/08/2015
-* Last change: 22/08/2015
+* Last change: 24/08/2015
 * Autogen: CListGen 1.0.3
 ****************************************************************************/
 
@@ -28,6 +28,7 @@ class AGECollisionAreaIndex
 		virtual ~AGECollisionAreaIndex();
 
 		int createRegister(string tag); /**< Dynamically creates a register to store the area and its information. */
+		int freeList(); /**< Unloads all the registers stored in the list */
 		int getId(int id); /**< Returns the 'id' value for a specific register. . It's a little useless, but can be used to check if an specific id are stored in the list. */
 		string getTag(int id); /**< Returns the 'tag' value for a specific register. */
 		bool getAvailable(int id); /**< Check if a register is available for use*/
