@@ -1,9 +1,9 @@
 /****************************************************************************
 * Created for: AGE
 * Dev line: AGE v1
-* Creation day: 24/08/2015
-* Last change: 24/08/2015
-* Autogen: CListGen 1.0.7
+* Creation day: 25/08/2015
+* Last change: 27/08/2015
+* Autogen: CListGen 1.0.8
 ****************************************************************************/
 
 
@@ -19,15 +19,28 @@ AGEAnimationElement::AGEAnimationElement()
 	this->tag = "";
 	this->available = false;
 	this->next = nullptr;
-	this->elements = 0;
+	this->frames = nullptr;
+	this->texture = nullptr;
+	this->file = "";
+	this->description = "";
+	this->bgcolor1 = 0;
+	this->bgcolor2 = 0;
+	this->bgcolor3 = 0;
+	this->images = 0;
 	this->init = 0;
-	this->texture_index = nullptr;
+	this->texture_h = 0;
+	this->texture_w = 0;
 
 }
 
 AGEAnimationElement::~AGEAnimationElement()
 {
-	//dtor
+
+    if (this->texture == nullptr){
+        SDL_DestroyTexture(this->texture);
+
+    }
+
 }
 
 
@@ -105,25 +118,133 @@ void AGEAnimationElement::setNext(AGEAnimationElement* next){
 
 //---------------------------------------------------------------------------
 
-Uint8 AGEAnimationElement::getElements(){
+AGEAnimationFrameIndex* AGEAnimationElement::getFrames(){
 
-	return this->elements;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-void AGEAnimationElement::setElements(Uint8 elements){
-
-	this->elements = elements;
+	return this->frames;
 
 }
 
 
 //---------------------------------------------------------------------------
 
-Uint8 AGEAnimationElement::getInit(){
+void AGEAnimationElement::setFrames(AGEAnimationFrameIndex* frames){
+
+	this->frames = frames;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+string AGEAnimationElement::getFile(){
+
+	return this->file;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGEAnimationElement::setFile(string file){
+
+	this->file = file;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+string AGEAnimationElement::getDescription(){
+
+	return this->description;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGEAnimationElement::setDescription(string description){
+
+	this->description = description;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGEAnimationElement::getBgcolor1(){
+
+	return this->bgcolor1;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGEAnimationElement::setBgcolor1(int bgcolor1){
+
+	this->bgcolor1 = bgcolor1;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGEAnimationElement::getBgcolor2(){
+
+	return this->bgcolor2;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGEAnimationElement::setBgcolor2(int bgcolor2){
+
+	this->bgcolor2 = bgcolor2;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGEAnimationElement::getBgcolor3(){
+
+	return this->bgcolor3;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGEAnimationElement::setBgcolor3(int bgcolor3){
+
+	this->bgcolor3 = bgcolor3;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGEAnimationElement::getImages(){
+
+	return this->images;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGEAnimationElement::setImages(int images){
+
+	this->images = images;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGEAnimationElement::getInit(){
 
 	return this->init;
 
@@ -132,7 +253,25 @@ Uint8 AGEAnimationElement::getInit(){
 
 //---------------------------------------------------------------------------
 
-void AGEAnimationElement::setInit(Uint8 init){
+int AGEAnimationElement::getTexture_h(){
+
+	return this->texture_h;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGEAnimationElement::getTexture_w(){
+
+	return this->texture_w;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGEAnimationElement::setInit(int init){
 
 	this->init = init;
 
@@ -141,18 +280,36 @@ void AGEAnimationElement::setInit(Uint8 init){
 
 //---------------------------------------------------------------------------
 
-AGETextureListIndex* AGEAnimationElement::getTexture_index(){
+void AGEAnimationElement::setTexture_h(int texture_h){
 
-	return this->texture_index;
+	this->texture_h = texture_h;
 
 }
 
 
 //---------------------------------------------------------------------------
 
-void AGEAnimationElement::setTexture_index(AGETextureListIndex* texture_index){
+void AGEAnimationElement::setTexture_w(int texture_w){
 
-	this->texture_index = texture_index;
+	this->texture_w = texture_w;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+SDL_Texture* AGEAnimationElement::getTexture(){
+
+    return this->texture;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGEAnimationElement::setTexture(SDL_Texture* texture){
+
+    this->texture = texture;
 
 }
 

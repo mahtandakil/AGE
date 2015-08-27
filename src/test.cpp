@@ -716,6 +716,8 @@ void test::test6(){
     bool keep = true;
     bool show = false;
     SDL_Event* event;
+    int walk;
+    int walk_frame = 0;
 
 
     cout << "Test 6 - START" << endl << endl;
@@ -725,6 +727,39 @@ void test::test6(){
     this->api->loadAPI();
     event = this->api->getEventHandler();
     this->api->refresh();
+
+    walk = this->api->deployAnimation("test/lucas_dash.gan");
+
+    while (keep){
+
+        while( SDL_PollEvent( event ) != 0 ){
+
+            if( event->type == SDL_KEYDOWN){
+
+                switch( event->key.keysym.sym ){
+
+                       case SDLK_SPACE:
+                            show = !show;
+                            break;
+
+                       case SDLK_ESCAPE:
+                            keep = false;
+                            break;
+
+                    }
+
+            }
+
+        }
+
+        this->api->clearScreen(0x00, 0x97, 0xbd);
+        cout << "2.A- " << walk_frame << endl;
+        walk_frame = this->api->moveAnimation(walk, walk_frame, 500, 300);
+        cout << "2.B- " << walk_frame << endl;
+        this->api->refresh();
+        this->api->pause(100);
+
+    }
 
     this->api->terminate();
 

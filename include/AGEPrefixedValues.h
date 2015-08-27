@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 17/07/2015
-* Last change: 24/08/2015
+* Last change: 27/08/2015
 ****************************************************************************/
 
 
@@ -22,7 +22,7 @@ const string API_IMAGES_IMAGEFILE_SRC = "AGE.bmp";
 const string API_IMAGES_MISSINGIMAGEFILE_SRC = "AGE_missing.bmp";
 const int API_IMAGES_MISSINGIMAGEFILE_W = 146;
 const int API_IMAGES_MISSINGIMAGEFILE_H = 60;
-const string API_VERSION = "0.5.0a";
+const string API_VERSION = "0.5.3";
 const string SDLLIB_VERSION = "2.0.3fix1";
 const string SDLLIB_IMAGE_VERSION = "2.0.0";
 

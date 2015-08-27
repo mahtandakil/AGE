@@ -2,7 +2,7 @@
 * Created for: AGE v1
 * Dev line: AGE v1
 * Creation day: 02/08/2015
-* Last change: 24/08/2015
+* Last change: 27/08/2015
 ****************************************************************************/
 
 
@@ -27,8 +27,10 @@ class AGETextureListIndex
         SDL_Rect getCollisionRect(int id); /**< Returns to SDL_Rect information of the image. This is needed for the collision system. */
         int getCounter(); /**< Returns the number of registers that are in usage. */
         AGETextureListElement* getElementById(int id); /**< Search a register using its id, and returns the full register. */
+        int getId(int id); /**< This function can be used to check the proper link of the list and if some element exists. */
         string getSrc(int id); /**< Returns the 'src' value for a specific register. */
         SDL_Texture* getTexture(int id); /**< Returns the 'texture' value for a specific register. */
+        int getNextId(int id); /**< Returns the 'next' value for a specific register. */
         int getTextureH(int id); /**< Returns the 'texture_h' value for a specific register. */
         int getTextureW(int id); /**< Returns the 'texture_w' value for a specific register. */
         int linkCollisionArea(int id, SDL_Rect area, string tag); /**< Binds dynamically  a collision area to a specific image. The colors of the area will be set randomly.*/

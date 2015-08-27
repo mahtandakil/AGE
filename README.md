@@ -12,7 +12,7 @@ For build the project, you will the the following libraries:
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 17/07/2015
-* Last change: 24/08/2015
+* Last change: 25/08/2015
 *
 *
 * REFERENCES
@@ -53,8 +53,8 @@ For build the project, you will the the following libraries:
 *
 *
 * DEV NOTES
-*
-*
+* int AGE::deployAnimation(string src, string tag
+* AGE::moveAnimation
 *
 ****************************************************************************/
 

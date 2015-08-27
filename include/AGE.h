@@ -2,13 +2,14 @@
 * Created for: ArcadeBox C
 * Dev line: AGE v1
 * Creation day: 11/02/2014
-* Last change: 24/08/2015
+* Last change: 27/08/2015
 ****************************************************************************/
 
 
 #include "AGEAnimationIndex.h"
 #include "AGECollisionAreaIndex.h"
 #include "AGEPrefixedValues.h"
+#include "AGEStringsIndex.h"
 #include "AGETextureListIndex.h"
 
 
@@ -17,6 +18,9 @@
 
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include <unistd.h>
 
 
@@ -50,23 +54,28 @@ class AGE
         bool checkTexturesCollision(int id1, int id2, int x2, int y2); /**< Checks if there is a collision between two textures. The x & y values are needed if the image has been draw several times in the same screen. */
         bool checkTexturesCollision(int id1, int x1, int y1, int id2, int x2, int y2); /**< Checks if there is a collision between two textures. The x & y values are needed if the image has been draw several times in the same screen. */
         void clearScreen(); /**< All the screen shows only black. */
+        void clearScreen(Uint8 color1, Uint8 color2, Uint8 color3); /**< All the screen shows only one color . */
         void deleteImage(int id); /**< Deletes a loaded image and sets its register as usable. */
         void drawCollisionArea(int id); /**< Make visible the specified collision area. */
         void drawCollisionArea(int id_texture, int id_area); /**< Make visible the specified binded collision area. */
         void drawLine(int x1, int y1, int x2, int y2, int color1, int color2, int color3); /**< Draws a simple line with a size of 1 pixel. */
         void drawSquare(int x1, int y1, int x2, int y2, int color1, int color2, int color3); /**< Draws a square. */
         void drawSquare(int x1, int y1, int x2, int y2, int color1, int color2, int color3, int alpha); /**< Draws a square. This function allows to specify the value of the alpha channel. */
+        int deployAnimation(string src); /**< This functions loads an animation and all its related images. */
+        int deployAnimation(string src, int x, int y); /**< This functions loads an animation and all its related images and shows the first image on the screen */
         int deployImage(string src); /**< This functions loads a image. */
         int deployImage(string src, int x, int y); /**< This functions loads a image and shows it on the screen */
         void fadeScreen(int alpha); /**< Sets black the screen with a specific alpha channel value. */
         void freeImage(int id); /**< Sets specific image as usable. It means, that if you want to load this image after the delete, it will be restored from the memory. If other image is loaded, the original register could be used to store the new image, and the old image will be definitely removed from memory. */
         SDL_Event* getEventHandler(); /**< Return the SDL event handler for the app. */
         AGETextureListIndex* getTextureIndex(); /**< Return the texture index of the main process */
+        string itos(int number);
         int linkCollisionAreaToScreen(string tag, int x, int y, int w, int h); /**< Defines an collision area with random color. */
         int linkCollisionAreaToScreen(string tag, int x, int y, int w, int h, int color1, int colo2, int color3); /**< Defines an collision area with specific color. */
         int linkCollisionAreaToTexture(int id, string tag, int x, int y, int w, int h); /**< Defines an collision area for an image with random color. */
         int linkCollisionAreaToTexture(int id, string tag, int x, int y, int w, int h, int color1, int color2, int color3); /**< Defines an collision area for an image with specific color. */
         void loadAPI(); /**< This function loads and initializes the different libraries used by AGE, load the default images and creates the different index. */
+        int moveAnimation(int animation_id, int frame_id, int x, int y); /**< Changes the position of an animation image, and returns the id of the next frame. This function don't cares about the delay specified in the GAN file. */
         void moveBindCollisionArea(int texture_id, int area_id, int x, int y); /**< Changes the position of an binded area. */
         void moveCollisionArea(int id, int x, int y); /**< Changes the position of an area. */
         void moveImage(int id, int x, int y); /**< Changes the position of an image. */
@@ -92,6 +101,7 @@ class AGE
         int window_mode;
         string window_title;
 
+        void applyAnimation(SDL_Texture* texture, int x, int y, int cut_x, int cut_y, int cut_w, int cut_h);
         void applyImage(SDL_Texture* texture, int x, int y, int w, int h);
         bool checkCollision(SDL_Rect area1, SDL_Rect area2);
 

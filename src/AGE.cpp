@@ -2,7 +2,7 @@
 * Created for: ArcadeBox C
 * Dev line: AGE v1
 * Creation day: 11/02/2014
-* Last change: 24/8/2015
+* Last change: 27/8/2015
 ****************************************************************************/
 
 
@@ -61,6 +61,121 @@ void AGE::configure(int x, int y, string window_mode, string window_title){
 
     }
 
+
+}
+
+//---------------------------------------------------------------------------
+
+int AGE::deployAnimation(string src, int x, int y){
+
+    int result = -1;
+
+    result = this->deployAnimation(src);
+    this->moveAnimation(result, 0, x, y);
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::deployAnimation(string src){
+
+    int animation_id = -1;
+    string opt;
+    int counter;
+    bool fail = false;
+    AGEAnimationFrameIndex* frames = nullptr;
+    string reg;
+    string reg_value;
+    AGEStringsIndex* strings_index = new AGEStringsIndex();
+    Uint8 limiter;
+    ifstream animation_file;
+    SDL_Texture* temp_texture = nullptr;
+    SDL_Surface* temp_surface = nullptr;
+    int texture_w = 0;
+    int texture_h = 0;
+
+    animation_id = this->animation_index->searchByFile(src);
+
+    //Animation is not registered, this block loads the image and creates the register
+    if (animation_id == -1){
+
+        //We search for an available register
+        animation_id = this->animation_index->searchByAvailable(true);
+
+        if (this->checkFile(src)){
+
+            //If the file exists we read the animation information
+            animation_file.open(src.c_str(), std::ios::in);
+            while(getline(animation_file, opt)){
+
+                limiter = opt.find("=", 0);
+                if((int)limiter < 255){
+
+                    reg = opt.substr(0, limiter);
+                    reg_value = opt.substr(limiter+1);
+                    strings_index->setElementData(strings_index->createRegister(reg), reg, reg_value, "");
+
+                }
+
+            }
+            animation_file.close();
+
+            frames = new AGEAnimationFrameIndex();
+            animation_id = this->animation_index->createRegister(strings_index->getEntry2By1("DESCRIPTION"));
+            this->animation_index->setElementData(animation_id,
+                                                  frames,
+                                                  strings_index->getEntry2By1("FILE").c_str(),
+                                                  strings_index->getEntry2By1("DESCRIPTION").c_str(),
+                                                  atoi(strings_index->getEntry2By1("BGCOLOR1").c_str()),
+                                                  atoi(strings_index->getEntry2By1("BGCOLOR2").c_str()),
+                                                  atoi(strings_index->getEntry2By1("BGCOLOR3").c_str()),
+                                                  atoi(strings_index->getEntry2By1("IMAGES").c_str()),
+                                                  atoi(strings_index->getEntry2By1("INIT").c_str())
+                                                  );
+            cout << this->animation_index->getBgcolor1(animation_id) << this->animation_index->getBgcolor2(animation_id) << this->animation_index->getBgcolor3(animation_id) << endl;
+            temp_surface = IMG_Load(strings_index->getEntry2By1("FILE").c_str());
+            SDL_SetColorKey(temp_surface, SDL_TRUE, SDL_MapRGB(temp_surface->format, this->animation_index->getBgcolor1(animation_id), this->animation_index->getBgcolor2(animation_id), this->animation_index->getBgcolor3(animation_id)));
+            temp_texture = SDL_CreateTextureFromSurface(this->renderer, temp_surface);
+            SDL_FreeSurface(temp_surface);
+            SDL_QueryTexture(temp_texture, nullptr, nullptr, &texture_w, &texture_h);
+            this->animation_index->setTexture(animation_id, temp_texture);
+            this->animation_index->setTexture_w(animation_id, texture_w);
+            this->animation_index->setTexture_h(animation_id, texture_h);
+
+            counter = 0;
+            while(counter < atoi(strings_index->getEntry2By1("IMAGES").c_str()) ){
+
+                frames->createRegister(strings_index->getEntry2By1("DESCRIPTION") + " - " + this->itos(counter));
+                frames->setElementData(counter,
+                                       atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "X").c_str()),
+                                       atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "Y").c_str()),
+                                       atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "W").c_str()),
+                                       atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "H").c_str()),
+                                       atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "D").c_str())
+                                       );
+                counter++;
+
+            }
+
+        //If the file is not valid, we return an invalid id
+        }else{
+            animation_id = -1;
+
+        }
+
+    //Animation was loaded previously, so the available flag is set to 'false' to avoid animation unload
+    }else{
+        this->animation_index->setAvailable(animation_id, false);
+
+    }
+
+
+    delete(strings_index);
+
+    return animation_id;
 
 }
 
@@ -146,6 +261,47 @@ void AGE::moveBindCollisionArea(int texture_id, int area_id, int x, int y){
 
 }
 
+//---------------------------------------------------------------------------
+
+int AGE::moveAnimation(int animation_id, int frame_id, int x, int y){
+
+    AGEAnimationElement* animation;
+    AGEAnimationFrameElement* frame;
+    SDL_Texture* texture;
+    bool available = false;
+    int w;
+    int h;
+    int next = -1;
+
+    animation = this->animation_index->getElementById(animation_id);
+    available = this->animation_index->getAvailable(animation_id);
+    texture = animation->getTexture();
+
+    if ((texture == nullptr) || (animation == nullptr) || (available == true)){
+
+        this->applyImage(this->missing_image, x, y, API_IMAGES_MISSINGIMAGEFILE_W, API_IMAGES_MISSINGIMAGEFILE_H);
+        next = -1;
+
+    }else{
+
+        frame = animation->getFrames()->getElementById(frame_id);
+
+        this->applyAnimation(texture, x, y, frame->getImage_x(), frame->getImage_y(), frame->getImage_w(), frame->getImage_h());
+
+        if(frame->getNext() == nullptr){
+            next = animation->getInit();
+
+        }else{
+            next = frame->getNext()->getId();
+
+        }
+
+   }
+
+    return next;
+
+}
+
 
 //---------------------------------------------------------------------------
 
@@ -188,6 +344,27 @@ void AGE::applyImage(SDL_Texture* texture, int x, int y, int w, int h){
     destination_rect.y = y;
     destination_rect.h = h;
     destination_rect.w = w;
+
+    SDL_RenderCopy(this->renderer, texture, &image_rect, &destination_rect);
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGE::applyAnimation(SDL_Texture* texture, int x, int y, int cut_x, int cut_y, int cut_w, int cut_h){
+
+    SDL_Rect image_rect;
+    image_rect.x = cut_x;
+    image_rect.y = cut_y;
+    image_rect.h = cut_h;
+    image_rect.w = cut_w;
+
+    SDL_Rect destination_rect;
+    destination_rect.x = x;
+    destination_rect.y = y;
+    destination_rect.h = cut_h;
+    destination_rect.w = cut_w;
 
     SDL_RenderCopy(this->renderer, texture, &image_rect, &destination_rect);
 
@@ -277,7 +454,16 @@ bool AGE::checkFile(string src){
 
 void AGE::clearScreen(){
 
-    SDL_SetRenderDrawColor(this->renderer, 0x00, 0x00, 0x00, 255);
+    this->clearScreen(0x00, 0x00, 0x00);
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGE::clearScreen(Uint8 color1, Uint8 color2, Uint8 color3){
+
+    SDL_SetRenderDrawColor(this->renderer, color1, color2, color3, 255);
     SDL_RenderClear(this->renderer);
 
 }
@@ -795,4 +981,14 @@ void AGE::drawCollisionArea(AGECollisionAreaElement* area, int mod_x, int mod_y)
 
 //---------------------------------------------------------------------------
 
+string AGE::itos(int number){
 
+    stringstream ss;
+    ss << number;
+
+    return ss.str();
+
+}
+
+
+//---------------------------------------------------------------------------

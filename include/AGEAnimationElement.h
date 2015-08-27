@@ -1,13 +1,13 @@
 /****************************************************************************
 * Created for: AGE
 * Dev line: AGE v1
-* Creation day: 24/08/2015
-* Last change: 24/08/2015
-* Autogen: CListGen 1.0.7
+* Creation day: 25/08/2015
+* Last change: 27/08/2015
+* Autogen: CListGen 1.0.8
 ****************************************************************************/
 
 
-#include "AGETextureListIndex.h"
+#include "AGEAnimationFrameIndex.h"
 
 
 #include <iostream>
@@ -31,16 +31,32 @@ class AGEAnimationElement
 		string getTag();
 		bool getAvailable();
 		AGEAnimationElement* getNext();
-		Uint8 getElements();
-		Uint8 getInit();
-		AGETextureListIndex* getTexture_index();
+		AGEAnimationFrameIndex* getFrames();
+		string getFile();
+		string getDescription();
+		int getBgcolor1();
+		int getBgcolor2();
+		int getBgcolor3();
+		int getImages();
+		int getInit();
+		int getTexture_h();
+		int getTexture_w();
+		SDL_Texture* getTexture();
 		void setId(int id);
 		void setTag(string tag);
 		void setAvailable(bool available);
 		void setNext(AGEAnimationElement* next);
-		void setElements(Uint8 elements);
-		void setInit(Uint8 init);
-		void setTexture_index(AGETextureListIndex* texture_index);
+		void setFrames(AGEAnimationFrameIndex* frames);
+		void setFile(string file);
+		void setDescription(string description);
+		void setBgcolor1(int bgcolor1);
+		void setBgcolor2(int bgcolor2);
+		void setBgcolor3(int bgcolor3);
+		void setImages(int images);
+		void setInit(int init);
+		void setTexture_h(int texture_h);
+		void setTexture_w(int texture_w);
+		void setTexture(SDL_Texture* texture);
 
 
 	protected:
@@ -51,9 +67,17 @@ class AGEAnimationElement
 		string tag;
 		bool available;
 		AGEAnimationElement* next;
-		Uint8 elements;
-		Uint8 init;
-		AGETextureListIndex* texture_index;
+		AGEAnimationFrameIndex* frames;
+		SDL_Texture* texture;
+		int texture_w;
+		int texture_h;
+		string file;
+		string description;
+		int bgcolor1;
+		int bgcolor2;
+		int bgcolor3;
+		int images;
+		int init;
 
 };
 

@@ -1,14 +1,14 @@
 /****************************************************************************
 * Created for: AGE
 * Dev line: AGE v1
-* Creation day: 24/08/2015
-* Last change: 24/08/2015
-* Autogen: CListGen 1.0.7
+* Creation day: 25/08/2015
+* Last change: 27/08/2015
+* Autogen: CListGen 1.0.8
 ****************************************************************************/
 
 
 #include "AGEAnimationElement.h"
-
+#include "AGEAnimationFrameIndex.h"
 
 #include <iostream>
 
@@ -32,24 +32,46 @@ class AGEAnimationIndex
 		string getTag(int id);
 		bool getAvailable(int id);
 		AGEAnimationElement* getNext(int id);
-		Uint8 getElements(int id);
-		Uint8 getInit(int id);
-		AGETextureListIndex* getTexture_index(int id);
+		AGEAnimationFrameIndex* getFrames(int id);
+		AGEAnimationElement* getElementById(int id);
+        string getFile(int id);
+		string getDescription(int id);
+		int getBgcolor1(int id);
+		int getBgcolor2(int id);
+		int getBgcolor3(int id);
+		int getImages(int id);
+		int getInit(int id);
+		SDL_Texture* getTexture(int id);
+		int getTexture_h(int id);
+		int getTexture_w(int id);
 		int searchById(int id);
 		int searchByTag(string tag);
 		int searchByAvailable(bool available);
 		int searchByNext(AGEAnimationElement* next);
-		int searchByElements(Uint8 elements);
-		int searchByInit(Uint8 init);
-		int searchByTexture_index(AGETextureListIndex* texture_index);
-		int setElementData(int id, string tag, Uint8 elements, Uint8 init, AGETextureListIndex* texture_index);
-		int setElementData(int id, Uint8 elements, Uint8 init, AGETextureListIndex* texture_index);
+		int searchByFrames(AGEAnimationFrameIndex* frames);
+		int searchByFile(string file);
+		int searchByDescription(string description);
+		int searchByBgcolor1(int bgcolor1);
+		int searchByBgcolor2(int bgcolor2);
+		int searchByBgcolor3(int bgcolor3);
+		int searchByImages(int images);
+		int searchByInit(int init);
+		int setElementData(int id, string tag, AGEAnimationFrameIndex* frames, string file, string description, int bgcolor1, int bgcolor2, int bgcolor3, int images, int init);
+		int setElementData(int id, AGEAnimationFrameIndex* frames, string file, string description, int bgcolor1, int bgcolor2, int bgcolor3, int images, int init);
 		int setTag(int id, string tag);
 		int setAvailable(int id, bool available);
 		int setNext(int id, AGEAnimationElement* next);
-		int setElements(int id, Uint8 elements);
-		int setInit(int id, Uint8 init);
-		int setTexture_index(int id, AGETextureListIndex* texture_index);
+		int setFrames(int id, AGEAnimationFrameIndex* frames);
+		int setTexture(int id, SDL_Texture* texture);
+		int setTexture_w(int id, int texture_w);
+		int setTexture_h(int id, int texture_h);
+		int setFile(int id, string file);
+		int setDescription(int id, string description);
+		int setBgcolor1(int id, int bgcolor1);
+		int setBgcolor2(int id, int bgcolor2);
+		int setBgcolor3(int id, int bgcolor3);
+		int setImages(int id, int images);
+		int setInit(int id, int init);
 
 
 	protected:
@@ -61,7 +83,6 @@ class AGEAnimationIndex
 		AGEAnimationElement* first;
 		AGEAnimationElement* last;
 
-		AGEAnimationElement* getElementById(int id);
 		int searchAvailable();
 
 };

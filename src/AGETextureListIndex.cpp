@@ -2,7 +2,7 @@
 * Created for: AGE v1
 * Dev line: AGE v1
 * Creation day: 02/08/2015
-* Last change: 24/08/2015
+* Last change: 27/08/2015
 ****************************************************************************/
 
 
@@ -99,6 +99,60 @@ int AGETextureListIndex::getCounter(){
     return this->counter;
 
 }
+
+//---------------------------------------------------------------------------
+
+int AGETextureListIndex::getNextId(int id){
+
+    int result = -1;
+    AGETextureListElement* pointer;
+    AGETextureListElement* pointer_next;
+
+    pointer = this->getElementById(id);
+
+    if ((pointer == nullptr) or (id < 0) or (id >= this->counter)){
+        result = -1;
+
+    }else{
+
+        pointer_next = pointer->getNext();
+
+        if(pointer->getNext() == nullptr){
+            result = this->first->getId();
+
+        }else{
+            result = pointer_next->getId();
+
+        }
+
+    }
+
+    return result;
+
+
+}
+
+//---------------------------------------------------------------------------
+
+int AGETextureListIndex::getId(int id){
+
+    int result = -1;
+    AGETextureListElement* pointer;
+
+    pointer = this->getElementById(id);
+
+    if ((pointer == nullptr) or (id < 0) or (id >= this->counter)){
+        result = -1;
+
+    }else{
+        result = pointer->getId();
+
+    }
+
+    return result;
+
+}
+
 
 //---------------------------------------------------------------------------
 

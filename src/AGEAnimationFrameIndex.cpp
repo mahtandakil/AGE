@@ -1,18 +1,18 @@
 /****************************************************************************
 * Created for: AGE
 * Dev line: AGE v1
-* Creation day: 25/08/2015
+* Creation day: 27/08/2015
 * Last change: 27/08/2015
 * Autogen: CListGen 1.0.8
 ****************************************************************************/
 
 
-#include "AGEAnimationIndex.h"
+#include "AGEAnimationFrameIndex.h"
 
 
 //---------------------------------------------------------------------------
 
-AGEAnimationIndex::AGEAnimationIndex()
+AGEAnimationFrameIndex::AGEAnimationFrameIndex()
 {
 
 	this->counter = 0;
@@ -21,7 +21,7 @@ AGEAnimationIndex::AGEAnimationIndex()
 
 }
 
-AGEAnimationIndex::~AGEAnimationIndex()
+AGEAnimationFrameIndex::~AGEAnimationFrameIndex()
 {
 
 	this->freeList();
@@ -31,9 +31,9 @@ AGEAnimationIndex::~AGEAnimationIndex()
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::createRegister(string tag){
+int AGEAnimationFrameIndex::createRegister(string tag){
 
-	AGEAnimationElement* pointer = new AGEAnimationElement();
+	AGEAnimationFrameElement* pointer = new AGEAnimationFrameElement();
 	pointer->setTag(tag);
 
 	if (this->counter == 0){
@@ -59,10 +59,10 @@ int AGEAnimationIndex::createRegister(string tag){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::freeList(){
+int AGEAnimationFrameIndex::freeList(){
 
-	AGEAnimationElement* pointer;
-	AGEAnimationElement* next;
+	AGEAnimationFrameElement* pointer;
+	AGEAnimationFrameElement* next;
 	int result= 0;
 
     if(this->first != nullptr){
@@ -87,10 +87,10 @@ int AGEAnimationIndex::freeList(){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::getId(int id){
+int AGEAnimationFrameIndex::getId(int id){
 
 	int result = 0;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -110,10 +110,10 @@ int AGEAnimationIndex::getId(int id){
 
 //---------------------------------------------------------------------------
 
-string AGEAnimationIndex::getTag(int id){
+string AGEAnimationFrameIndex::getTag(int id){
 
 	string result = "";
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -133,10 +133,10 @@ string AGEAnimationIndex::getTag(int id){
 
 //---------------------------------------------------------------------------
 
-bool AGEAnimationIndex::getAvailable(int id){
+bool AGEAnimationFrameIndex::getAvailable(int id){
 
 	bool result = false;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -156,10 +156,10 @@ bool AGEAnimationIndex::getAvailable(int id){
 
 //---------------------------------------------------------------------------
 
-AGEAnimationElement* AGEAnimationIndex::getNext(int id){
+AGEAnimationFrameElement* AGEAnimationFrameIndex::getNext(int id){
 
-	AGEAnimationElement* result = nullptr;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* result = nullptr;
+	AGEAnimationFrameElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -179,79 +179,10 @@ AGEAnimationElement* AGEAnimationIndex::getNext(int id){
 
 //---------------------------------------------------------------------------
 
-AGEAnimationFrameIndex* AGEAnimationIndex::getFrames(int id){
-
-	AGEAnimationFrameIndex* result = nullptr;
-	AGEAnimationElement* pointer;
-
-	pointer = this->getElementById(id);
-
-	if ((pointer == nullptr) or (id < 0) or (id >= this->counter)){
-		result = nullptr;
-;
-
-	}else{
-		result = pointer->getFrames();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-string AGEAnimationIndex::getFile(int id){
-
-	string result = "";
-	AGEAnimationElement* pointer;
-
-	pointer = this->getElementById(id);
-
-	if ((pointer == nullptr) or (id < 0) or (id >= this->counter)){
-		result = "";
-;
-
-	}else{
-		result = pointer->getFile();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-string AGEAnimationIndex::getDescription(int id){
-
-	string result = "";
-	AGEAnimationElement* pointer;
-
-	pointer = this->getElementById(id);
-
-	if ((pointer == nullptr) or (id < 0) or (id >= this->counter)){
-		result = "";
-;
-
-	}else{
-		result = pointer->getDescription();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGEAnimationIndex::getBgcolor1(int id){
+int AGEAnimationFrameIndex::getImage_x(int id){
 
 	int result = 0;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -260,7 +191,7 @@ int AGEAnimationIndex::getBgcolor1(int id){
 ;
 
 	}else{
-		result = pointer->getBgcolor1();
+		result = pointer->getImage_x();
 
 	}
 
@@ -271,10 +202,10 @@ int AGEAnimationIndex::getBgcolor1(int id){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::getBgcolor2(int id){
+int AGEAnimationFrameIndex::getImage_y(int id){
 
 	int result = 0;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -283,7 +214,7 @@ int AGEAnimationIndex::getBgcolor2(int id){
 ;
 
 	}else{
-		result = pointer->getBgcolor2();
+		result = pointer->getImage_y();
 
 	}
 
@@ -294,10 +225,10 @@ int AGEAnimationIndex::getBgcolor2(int id){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::getBgcolor3(int id){
+int AGEAnimationFrameIndex::getImage_w(int id){
 
 	int result = 0;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -306,7 +237,7 @@ int AGEAnimationIndex::getBgcolor3(int id){
 ;
 
 	}else{
-		result = pointer->getBgcolor3();
+		result = pointer->getImage_w();
 
 	}
 
@@ -317,10 +248,10 @@ int AGEAnimationIndex::getBgcolor3(int id){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::getImages(int id){
+int AGEAnimationFrameIndex::getImage_h(int id){
 
 	int result = 0;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -329,7 +260,7 @@ int AGEAnimationIndex::getImages(int id){
 ;
 
 	}else{
-		result = pointer->getImages();
+		result = pointer->getImage_h();
 
 	}
 
@@ -340,10 +271,10 @@ int AGEAnimationIndex::getImages(int id){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::getInit(int id){
+int AGEAnimationFrameIndex::getImage_d(int id){
 
 	int result = 0;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	pointer = this->getElementById(id);
 
@@ -352,7 +283,7 @@ int AGEAnimationIndex::getInit(int id){
 ;
 
 	}else{
-		result = pointer->getInit();
+		result = pointer->getImage_d();
 
 	}
 
@@ -363,11 +294,11 @@ int AGEAnimationIndex::getInit(int id){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::searchById(int id){
+int AGEAnimationFrameIndex::searchById(int id){
 
 	int result = -1;
 	bool found = false;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -399,11 +330,11 @@ int AGEAnimationIndex::searchById(int id){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::searchByTag(string tag){
+int AGEAnimationFrameIndex::searchByTag(string tag){
 
 	int result = -1;
 	bool found = false;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -435,11 +366,11 @@ int AGEAnimationIndex::searchByTag(string tag){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::searchByAvailable(bool available){
+int AGEAnimationFrameIndex::searchByAvailable(bool available){
 
 	int result = -1;
 	bool found = false;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -471,11 +402,11 @@ int AGEAnimationIndex::searchByAvailable(bool available){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::searchByNext(AGEAnimationElement* next){
+int AGEAnimationFrameIndex::searchByNext(AGEAnimationFrameElement* next){
 
 	int result = -1;
 	bool found = false;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -507,11 +438,11 @@ int AGEAnimationIndex::searchByNext(AGEAnimationElement* next){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::searchByFrames(AGEAnimationFrameIndex* frames){
+int AGEAnimationFrameIndex::searchByImage_x(int image_x){
 
 	int result = -1;
 	bool found = false;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -522,7 +453,7 @@ int AGEAnimationIndex::searchByFrames(AGEAnimationFrameIndex* frames){
 
 		while (not ((pointer == nullptr) or (found))){
 
-			if (frames == pointer->getFrames()){
+			if (image_x == pointer->getImage_x()){
 
 				result = pointer->getId();
 				found = true;
@@ -543,11 +474,11 @@ int AGEAnimationIndex::searchByFrames(AGEAnimationFrameIndex* frames){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::searchByFile(string file){
+int AGEAnimationFrameIndex::searchByImage_y(int image_y){
 
 	int result = -1;
 	bool found = false;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -558,7 +489,7 @@ int AGEAnimationIndex::searchByFile(string file){
 
 		while (not ((pointer == nullptr) or (found))){
 
-			if (file == pointer->getFile()){
+			if (image_y == pointer->getImage_y()){
 
 				result = pointer->getId();
 				found = true;
@@ -579,11 +510,11 @@ int AGEAnimationIndex::searchByFile(string file){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::searchByDescription(string description){
+int AGEAnimationFrameIndex::searchByImage_w(int image_w){
 
 	int result = -1;
 	bool found = false;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -594,7 +525,7 @@ int AGEAnimationIndex::searchByDescription(string description){
 
 		while (not ((pointer == nullptr) or (found))){
 
-			if (description == pointer->getDescription()){
+			if (image_w == pointer->getImage_w()){
 
 				result = pointer->getId();
 				found = true;
@@ -615,11 +546,11 @@ int AGEAnimationIndex::searchByDescription(string description){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::searchByBgcolor1(int bgcolor1){
+int AGEAnimationFrameIndex::searchByImage_h(int image_h){
 
 	int result = -1;
 	bool found = false;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -630,7 +561,7 @@ int AGEAnimationIndex::searchByBgcolor1(int bgcolor1){
 
 		while (not ((pointer == nullptr) or (found))){
 
-			if (bgcolor1 == pointer->getBgcolor1()){
+			if (image_h == pointer->getImage_h()){
 
 				result = pointer->getId();
 				found = true;
@@ -651,11 +582,11 @@ int AGEAnimationIndex::searchByBgcolor1(int bgcolor1){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::searchByBgcolor2(int bgcolor2){
+int AGEAnimationFrameIndex::searchByImage_d(int image_d){
 
 	int result = -1;
 	bool found = false;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	if (this->counter == 0){
 		result = -1;
@@ -666,7 +597,7 @@ int AGEAnimationIndex::searchByBgcolor2(int bgcolor2){
 
 		while (not ((pointer == nullptr) or (found))){
 
-			if (bgcolor2 == pointer->getBgcolor2()){
+			if (image_d == pointer->getImage_d()){
 
 				result = pointer->getId();
 				found = true;
@@ -687,117 +618,9 @@ int AGEAnimationIndex::searchByBgcolor2(int bgcolor2){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::searchByBgcolor3(int bgcolor3){
+int AGEAnimationFrameIndex::setElementData(int id, string tag, int image_x, int image_y, int image_w, int image_h, int image_d){
 
-	int result = -1;
-	bool found = false;
-	AGEAnimationElement* pointer;
-
-	if (this->counter == 0){
-		result = -1;
-
-	}else{
-
-		pointer = this->first;
-
-		while (not ((pointer == nullptr) or (found))){
-
-			if (bgcolor3 == pointer->getBgcolor3()){
-
-				result = pointer->getId();
-				found = true;
-
-			}
-
-			pointer = pointer->getNext();
-
-		}
-
-	}
-
-	return result;
-
-}
-
-
-
-//---------------------------------------------------------------------------
-
-int AGEAnimationIndex::searchByImages(int images){
-
-	int result = -1;
-	bool found = false;
-	AGEAnimationElement* pointer;
-
-	if (this->counter == 0){
-		result = -1;
-
-	}else{
-
-		pointer = this->first;
-
-		while (not ((pointer == nullptr) or (found))){
-
-			if (images == pointer->getImages()){
-
-				result = pointer->getId();
-				found = true;
-
-			}
-
-			pointer = pointer->getNext();
-
-		}
-
-	}
-
-	return result;
-
-}
-
-
-
-//---------------------------------------------------------------------------
-
-int AGEAnimationIndex::searchByInit(int init){
-
-	int result = -1;
-	bool found = false;
-	AGEAnimationElement* pointer;
-
-	if (this->counter == 0){
-		result = -1;
-
-	}else{
-
-		pointer = this->first;
-
-		while (not ((pointer == nullptr) or (found))){
-
-			if (init == pointer->getInit()){
-
-				result = pointer->getId();
-				found = true;
-
-			}
-
-			pointer = pointer->getNext();
-
-		}
-
-	}
-
-	return result;
-
-}
-
-
-
-//---------------------------------------------------------------------------
-
-int AGEAnimationIndex::setElementData(int id, string tag, AGEAnimationFrameIndex* frames, string file, string description, int bgcolor1, int bgcolor2, int bgcolor3, int images, int init){
-
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
@@ -805,14 +628,11 @@ int AGEAnimationIndex::setElementData(int id, string tag, AGEAnimationFrameIndex
 	if (pointer != nullptr){
 
 		pointer->setTag(tag);
-		pointer->setFrames(frames);
-		pointer->setFile(file);
-		pointer->setDescription(description);
-		pointer->setBgcolor1(bgcolor1);
-		pointer->setBgcolor2(bgcolor2);
-		pointer->setBgcolor3(bgcolor3);
-		pointer->setImages(images);
-		pointer->setInit(init);
+		pointer->setImage_x(image_x);
+		pointer->setImage_y(image_y);
+		pointer->setImage_w(image_w);
+		pointer->setImage_h(image_h);
+		pointer->setImage_d(image_d);
 		result = pointer->getId();
 
 	}
@@ -824,23 +644,20 @@ int AGEAnimationIndex::setElementData(int id, string tag, AGEAnimationFrameIndex
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::setElementData(int id, AGEAnimationFrameIndex* frames, string file, string description, int bgcolor1, int bgcolor2, int bgcolor3, int images, int init){
+int AGEAnimationFrameIndex::setElementData(int id, int image_x, int image_y, int image_w, int image_h, int image_d){
 
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
 
 	if (pointer != nullptr){
 
-		pointer->setFrames(frames);
-		pointer->setFile(file);
-		pointer->setDescription(description);
-		pointer->setBgcolor1(bgcolor1);
-		pointer->setBgcolor2(bgcolor2);
-		pointer->setBgcolor3(bgcolor3);
-		pointer->setImages(images);
-		pointer->setInit(init);
+		pointer->setImage_x(image_x);
+		pointer->setImage_y(image_y);
+		pointer->setImage_w(image_w);
+		pointer->setImage_h(image_h);
+		pointer->setImage_d(image_d);
 		result = pointer->getId();
 
 	}
@@ -852,9 +669,9 @@ int AGEAnimationIndex::setElementData(int id, AGEAnimationFrameIndex* frames, st
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::setTag(int id, string tag){
+int AGEAnimationFrameIndex::setTag(int id, string tag){
 
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
@@ -873,9 +690,9 @@ int AGEAnimationIndex::setTag(int id, string tag){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::setAvailable(int id, bool available){
+int AGEAnimationFrameIndex::setAvailable(int id, bool available){
 
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
@@ -894,9 +711,9 @@ int AGEAnimationIndex::setAvailable(int id, bool available){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::setNext(int id, AGEAnimationElement* next){
+int AGEAnimationFrameIndex::setNext(int id, AGEAnimationFrameElement* next){
 
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
@@ -915,16 +732,16 @@ int AGEAnimationIndex::setNext(int id, AGEAnimationElement* next){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::setFrames(int id, AGEAnimationFrameIndex* frames){
+int AGEAnimationFrameIndex::setImage_x(int id, int image_x){
 
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
 
 	if (pointer != nullptr){
 
-		pointer->setFrames(frames);
+		pointer->setImage_x(image_x);
 		result = pointer->getId();
 
 	}
@@ -936,16 +753,16 @@ int AGEAnimationIndex::setFrames(int id, AGEAnimationFrameIndex* frames){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::setFile(int id, string file){
+int AGEAnimationFrameIndex::setImage_y(int id, int image_y){
 
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
 
 	if (pointer != nullptr){
 
-		pointer->setFile(file);
+		pointer->setImage_y(image_y);
 		result = pointer->getId();
 
 	}
@@ -957,16 +774,16 @@ int AGEAnimationIndex::setFile(int id, string file){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::setDescription(int id, string description){
+int AGEAnimationFrameIndex::setImage_w(int id, int image_w){
 
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
 
 	if (pointer != nullptr){
 
-		pointer->setDescription(description);
+		pointer->setImage_w(image_w);
 		result = pointer->getId();
 
 	}
@@ -978,16 +795,16 @@ int AGEAnimationIndex::setDescription(int id, string description){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::setBgcolor1(int id, int bgcolor1){
+int AGEAnimationFrameIndex::setImage_h(int id, int image_h){
 
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
 
 	if (pointer != nullptr){
 
-		pointer->setBgcolor1(bgcolor1);
+		pointer->setImage_h(image_h);
 		result = pointer->getId();
 
 	}
@@ -999,16 +816,16 @@ int AGEAnimationIndex::setBgcolor1(int id, int bgcolor1){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::setBgcolor2(int id, int bgcolor2){
+int AGEAnimationFrameIndex::setImage_d(int id, int image_d){
 
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 	int result = -1;
 
 	pointer = this->getElementById(id);
 
 	if (pointer != nullptr){
 
-		pointer->setBgcolor2(bgcolor2);
+		pointer->setImage_d(image_d);
 		result = pointer->getId();
 
 	}
@@ -1020,72 +837,9 @@ int AGEAnimationIndex::setBgcolor2(int id, int bgcolor2){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::setBgcolor3(int id, int bgcolor3){
-
-	AGEAnimationElement* pointer;
-	int result = -1;
-
-	pointer = this->getElementById(id);
-
-	if (pointer != nullptr){
-
-		pointer->setBgcolor3(bgcolor3);
-		result = pointer->getId();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGEAnimationIndex::setImages(int id, int images){
-
-	AGEAnimationElement* pointer;
-	int result = -1;
-
-	pointer = this->getElementById(id);
-
-	if (pointer != nullptr){
-
-		pointer->setImages(images);
-		result = pointer->getId();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGEAnimationIndex::setInit(int id, int init){
-
-	AGEAnimationElement* pointer;
-	int result = -1;
-
-	pointer = this->getElementById(id);
-
-	if (pointer != nullptr){
-
-		pointer->setInit(init);
-		result = pointer->getId();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-AGEAnimationElement* AGEAnimationIndex::getElementById(int id){
-	AGEAnimationElement* result;
-	AGEAnimationElement* pointer;
+AGEAnimationFrameElement* AGEAnimationFrameIndex::getElementById(int id){
+	AGEAnimationFrameElement* result;
+	AGEAnimationFrameElement* pointer;
 
 	if (this->counter == 0){
 		result = nullptr;
@@ -1111,12 +865,12 @@ AGEAnimationElement* AGEAnimationIndex::getElementById(int id){
 
 //---------------------------------------------------------------------------
 
-int AGEAnimationIndex::searchAvailable(){
+int AGEAnimationFrameIndex::searchAvailable(){
 
 	int result = -1;
 	int counter = 0;
 	bool found = false;
-	AGEAnimationElement* pointer;
+	AGEAnimationFrameElement* pointer;
 
 	while((counter < this->counter) && (found == false)){
 
@@ -1129,137 +883,6 @@ int AGEAnimationIndex::searchAvailable(){
 		}
 
 		counter++;
-
-	}
-
-	return result;
-
-}
-
-//---------------------------------------------------------------------------
-
-int AGEAnimationIndex::setTexture(int id, SDL_Texture* texture){
-
-	AGEAnimationElement* pointer;
-	int result = -1;
-
-	pointer = this->getElementById(id);
-
-	if (pointer != nullptr){
-
-		pointer->setTexture(texture);
-		result = pointer->getId();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGEAnimationIndex::setTexture_h(int id, int texture_h){
-
-	AGEAnimationElement* pointer;
-	int result = -1;
-
-	pointer = this->getElementById(id);
-
-	if (pointer != nullptr){
-
-		pointer->setTexture_h(texture_h);
-		result = pointer->getId();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGEAnimationIndex::setTexture_w(int id, int texture_w){
-
-	AGEAnimationElement* pointer;
-	int result = -1;
-
-	pointer = this->getElementById(id);
-
-	if (pointer != nullptr){
-
-		pointer->setTexture_w(texture_w);
-		result = pointer->getId();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-SDL_Texture*  AGEAnimationIndex::getTexture(int id){
-
-	SDL_Texture* result = nullptr;
-	AGEAnimationElement* pointer;
-
-	pointer = this->getElementById(id);
-
-	if ((pointer == nullptr) or (id < 0) or (id >= this->counter)){
-		result = nullptr;
-
-
-	}else{
-		result = pointer->getTexture();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int  AGEAnimationIndex::getTexture_w(int id){
-
-	int result = -1;
-	AGEAnimationElement* pointer;
-
-	pointer = this->getElementById(id);
-
-	if ((pointer == nullptr) or (id < 0) or (id >= this->counter)){
-		result = -1;
-
-
-	}else{
-		result = pointer->getTexture_w();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int  AGEAnimationIndex::getTexture_h(int id){
-
-	int result = -1;
-	AGEAnimationElement* pointer;
-
-	pointer = this->getElementById(id);
-
-	if ((pointer == nullptr) or (id < 0) or (id >= this->counter)){
-		result = -1;
-
-
-	}else{
-		result = pointer->getTexture_h();
 
 	}
 
