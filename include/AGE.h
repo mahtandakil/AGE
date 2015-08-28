@@ -75,7 +75,7 @@ class AGE
         int linkCollisionAreaToTexture(int id, string tag, int x, int y, int w, int h); /**< Defines an collision area for an image with random color. */
         int linkCollisionAreaToTexture(int id, string tag, int x, int y, int w, int h, int color1, int color2, int color3); /**< Defines an collision area for an image with specific color. */
         void loadAPI(); /**< This function loads and initializes the different libraries used by AGE, load the default images and creates the different index. */
-        int moveAnimation(int animation_id, int frame_id, int x, int y); /**< Changes the position of an animation image, and returns the id of the next frame. This function don't cares about the delay specified in the GAN file. */
+        int moveAnimation(int animation_id, int frame_id, int x, int y, double angle=0.0, SDL_Point* center=NULL, SDL_RendererFlip flip=AGE_FLIPN); /**< Changes the position of an animation image, and returns the id of the next frame. This function don't cares about the delay specified in the GAN file. */
         void moveBindCollisionArea(int texture_id, int area_id, int x, int y); /**< Changes the position of an binded area. */
         void moveCollisionArea(int id, int x, int y); /**< Changes the position of an area. */
         void moveImage(int id, int x, int y, double angle=0.0, SDL_Point* center=NULL, SDL_RendererFlip flip=AGE_FLIPN); /**< Changes the position of an image. */
@@ -102,6 +102,7 @@ class AGE
         string window_title;
 
         void applyAnimation(SDL_Texture* texture, int x, int y, int cut_x, int cut_y, int cut_w, int cut_h);
+        void applyAnimation(SDL_Texture* texture, int x, int y, int cut_x, int cut_y, int cut_w, int cut_h, double angle, SDL_Point* center, SDL_RendererFlip flip);
         void applyImage(SDL_Texture* texture, int x, int y, int w, int h);
         void applyImage(SDL_Texture* texture, int x, int y, int w, int h, double angle, SDL_Point* center, SDL_RendererFlip flip);
         bool checkCollision(SDL_Rect area1, SDL_Rect area2);

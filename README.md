@@ -25,7 +25,6 @@ For build the project, you will the the following libraries:
 *
 *
 * MILLESTONE
-* 0.5.5 - Reverse animations
 * 0.5.6 - Check animation system & area collision system
 * 0.5.7 - Create an human walk simulation
 * 0.6.0 - Create collision points system

@@ -768,15 +768,19 @@ void test::test6(){
         this->api->moveImage(0, 1040, 540, NULL, NULL, AGE_FLIPHV);
 
         walk_frame1 = this->api->moveAnimation(walk, walk_frame1, x1, 190);
-        walk_frame2 = this->api->moveAnimation(walk, walk_frame2, x2, 350);
+        walk_frame2 = this->api->moveAnimation(walk, walk_frame2, x2, 350, NULL, NULL, AGE_FLIPH);
+        walk_frame3 = this->api->moveAnimation(walk, walk_frame3, 480, y4, 270, NULL, AGE_FLIPN);
+        walk_frame4 = this->api->moveAnimation(walk, walk_frame4, 660, y3, 90, NULL, AGE_FLIPN);
 
         x1 = x1 + 5;
         x2 = x2 - 8;
         y3 = y3 + 6;
         y4 = y4 - 9;
 
-        if(x1>1300){x1 = -40;}
-        if(x2<-30){x2 = 1240;}
+        if(x1>1300){x1 = -60;}
+        if(x2<-70){x2 = 1240;}
+        if(y3>760){y3 = -60;}
+        if(y4<-70){y4 = 750;}
 
         this->api->refresh();
         this->api->pause(100);

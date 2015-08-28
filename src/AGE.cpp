@@ -263,7 +263,7 @@ void AGE::moveBindCollisionArea(int texture_id, int area_id, int x, int y){
 
 //---------------------------------------------------------------------------
 
-int AGE::moveAnimation(int animation_id, int frame_id, int x, int y){
+int AGE::moveAnimation(int animation_id, int frame_id, int x, int y, double angle, SDL_Point* center, SDL_RendererFlip flip){
 
     AGEAnimationElement* animation;
     AGEAnimationFrameElement* frame;
@@ -286,7 +286,13 @@ int AGE::moveAnimation(int animation_id, int frame_id, int x, int y){
 
         frame = animation->getFrames()->getElementById(frame_id);
 
-        this->applyAnimation(texture, x, y, frame->getImage_x(), frame->getImage_y(), frame->getImage_w(), frame->getImage_h());
+        if((angle == 0.0) && (center == NULL) && (flip == AGE_FLIPN)){
+            this->applyAnimation(texture, x, y, frame->getImage_x(), frame->getImage_y(), frame->getImage_w(), frame->getImage_h());
+
+        }else{
+            this->applyAnimation(texture, x, y, frame->getImage_x(), frame->getImage_y(), frame->getImage_w(), frame->getImage_h(), angle, center, flip);
+
+        }
 
         if(frame->getNext() == nullptr){
             next = animation->getInit();
@@ -396,6 +402,27 @@ void AGE::applyAnimation(SDL_Texture* texture, int x, int y, int cut_x, int cut_
     destination_rect.w = cut_w;
 
     SDL_RenderCopy(this->renderer, texture, &image_rect, &destination_rect);
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGE::applyAnimation(SDL_Texture* texture, int x, int y, int cut_x, int cut_y, int cut_w, int cut_h, double angle, SDL_Point* center, SDL_RendererFlip flip){
+
+    SDL_Rect image_rect;
+    image_rect.x = cut_x;
+    image_rect.y = cut_y;
+    image_rect.h = cut_h;
+    image_rect.w = cut_w;
+
+    SDL_Rect destination_rect;
+    destination_rect.x = x;
+    destination_rect.y = y;
+    destination_rect.h = cut_h;
+    destination_rect.w = cut_w;
+
+    SDL_RenderCopyEx(this->renderer, texture, &image_rect, &destination_rect, angle, center, flip);
 
 }
 
