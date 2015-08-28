@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 17/07/2015
-* Last change: 24/08/2015
+* Last change: 28/08/2015
 ****************************************************************************/
 
 
@@ -717,7 +717,14 @@ void test::test6(){
     bool show = false;
     SDL_Event* event;
     int walk;
-    int walk_frame = 0;
+    int walk_frame1 = 0;
+    int walk_frame2 = 3;
+    int walk_frame3 = 5;
+    int walk_frame4 = 5;
+    int x1 = (rand() % 1300);
+    int x2 = (rand() % 1300);
+    int y3 = (rand() % 700);
+    int y4 = (rand() % 700);
 
 
     cout << "Test 6 - START" << endl << endl;
@@ -729,6 +736,7 @@ void test::test6(){
     this->api->refresh();
 
     walk = this->api->deployAnimation("test/lucas_dash.gan");
+    this->api->deployImage("test/5.jpg");
 
     while (keep){
 
@@ -753,9 +761,23 @@ void test::test6(){
         }
 
         this->api->clearScreen(0x00, 0x97, 0xbd);
-        cout << "2.A- " << walk_frame << endl;
-        walk_frame = this->api->moveAnimation(walk, walk_frame, 500, 300);
-        cout << "2.B- " << walk_frame << endl;
+
+        this->api->moveImage(0, 10, 10);
+        this->api->moveImage(0, 1040, 10, NULL, NULL, AGE_FLIPH);
+        this->api->moveImage(0, 10, 540, NULL, NULL, AGE_FLIPV);
+        this->api->moveImage(0, 1040, 540, NULL, NULL, AGE_FLIPHV);
+
+        walk_frame1 = this->api->moveAnimation(walk, walk_frame1, x1, 190);
+        walk_frame2 = this->api->moveAnimation(walk, walk_frame2, x2, 350);
+
+        x1 = x1 + 5;
+        x2 = x2 - 8;
+        y3 = y3 + 6;
+        y4 = y4 - 9;
+
+        if(x1>1300){x1 = -40;}
+        if(x2<-30){x2 = 1240;}
+
         this->api->refresh();
         this->api->pause(100);
 

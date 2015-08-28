@@ -2,7 +2,7 @@
 * Created for: ArcadeBox C
 * Dev line: AGE v1
 * Creation day: 11/02/2014
-* Last change: 27/08/2015
+* Last change: 28/08/2015
 ****************************************************************************/
 
 
@@ -78,7 +78,7 @@ class AGE
         int moveAnimation(int animation_id, int frame_id, int x, int y); /**< Changes the position of an animation image, and returns the id of the next frame. This function don't cares about the delay specified in the GAN file. */
         void moveBindCollisionArea(int texture_id, int area_id, int x, int y); /**< Changes the position of an binded area. */
         void moveCollisionArea(int id, int x, int y); /**< Changes the position of an area. */
-        void moveImage(int id, int x, int y); /**< Changes the position of an image. */
+        void moveImage(int id, int x, int y, double angle=0.0, SDL_Point* center=NULL, SDL_RendererFlip flip=AGE_FLIPN); /**< Changes the position of an image. */
         void pause(int miliseconds); /**< Pauses the execution of the engine for a time. */
         void refresh(); /**< Presents all the images on the screen. */
         void terminate(); /**< Unloads all the libraries & the index. */
@@ -103,6 +103,7 @@ class AGE
 
         void applyAnimation(SDL_Texture* texture, int x, int y, int cut_x, int cut_y, int cut_w, int cut_h);
         void applyImage(SDL_Texture* texture, int x, int y, int w, int h);
+        void applyImage(SDL_Texture* texture, int x, int y, int w, int h, double angle, SDL_Point* center, SDL_RendererFlip flip);
         bool checkCollision(SDL_Rect area1, SDL_Rect area2);
 
 };

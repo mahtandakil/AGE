@@ -135,7 +135,7 @@ int AGE::deployAnimation(string src){
                                                   atoi(strings_index->getEntry2By1("IMAGES").c_str()),
                                                   atoi(strings_index->getEntry2By1("INIT").c_str())
                                                   );
-            cout << this->animation_index->getBgcolor1(animation_id) << this->animation_index->getBgcolor2(animation_id) << this->animation_index->getBgcolor3(animation_id) << endl;
+
             temp_surface = IMG_Load(strings_index->getEntry2By1("FILE").c_str());
             SDL_SetColorKey(temp_surface, SDL_TRUE, SDL_MapRGB(temp_surface->format, this->animation_index->getBgcolor1(animation_id), this->animation_index->getBgcolor2(animation_id), this->animation_index->getBgcolor3(animation_id)));
             temp_texture = SDL_CreateTextureFromSurface(this->renderer, temp_surface);
@@ -305,7 +305,7 @@ int AGE::moveAnimation(int animation_id, int frame_id, int x, int y){
 
 //---------------------------------------------------------------------------
 
-void AGE::moveImage(int id, int x, int y){
+void AGE::moveImage(int id, int x, int y, double angle, SDL_Point* center, SDL_RendererFlip flip){
 
     SDL_Texture* texture;
     bool available = false;
@@ -321,7 +321,15 @@ void AGE::moveImage(int id, int x, int y){
     }else{
         w = this->texture_index->getTextureW(id);
         h = this->texture_index->getTextureH(id);
-        this->applyImage(texture, x, y, w, h);
+
+        if((angle == 0.0) && (center == NULL) && (flip == AGE_FLIPN)){
+            this->applyImage(texture, x, y, w, h);
+
+        }else{
+            this->applyImage(texture, x, y, w, h, angle, center, flip);
+
+        }
+
         this->texture_index->setPosition(id, x, y);
 
     }
@@ -346,6 +354,27 @@ void AGE::applyImage(SDL_Texture* texture, int x, int y, int w, int h){
     destination_rect.w = w;
 
     SDL_RenderCopy(this->renderer, texture, &image_rect, &destination_rect);
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGE::applyImage(SDL_Texture* texture, int x, int y, int w, int h, double angle, SDL_Point* center, SDL_RendererFlip flip){
+
+    SDL_Rect image_rect;
+    image_rect.x = 0;
+    image_rect.y = 0;
+    image_rect.h = h;
+    image_rect.w = w;
+
+    SDL_Rect destination_rect;
+    destination_rect.x = x;
+    destination_rect.y = y;
+    destination_rect.h = h;
+    destination_rect.w = w;
+
+    SDL_RenderCopyEx(this->renderer, texture, &image_rect, &destination_rect, angle, center, flip);
 
 }
 
