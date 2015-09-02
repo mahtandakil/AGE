@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 17/07/2015
-* Last change: 28/08/2015
+* Last change: 02/09/2015
 ****************************************************************************/
 
 
@@ -49,16 +49,20 @@ test::test(int id){
 
         default:
             cout << endl;
-            cout << "Test 1: Six files are loaded and one is a missing file" << endl;
-            cout << "Test 2: Memory manage & dynamic load system form images" << endl;
-            cout << "Test 3: Fade screen & drawsquare function" << endl;
-            cout << "Test 4: Moving an image to check collisions" << endl;
-            cout << "Test 5: Area collision system example" << endl;
-            cout << "Test 6: Animation system example" << endl;
-            cout << "Test 7: Collision point system example" << endl;
+            cout << "TOOLS:" << endl;
+            cout << "   ANC: " << endl;
+            cout << "   AGG: " << endl;
 
-//            cout << "Test 7: AGE button example" << endl;
-//            cout << "Test 8: Music & FX" << endl;
+            cout << endl;
+            cout << "TESTS:" << endl;
+            cout << "   1: Six files are loaded and one is a missing file" << endl;
+            cout << "   2: Memory manage & dynamic load system form images" << endl;
+            cout << "   3: Fade screen & drawsquare function" << endl;
+            cout << "   4: Moving an image to check collisions" << endl;
+            cout << "   5: Area collision system example" << endl;
+            cout << "   6: Animation system example" << endl;
+            cout << "   7: Label system example" << endl;
+            cout << "   8: Collision point system example" << endl;
             cout << endl;
     }
 
@@ -423,8 +427,11 @@ void test::test4(){
     int x = 500;
     int y = 200;
 
-    cout << "Test 4 - START" << endl << endl;
-    cout << "Press keys to move, left click to control with mouse" << endl << endl;
+    cout << "Test 4 - START" << endl;
+    cout << "Press keys to move, left click to control with mouse." << endl;
+    cout << "Press <ESC> to exit." << endl;
+    cout << "Movement events will be notified, when dog collision with other images, a square will be colored" << endl;
+    cout << "When dog collision with other images, an area will be colored" << endl << endl;
 
     this->api->configure(1200,700, "window", "Test 4");
     this->api->loadAPI();
@@ -559,7 +566,10 @@ void test::test5(){
     int x = 20;
 
     cout << "Test 5 - START" << endl << endl;
-    cout << "Move elements to check collision system. Press SPACE to show/hide collision areas" << endl << endl;
+    cout << "Press keys to move." << endl << endl;
+    cout << "Press <SPACE> to show/hide collision areas." << endl;
+    cout << "Press <ESC> to exit." << endl;
+    cout << "Program will check collision events and notify with colored squares." << endl << endl;
 
     this->api->configure(1200,700, "window", "Test 5");
     this->api->loadAPI();
@@ -728,7 +738,9 @@ void test::test6(){
 
 
     cout << "Test 6 - START" << endl << endl;
-    cout << "Animations are loaded & reproduced. Press button 'A' for attack and check collisions." << endl << endl;
+    cout << "Press <ESC> to exit." << endl;
+    cout << "Images & animations have been transformed, only one image & one animation area allocated in memory." << endl << endl;
+    cout << "Animations are loaded & reproduced." << endl << endl;
 
     this->api->configure(1200,700, "window", "Test 6");
     this->api->loadAPI();
@@ -763,14 +775,14 @@ void test::test6(){
         this->api->clearScreen(0x00, 0x97, 0xbd);
 
         this->api->moveImage(0, 10, 10);
-        this->api->moveImage(0, 1040, 10, NULL, NULL, AGE_FLIPH);
-        this->api->moveImage(0, 10, 540, NULL, NULL, AGE_FLIPV);
-        this->api->moveImage(0, 1040, 540, NULL, NULL, AGE_FLIPHV);
+        this->api->moveImage(0, 1040, 10, 0, nullptr, AGE_FLIPH);
+        this->api->moveImage(0, 10, 540, 0, nullptr, AGE_FLIPV);
+        this->api->moveImage(0, 1040, 540, 0, nullptr, AGE_FLIPHV);
 
         walk_frame1 = this->api->moveAnimation(walk, walk_frame1, x1, 190);
-        walk_frame2 = this->api->moveAnimation(walk, walk_frame2, x2, 350, NULL, NULL, AGE_FLIPH);
-        walk_frame3 = this->api->moveAnimation(walk, walk_frame3, 480, y4, 270, NULL, AGE_FLIPN);
-        walk_frame4 = this->api->moveAnimation(walk, walk_frame4, 660, y3, 90, NULL, AGE_FLIPN);
+        walk_frame2 = this->api->moveAnimation(walk, walk_frame2, x2, 350, 0, nullptr, AGE_FLIPH);
+        walk_frame3 = this->api->moveAnimation(walk, walk_frame3, 480, y4, 270, nullptr, AGE_FLIPN);
+        walk_frame4 = this->api->moveAnimation(walk, walk_frame4, 660, y3, 90, nullptr, AGE_FLIPN);
 
         x1 = x1 + 5;
         x2 = x2 - 8;
@@ -799,21 +811,186 @@ void test::test6(){
 void test::test7(){
 
     bool keep = true;
-    bool show = false;
+    bool opt = true;
+    int example = 0;
     SDL_Event* event;
+    int font1 = -1;
+    int font2 = -1;
+    int font3 = -1;
+    int font4 = -1;
+    int font6 = -1;
+    int label11 = -1;
+    int label12 = -1;
+    int label21 = -1;
+    int label22 = -1;
+    int label31 = -1;
+    int label32 = -1;
+    int label41 = -1;
+    int label42 = -1;
+    int label51 = -1;
+    int label52 = -1;
+    int labelX1 = -1;
+    int labelX2 = -1;
+    int labelR1 = -1;
+    int labelR2 = -1;
+    int labelR3 = -1;
+    int labelR4 = -1;
+    int labelR5 = -1;
+    int labelR6 = -1;
+    int labelR7 = -1;
+    int labelR8 = -1;
+    int labelR9 = -1;
 
     cout << "Test 7 - START" << endl << endl;
-    cout << "?????????????????" << endl << endl;
+    cout << "Different strings will be displayed" << endl << endl;
 
     this->api->configure(1200,700, "window", "Test 7");
     this->api->loadAPI();
     event = this->api->getEventHandler();
     this->api->refresh();
 
+    cout << "Loading fonts:" << endl;
+    font1 = this->api->deployFont("test/OpenSans-Regular.ttf", 12, "1");
+    cout << "OpenSans 12 loaded with id: " << font1 << endl;
+    font2 = this->api->deployFont("test/OpenSans-Regular.ttf", 16, "2");
+    cout << "OpenSans 16 loaded with id: " << font2 << endl;
+    font3 = this->api->deployFont("test/OpenSans-Regular.ttf", 32, "3");
+    cout << "OpenSans 32 loaded with id: " << font3 << endl;
+    font4 = this->api->deployFont("test/AlexBrush-Regular.ttf", 36, "4");
+    cout << "Alex brush 36 loaded with id: " << font4 << endl;
+    cout << "Trying to load again OpenSans 12. ID: " << this->api->deployFont("test/OpenSans-Regular.ttf", 12, "1") << endl;
+    cout << "Trying to load again Alex brush 15. ID: " << this->api->deployFont("test/AlexBrush-Regular.ttf", 15, "4") << endl << endl;
+    font6 = this->api->deployFont("test/AlexBrush-Regular.ttf", 32, "6");
+    cout << "Alex brush 32 loaded with id: " << font6 << endl;
+
+    cout << "Deploying labels: "<< endl;
+    label11 = this->api->deployLabel("Regular label", font1, AGE_RENDER_N, 200, 250, 230);
+    cout << "Label11: " << label11 << endl;
+    label12 = this->api->deployLabel("Regular label with border", font1, AGE_RENDER_N, 200, 250, 230, false, 0, 0, 0, 0, true, 0, 140, 232, 56);
+    cout << "Label12: " << label12 << endl;
+
+    label21 = this->api->deployLabel("This label also has a border, but with a margin of 7px", font2, AGE_RENDER_N, 20, 20, 20, false, 0, 0, 0, 0, true, 7, 255, 0, 180);
+    cout << "Label21: " << label21 << endl;
+    label22 = this->api->deployLabel("We are using now a yellow background", font2, AGE_RENDER_N, 20, 20, 20, true, 0, 255, 255, 0);
+    cout << "Label22: " << label22 << endl;
+
+    label31 = this->api->deployLabel("Backgrounds also has a margin value. This is 9px", font3, AGE_RENDER_N, 0, 0, 0, true, 9, 150, 0, 255);
+    cout << "Label31: " << label31 << endl;
+    label32 = this->api->deployLabel("Backgrounds & borders are compatible", font3,AGE_RENDER_N,  0, 0, 0, true, 4, 255, 255, 153, true, 4, 255, 50, 0);
+    cout << "Label32: " << label32 << endl;
+
+    label41 = this->api->deployLabel("This label uses a new font & a different color", font4, AGE_RENDER_N, 60, 255, 0, true, 5);
+    cout << "Label41: " << label41 << endl;
+    label42 = this->api->deployLabel("Press space to change the colors of this label", font4, AGE_RENDER_N, 0, 0, 0, true, 12, 255,255,255,true, 6,0,0,0);
+    cout << "Label42: " << label42 << endl;
+
+    label51 = this->api->deployLabel("Labels can rotate, but this is incompatible with borders & backgrounds", font2, AGE_RENDER_N, 120, 255, 75, true, 9, 255, 255, 255);
+    cout << "Label51: " << label51 << endl;
+    label52 = this->api->deployLabel("But there are no problems with flipping", font2, AGE_RENDER_N, 40, 40, 10, true, 9, 255, 255, 255, true, 7, 0,0,0);
+    cout << "Label52: " << label52 << endl;
+
+    labelX1= this->api->deployLabel("An invalid font id where used to create this label, so AGE uses the default font.", 9999, AGE_RENDER_N, 200, 250, 230);
+    cout << "LabelX1: " << labelX1 << " -> " << "This label uses a wrong font" << endl;
+    labelX2= 9999999;
+    cout << "LabelX2: " << labelX2 << " -> " << "This is a wrong label id" << endl;
+
+    labelR1 = this->api->deployLabel("Press <INTRO> to continue.", font3, AGE_RENDER_N, 120, 255, 75, true, 9, 255, 30, 40);
+    labelR2 = this->api->deployLabel("Probably you have noticed the ugly look of the characters.", font6, AGE_RENDER_N, 250, 0, 55, true, 9, 255, 255, 143);
+    labelR3 = this->api->deployLabel("That happens because we don't have use any render (AGE_RENDER_N). There are 2 solutions", font6, AGE_RENDER_N, 250, 0, 55, true, 9, 255, 255, 143);
+    labelR4 = this->api->deployLabel("First one is use of AGE_RENDER_S, the result is much better.", font6, AGE_RENDER_S, 250, 0, 55, true, 9, 204, 255, 255);
+    labelR5 = this->api->deployLabel("The problem is that requires more resources and the use of background is mandatory.", font6, AGE_RENDER_S, 250, 0, 55, true, 9, 204, 255, 255);
+    labelR6 = this->api->deployLabel("This is the default look of this mode if you don't provide any color for background.", font6, AGE_RENDER_S, 250, 0, 55);
+    labelR7 = this->api->deployLabel("The other option is AGE_RENDER_B. It requires even (a little) more resources.", font6, AGE_RENDER_B, 250, 0, 55, true, 9, 255, 193, 255);
+    labelR8 = this->api->deployLabel("The good news are that this mode can be used without background.", font6, AGE_RENDER_B, 117, 255, 152);
+    labelR9 = this->api->deployLabel("Press <SPACE> to change the looking of this label created with render.", font6, AGE_RENDER_S, 250, 0, 55, true, 9, 255, 193, 255 );
+
+    while (keep){
+
+        while( SDL_PollEvent( event ) != 0 ){
+
+            if( event->type == SDL_KEYDOWN){
+
+                switch( event->key.keysym.sym ){
+
+                    case SDLK_ESCAPE:
+                            keep = false;
+                            break;
+
+                    case SDLK_RETURN:
+                            example = 1;
+
+                    case SDLK_SPACE:
+
+                            opt = not opt;
+
+                            if (opt){
+
+                                this->api->setLabelValue(label42, "Press space to change the colors of this label");
+                                this->api->setLabelColor(label42, 0,0,0);
+                                this->api->setLabelBg(label42, true, 12, 255,255,255);
+                                this->api->setLabelBorder(label42, true, 6,0,0,0);
+                                this->api->setLabelColor(labelR9, 0,0,0);
+                                this->api->setLabelBg(labelR9, true, 9, 255,255,255);
+
+                            }else{
+
+                                this->api->setLabelValue(label42, "Press space to restore the label to default values");
+                                this->api->setLabelColor(label42, 255,255,255);
+                                this->api->setLabelBg(label42, true, 12,0,0,0);
+                                this->api->setLabelBorder(label42, true, 6,255,255,255);
+                                this->api->setLabelColor(labelR9, 250, 0, 55);
+                                this->api->setLabelBg(labelR9, true, 9, 255, 193, 255);
+                            break;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        this->api->clearScreen(0x00, 0x97, 0xbd);
+
+        if(example == 0){
+
+            this->api->moveLabel(label11, 30, 10);
+            this->api->moveLabel(label12, 30, 50);
+            this->api->moveLabel(label21, 30, 90);
+            this->api->moveLabel(label22, 30, 140);
+            this->api->moveLabel(label31, 30, 190);
+            this->api->moveLabel(label32, 30, 280);
+            this->api->moveLabel(label41, 30, 380);
+            this->api->moveLabel(label42, 30, 480);
+            this->api->moveLabel(labelX1, 30, 550);
+            this->api->moveLabel(labelX2, 30, 590);
+            this->api->moveLabel(label51, 660, 160, 330, nullptr, AGE_FLIPN);
+            this->api->moveLabel(label52, 865, 250, 0, nullptr, AGE_FLIPH);
+            this->api->moveLabel(labelR1, 790, 650);
+
+        }else{
+
+            this->api->moveLabel(labelR2, 20, 20);
+            this->api->moveLabel(labelR3, 20, 70);
+            this->api->moveLabel(labelR4, 20, 130);
+            this->api->moveLabel(labelR5, 20, 180);
+            this->api->moveLabel(labelR6, 20, 230);
+            this->api->moveLabel(labelR7, 20, 280);
+            this->api->moveLabel(labelR8, 20, 330);
+            this->api->moveLabel(labelR9, 20, 530);
+
+        }
+
+        this->api->refresh();
+        this->api->pause(1000);
+
+    }
+
     this->api->terminate();
 
     cout << "Test 7 - END" << endl;
 
 }
+
 
 //----------------------------------------------------------------------------

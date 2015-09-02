@@ -2,7 +2,7 @@
 * Created for: ArcadeBox C
 * Dev line: AGE v1
 * Creation day: 11/02/2014
-* Last change: 27/8/2015
+* Last change: 02/09/2015
 ****************************************************************************/
 
 
@@ -15,6 +15,8 @@ AGE::AGE(){
 
     //this->event_handler;
 
+    this->missing_font = nullptr;
+    this->missing_image = nullptr;
     this->screen_x = 0;
     this->screen_y = 0;
     this->window = nullptr;
@@ -24,6 +26,9 @@ AGE::AGE(){
 
     this->animation_index = new AGEAnimationIndex();
     this->area_index = new AGECollisionAreaIndex();
+    this->font_index = new AGEFontIndex();
+    this->labelttf_index = new AGELabelTTFIndex();
+    this->string_index = new AGEStringsIndex();
     this->texture_index = new AGETextureListIndex();
 
     srand((int)this);
@@ -85,7 +90,6 @@ int AGE::deployAnimation(string src){
     int animation_id = -1;
     string opt;
     int counter;
-    bool fail = false;
     AGEAnimationFrameIndex* frames = nullptr;
     string reg;
     string reg_value;
@@ -246,6 +250,139 @@ int AGE::deployImage(string src, int x, int y){
 
 //---------------------------------------------------------------------------
 
+int AGE::deployLabel(string value, int font_id, Uint8 render, Uint8 color1, Uint8 color2, Uint8 color3, bool background, Uint8 bg_margin, Uint8 bg_color1, Uint8 bg_color2, Uint8 bg_color3, bool border, Uint8 border_margin, Uint8 border_color1, Uint8 border_color2, Uint8 border_color3){
+
+    SDL_Texture* temp_texture = nullptr;
+    int label_id = -1;
+    string tag = "";
+    TTF_Font* font = nullptr;
+    SDL_Color label_color;
+    SDL_Color bg_color;
+
+    tag = value + "-" + this->font_index->getTag(font_id);
+    label_id = this->labelttf_index->searchByTag(tag);
+
+    //Label is not registered, this block loads the image and creates the register
+    if (label_id == -1){
+
+        //We get the font, if it don't exists, the default font will be used
+        font = this->font_index->getFont(font_id);
+        if(font == nullptr){
+            font = this->missing_font;
+
+        }
+
+        label_color.r = color1;
+        label_color.g = color2;
+        label_color.b = color3;
+        label_color.a = 255;
+        bg_color.r = bg_color1;
+        bg_color.g = bg_color2;
+        bg_color.b = bg_color3;
+        bg_color.a = 255;
+
+        //We search for an available register
+        label_id = this->labelttf_index->searchByAvailable(true);
+
+        temp_texture = this->renderTTF(font, value, label_color, bg_color, render);
+
+        //If we need to create a new register (there are not available registers)
+        if(label_id == -1){
+            label_id = this->labelttf_index->createRegister(tag);
+
+        //if we have found an available register for the new image
+        }else{
+            SDL_DestroyTexture(this->labelttf_index->getTexture(label_id));
+
+        }
+
+        this->labelttf_index->setTexture(label_id, temp_texture);
+        this->labelttf_index->setFont_color1(label_id, color1);
+        this->labelttf_index->setFont_color1(label_id, color2);
+        this->labelttf_index->setFont_color1(label_id, color3);
+        this->labelttf_index->setBg(label_id, background);
+        this->labelttf_index->setBg_margin(label_id, bg_margin);
+        this->labelttf_index->setBg_color1(label_id, bg_color1);
+        this->labelttf_index->setBg_color2(label_id, bg_color2);
+        this->labelttf_index->setBg_color3(label_id, bg_color3);
+        this->labelttf_index->setBorder(label_id, border);
+        this->labelttf_index->setBorder_margin(label_id, border_margin);
+        this->labelttf_index->setBorder_color1(label_id, border_color1);
+        this->labelttf_index->setBorder_color2(label_id, border_color2);
+        this->labelttf_index->setBorder_color3(label_id, border_color3);
+        this->labelttf_index->setModified(label_id, false);
+        this->labelttf_index->setFont(label_id, font_id);
+        this->labelttf_index->setRender(label_id, render);
+        this->labelttf_index->setContent(label_id, value);
+
+
+    //Label was created previously, so the available flag is set to 'false' to avoid label unload
+    }else{
+        this->labelttf_index->setAvailable(label_id, false);
+
+    }
+
+    return label_id;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::deployFont(string src, int font_size, string mod){
+
+    TTF_Font *temp_font = nullptr;
+    int font_id = -1;
+    string tag = "";
+
+    tag = src + " - " + this->itos(font_size) + " - " + mod;
+    font_id = this->font_index->searchByTag(tag);
+
+    //Font is not registered, this block loads the font and creates the register
+    if (font_id == -1){
+
+        //We search for an available register
+        font_id = this->font_index->searchByAvailable(true);
+
+        if (this->checkFile(src)){
+
+            temp_font =  TTF_OpenFont(src.c_str(), font_size);
+
+            //If we need to create a new register (there are not available registers)
+            if(font_id == -1){
+                font_id = this->font_index->createRegister(src);
+
+            //if we have found an available register for the new image
+            }else{
+                TTF_CloseFont(this->font_index->getFont(font_id));
+
+            }
+
+            this->font_index->setSrc(font_id, src);
+            this->font_index->setTag(font_id, tag);
+            this->font_index->setFont(font_id, temp_font);
+
+        //If the file is not valid, we return an invalid id
+        }else{
+            font_id = -1;
+
+        }
+
+
+
+    //font was loaded previously, so the available flag is set to 'false' to avoid image unload
+    }else{
+        this->font_index->setAvailable(font_id, false);
+
+    }
+
+    return font_id;
+
+}
+
+
+//---------------------------------------------------------------------------
+
 void AGE::moveCollisionArea(int id, int x, int y){
 
     this->area_index->setPosition(id, x, y);
@@ -269,8 +406,6 @@ int AGE::moveAnimation(int animation_id, int frame_id, int x, int y, double angl
     AGEAnimationFrameElement* frame;
     SDL_Texture* texture;
     bool available = false;
-    int w;
-    int h;
     int next = -1;
 
     animation = this->animation_index->getElementById(animation_id);
@@ -314,6 +449,7 @@ int AGE::moveAnimation(int animation_id, int frame_id, int x, int y, double angl
 void AGE::moveImage(int id, int x, int y, double angle, SDL_Point* center, SDL_RendererFlip flip){
 
     SDL_Texture* texture;
+
     bool available = false;
     int w;
     int h;
@@ -337,6 +473,82 @@ void AGE::moveImage(int id, int x, int y, double angle, SDL_Point* center, SDL_R
         }
 
         this->texture_index->setPosition(id, x, y);
+
+    }
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGE::moveLabel(int label_id, int x, int y, double angle, SDL_Point* center, SDL_RendererFlip flip){
+
+    SDL_Texture* texture = nullptr;
+    SDL_Color label_color;
+    SDL_Color bg_color;
+    bool available = false;
+    int w;
+    int h;
+    int margin = 0;
+
+    texture = this->labelttf_index->getTexture(label_id);
+    available = this->labelttf_index->getAvailable(label_id);
+
+    if ((texture == nullptr) || (available == true)){
+        this->applyImage(this->missing_image, x, y, API_IMAGES_MISSINGIMAGEFILE_W, API_IMAGES_MISSINGIMAGEFILE_H);
+
+    }else{
+
+        if(this->labelttf_index->getModified(label_id)){
+
+            label_color.r = this->labelttf_index->getFont_color1(label_id);
+            label_color.g = this->labelttf_index->getFont_color2(label_id);
+            label_color.b = this->labelttf_index->getFont_color3(label_id);
+            label_color.a = 255;
+            bg_color.r = this->labelttf_index->getBg_color1(label_id);
+            bg_color.g = this->labelttf_index->getBg_color2(label_id);
+            bg_color.b = this->labelttf_index->getBg_color3(label_id);
+            bg_color.a = 255;
+
+            texture = this->labelttf_index->getTexture(label_id);
+            SDL_DestroyTexture(texture);
+            texture = this->renderTTF(this->font_index->getFont(this->labelttf_index->getFont(label_id)),
+                                      this->labelttf_index->getContent(label_id),
+                                      label_color,
+                                      bg_color,
+                                      this->labelttf_index->getRender(label_id)
+                                      );
+            this->labelttf_index->setTexture(label_id, texture);
+            this->labelttf_index->setModified(label_id, false);
+
+
+
+        }
+
+        SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
+
+        if(angle == 0.0){
+
+            if (this->labelttf_index->getBg(label_id)){
+
+                margin = this->labelttf_index->getBg_margin(label_id);
+                this->drawSquare(x-margin, y-margin, w+(margin*2), h+(margin*2), this->labelttf_index->getBg_color1(label_id), this->labelttf_index->getBg_color2(label_id), this->labelttf_index->getBg_color3(label_id));
+
+            }
+
+            if (this->labelttf_index->getBorder(label_id)){
+
+                margin = this->labelttf_index->getBorder_margin(label_id);
+                this->drawSquareBorder(x-margin, y-margin, w+(margin*2), h+(margin*2), this->labelttf_index->getBorder_color1(label_id), this->labelttf_index->getBorder_color2(label_id), this->labelttf_index->getBorder_color3(label_id));
+
+            }
+
+            this->applyImage(texture, x, y, w, h, angle, center, flip);
+
+        }else{
+            this->applyImage(texture, x, y, w, h, angle, center, flip);
+
+        }
 
     }
 
@@ -437,6 +649,9 @@ void AGE::loadAPI(){
     //start SDL_image
     IMG_Init( IMG_INIT_PNG | IMG_INIT_PNG );
 
+    //start SDL_ttf
+    TTF_Init();
+
     //Set up window
     this->window = SDL_CreateWindow(this->window_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->screen_x, this->screen_y, this->window_mode);
     this->wsurface = SDL_GetWindowSurface(this->window);
@@ -445,6 +660,8 @@ void AGE::loadAPI(){
     SDL_Surface* temp_surface = IMG_Load(API_IMAGES_MISSINGIMAGEFILE_SRC.c_str());
     this->missing_image = SDL_CreateTextureFromSurface(this->renderer, temp_surface);
     SDL_FreeSurface(temp_surface);
+
+    this->missing_font = TTF_OpenFont(AGE_FONT_SRC.c_str(), AGE_FONT_SIZE);
 
 }
 
@@ -465,6 +682,8 @@ void AGE::terminate()
 
     this->animation_index->freeList();
     this->area_index->freeList();
+    this->font_index->freeList();
+    this->string_index->freeList();
     this->texture_index->freeList();
 
     SDL_DestroyWindow(this->window);
@@ -546,22 +765,34 @@ void AGE::deleteImage(int id){
 
 //---------------------------------------------------------------------------
 
-void AGE::drawSquare(int x1, int y1, int x2, int y2, int color1, int color2, int color3){
+void AGE::drawSquare(int x, int y, int w, int h, int color1, int color2, int color3){
 
-    this->drawSquare(x1, y1, x2, y2, color1, color2, color3, 0xFF);
+    this->drawSquare(x, y, w, h, color1, color2, color3, 0xFF);
 
 }
 
 
 //---------------------------------------------------------------------------
 
-void AGE::drawSquare(int x1, int y1, int x2, int y2, int color1, int color2, int color3, int alpha){
+void AGE::drawSquare(int x, int y, int w, int h, int color1, int color2, int color3, int alpha){
 
     SDL_SetRenderDrawBlendMode(this->renderer, SDL_BLENDMODE_BLEND);
-    SDL_Rect fillRect = { x1, y1, x2, y2};
+    SDL_Rect fillRect = { x, y, w, h};
     SDL_SetRenderDrawColor( this->renderer, color1, color2, color3, alpha);
     SDL_RenderFillRect( this->renderer, &fillRect );
     SDL_SetRenderDrawBlendMode(this->renderer, SDL_BLENDMODE_NONE);
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGE::drawSquareBorder(int x, int y, int w, int h, int color1, int color2, int color3){
+
+            this->drawLine(x, y, x+w, y, color1, color2, color3);
+            this->drawLine(x, y, x, y+h, color1, color2, color3);
+            this->drawLine(x+w, y+h, x+w, y, color1, color2, color3);
+            this->drawLine(x+w, y+h, x, y+h, color1, color2, color3);
 
 }
 
@@ -1047,4 +1278,132 @@ string AGE::itos(int number){
 }
 
 
-//---------------------------------------------------------------------------
+//------------------- --------------------------------------------------------
+
+int AGE::setLabelValue(int label_id, string value){
+
+    int result = -1;
+
+    if ((this->labelttf_index->getId(label_id) == label_id) and (label_id >= 0)){
+
+        this->labelttf_index->setContent(label_id, value);
+        this->labelttf_index->setModified(label_id, true);
+        result = this->labelttf_index->getId(label_id);
+
+    }else{
+        result = -1;
+
+    }
+
+    return result;
+
+}
+
+//------------------- --------------------------------------------------------
+
+int AGE::setLabelColor(int label_id, Uint8 color1, Uint8 color2, Uint8 color3){
+
+    int result = -1;
+
+    if ((this->labelttf_index->getId(label_id) == label_id) or (label_id >= 0)){
+
+        this->labelttf_index->setFont_color1(label_id, color1);
+        this->labelttf_index->setFont_color2(label_id, color2);
+        this->labelttf_index->setFont_color3(label_id, color3);
+        this->labelttf_index->setModified(label_id, true);
+        result = this->labelttf_index->getId(label_id);
+
+    }else{
+        result = -1;
+
+    }
+
+    return result;
+
+}
+
+
+//------------------- --------------------------------------------------------
+
+int AGE::setLabelBg(int label_id, bool active, Uint8 margin, Uint8 color1, Uint8 color2, Uint8 color3){
+
+    int result = -1;
+
+    if ((this->labelttf_index->getId(label_id) == label_id) or (label_id >= 0)){
+
+        this->labelttf_index->setBg(label_id, active);
+        this->labelttf_index->setBg_margin(label_id,margin);
+        this->labelttf_index->setBg_color1(label_id, color1);
+        this->labelttf_index->setBg_color2(label_id, color2);
+        this->labelttf_index->setBg_color3(label_id, color3);
+        this->labelttf_index->setModified(label_id, true);
+        result = this->labelttf_index->getId(label_id);
+
+    }else{
+        result = -1;
+
+    }
+
+    return result;
+
+}
+
+//------------------- --------------------------------------------------------
+
+int AGE::setLabelBorder(int label_id, bool active, Uint8 margin, Uint8 color1, Uint8 color2, Uint8 color3){
+
+    int result = -1;
+
+    if ((this->labelttf_index->getId(label_id) == label_id) or (label_id >= 0)){
+
+        this->labelttf_index->setBorder(label_id, active);
+        this->labelttf_index->setBorder_margin(label_id,margin);
+        this->labelttf_index->setBorder_color1(label_id, color1);
+        this->labelttf_index->setBorder_color2(label_id, color2);
+        this->labelttf_index->setBorder_color3(label_id, color3);
+        this->labelttf_index->setModified(label_id, true);
+        result = this->labelttf_index->getId(label_id);
+
+    }else{
+        result = -1;
+
+    }
+
+    return result;
+
+}
+
+//------------------- --------------------------------------------------------
+
+SDL_Texture* AGE::renderTTF(TTF_Font* font, string value, SDL_Color label_color, SDL_Color bg_color, int mode){
+
+    SDL_Surface* temp_surface = nullptr;
+    SDL_Texture* temp_texture = nullptr;
+
+    if(value == ""){
+        value = " ";
+
+    }
+
+    if(mode == AGE_RENDER_B){
+        temp_surface = TTF_RenderText_Blended(font, value.c_str(), label_color );
+
+    }else if(mode == AGE_RENDER_N){
+        temp_surface = TTF_RenderText_Solid( font, value.c_str(), label_color );
+
+    }else if(mode == AGE_RENDER_S){
+        temp_surface = TTF_RenderText_Shaded( font, value.c_str(), label_color, bg_color);
+
+    }
+
+    temp_texture = SDL_CreateTextureFromSurface(this->renderer, temp_surface);
+    SDL_FreeSurface(temp_surface);
+
+    return temp_texture;
+
+}
+
+
+//------------------- --------------------------------------------------------
+
+

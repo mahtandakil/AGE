@@ -12,12 +12,14 @@ For build the project, you will the the following libraries:
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 17/07/2015
-* Last change: 28/08/2015
+* Last change: 01/09/2015
 *
 *
 * REFERENCES
 * http://lazyfoo.net
+* http://www.sdltutorials.com/
 * http://www.spriters-resource.com
+* http://spritedatabase.net
 * https://bintray.com/
 * https://github.com/
 * http://xerces.apache.org/xerces-c/apiDocs-3/index.html
@@ -25,14 +27,16 @@ For build the project, you will the the following libraries:
 *
 *
 * MILLESTONE
-* 0.5.6 - Check animation system & area collision system
-* 0.5.7 - Create an human walk simulation
-* 0.6.0 - Create collision points system
+* 0.5.7 - ADC - Animation definition creator
+* 0.5.8 - ACC - Animation collision creator
+* 0.5.9 - LSC - Label from sprites creator
+* 0.5.10 - Label object system from sprites
+* 0.5.11 - Check animation system & area collision system
+* 0.5.12 - Create collision points system
+* 0.6.0 - Create an human walk simulation
 * 0.6.1 - Create a single collision function for users (AGE_TYPE)
-* 0.6.2 - Label object system from TTF
-* 0.7.0 - Label object system from sprites
-* 0.7.1 - Create SDLApiButton list system
-* 0.7.2 - Develop regular button
+* 0.7.0 - Create SDLApiButton list system
+* 0.7.1 - Develop regular button
 * 0.8.0 - Create hold button
 * 0.9.0 - Sounds
 * 0.10.0 - Linux test & fixing
@@ -44,9 +48,13 @@ For build the project, you will the the following libraries:
 * 0.10.6 - Proper use of the destructor instructions
 * 0.10.7 - Recode the test examples to fit the new processes
 * 0.10.8 - Rename references to API or SDL from prefixed values filesfit the new processes
+* 0.10.10 - Check deploy functions to verify the previous objects are unloaded properly
+* 0.10.11 - Images & other objs must use tag value as main identifier (allows one file to be loaded several times)
 * 1.0.0 - TQ1: HD
-* 1.0.1 - Draw circles
-* 1.0.2 - Circular area collision system
+* 1.0.1 - Sound loading
+* 1.1.0 - Sound play
+* 1.1.1 - Draw circles
+* 1.1.2 - Circular area collision system
 *
 *
 * DEV NOTES
@@ -67,12 +75,33 @@ using namespace std;
 
 int main(int argc, char* args[]){
 
-    if (argc == 2){
-        int opt = atoi(args[1]);
-        new test(opt);
+    string tool;
+    int opt;
+
+    if (argc == 3){
+        tool = args[1];
+        opt = atoi(args[2]);
+
+        if (tool == "test"){
+            new test(opt);
+
+        }else if (tool == "ACC"){
+            new test(-1);
+
+        }else if (tool == "ANC"){
+            new test(-1);
+
+        }else{
+            new test(-1);
+
+        }
+
+    }else if(argc == 2){
+         tool = args[1];
+
 
     }else{
-        new test(6);
+         new test(7);
 
     }
 
