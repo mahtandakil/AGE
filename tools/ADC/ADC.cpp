@@ -940,9 +940,7 @@ void ADC::loadGAN(){
                          };
         this->total_frames = atoi((this->age->getString(this->age->searchString("IMAGES", 0), 1)).c_str());
         for(counter = 0; counter < this->total_frames; counter++){
-            cout << counter << " - " << "IMAGE" + this->age->itos(counter+1) + "X" << endl;
-            cout << counter << " - " << this->age->searchString("IMAGE" + this->age->itos(counter+1) + "X", 0) << endl;
-            cout << endl;
+
             this->frames[counter] = {atoi((this->age->getString(this->age->searchString("IMAGE" + this->age->itos(counter+1) + "X", 0), 1)).c_str()),
                                      atoi((this->age->getString(this->age->searchString("IMAGE" + this->age->itos(counter+1) + "Y", 0), 1)).c_str()),
                                      atoi((this->age->getString(this->age->searchString("IMAGE" + this->age->itos(counter+1) + "W", 0), 1)).c_str()),

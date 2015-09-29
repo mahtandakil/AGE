@@ -131,6 +131,7 @@ int main(int argc, char* args[]){
         new test(0);
         //new test(6);
         //launchADC("test/an02.png", "test/test_adc.gan");
+        //age ADC test/an02.png test/test_adc.gan
     }
 
 

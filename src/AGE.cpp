@@ -455,7 +455,7 @@ int AGE::moveAnimation(int animation_id, int frame_id, int x, int y, double angl
 
 void AGE::moveImage(int id, int x, int y, double size_mod, double angle, SDL_Point* center, SDL_RendererFlip flip){
 
-    SDL_Texture* texture;
+    SDL_Texture* texture = nullptr;
     bool available = false;
     int w;
     int h;
@@ -470,10 +470,11 @@ void AGE::moveImage(int id, int x, int y, double size_mod, double angle, SDL_Poi
         w = this->texture_index->getTextureW(id);
         h = this->texture_index->getTextureH(id);
 
-        if((angle == 0.0) && (size_mod == 0.0) && (center == NULL) && (flip == AGE_FLIPN)){
+        if((angle == 0.0) && (size_mod == 1.0) && (center == NULL) && (flip == AGE_FLIPN)){
             this->applyImage(texture, x, y, w, h);
 
         }else{
+            if(size_mod == 0.0){size_mod=1.0;}
             this->applyImage(texture, x, y, w, h, size_mod, angle, center, flip);
 
         }

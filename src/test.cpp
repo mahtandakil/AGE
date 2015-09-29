@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 17/07/2015
-* Last change: 27/09/2015
+* Last change: 29/09/2015
 ****************************************************************************/
 
 
@@ -774,11 +774,10 @@ void test::test6(){
 
         this->api->clearScreen(0x00, 0x97, 0xbd);
 
-        //this->api->moveImage(0, 1040, 10, 0, 0, nullptr, AGE_FLIPH);
-        //this->api->moveImage(0, 10, 540, 0, 0, nullptr, AGE_FLIPV);
-        //this->api->moveImage(0, 1040, 540, 0, 0, nullptr, AGE_FLIPHV);
         this->api->moveImage(0, 10, 10);
         this->api->moveImage(0, 1040, 10, 0, 0, nullptr, AGE_FLIPH);
+        this->api->moveImage(0, 10, 540, 0, 0, nullptr, AGE_FLIPV);
+        this->api->moveImage(0, 1040, 540, 0, 0, nullptr, AGE_FLIPHV);
 
         walk_frame1 = this->api->moveAnimation(walk, walk_frame1, x1, 190);
         walk_frame2 = this->api->moveAnimation(walk, walk_frame2, x2, 350, 0, nullptr, AGE_FLIPH);
