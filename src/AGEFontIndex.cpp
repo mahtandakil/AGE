@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 29/08/2015
-* Last change: 29/08/2015
+* Last change: 27/09/2015
 * Autogen: CListGen 1.0.8
 ****************************************************************************/
 
@@ -592,8 +592,9 @@ int AGEFontIndex::setFont(int id, TTF_Font* font){
 //---------------------------------------------------------------------------
 
 AGEFontElement* AGEFontIndex::getElementById(int id){
-	AGEFontElement* result;
-	AGEFontElement* pointer;
+
+	AGEFontElement* result = nullptr;
+	AGEFontElement* pointer = nullptr;
 
 	if (this->counter == 0){
 		result = nullptr;

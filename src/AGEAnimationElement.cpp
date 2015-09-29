@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 25/08/2015
-* Last change: 27/08/2015
+* Last change: 06/09/2015
 * Autogen: CListGen 1.0.8
 ****************************************************************************/
 
@@ -30,6 +30,7 @@ AGEAnimationElement::AGEAnimationElement()
 	this->init = 0;
 	this->texture_h = 0;
 	this->texture_w = 0;
+	this->surface = nullptr;
 
 }
 
@@ -38,6 +39,11 @@ AGEAnimationElement::~AGEAnimationElement()
 
     if (this->texture == nullptr){
         SDL_DestroyTexture(this->texture);
+
+    }
+
+    if (this->surface == nullptr){
+        SDL_FreeSurface(this->surface);
 
     }
 
@@ -307,9 +313,27 @@ SDL_Texture* AGEAnimationElement::getTexture(){
 
 //---------------------------------------------------------------------------
 
+SDL_Surface* AGEAnimationElement::getSurface(){
+
+    return this->surface;
+
+}
+
+
+//---------------------------------------------------------------------------
+
 void AGEAnimationElement::setTexture(SDL_Texture* texture){
 
     this->texture = texture;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGEAnimationElement::setSurface(SDL_Surface* surface){
+
+    this->surface = surface;
 
 }
 

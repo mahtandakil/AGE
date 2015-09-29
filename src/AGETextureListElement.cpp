@@ -2,7 +2,7 @@
 * Created for: AGE v1
 * Dev line: AGE v1
 * Creation day: 02/08/2015
-* Last change: 21/08/2015
+* Last change: 06/09/2015
 ****************************************************************************/
 
 
@@ -23,6 +23,7 @@ AGETextureListElement::AGETextureListElement()
     this->texture_w = -1;
     this->position_x = -1;
     this->position_y = -1;
+    this->surface = nullptr;
 
     this->area_index = new AGECollisionAreaIndex();
 
@@ -190,6 +191,24 @@ AGECollisionAreaIndex* AGETextureListElement::initAreaIndex(){
     this->area_index = new AGECollisionAreaIndex();
 
     return this->area_index;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+SDL_Surface* AGETextureListElement::getSurface(){
+
+    return this->surface;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGETextureListElement::setSurface(SDL_Surface* surface){
+
+    this->surface = surface;
 
 }
 

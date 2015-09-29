@@ -2,7 +2,7 @@
 * Created for: ArcadeBox C
 * Dev line: AGE v1
 * Creation day: 11/02/2014
-* Last change: 02/09/2015
+* Last change: 28/09/2015
 ****************************************************************************/
 
 
@@ -61,6 +61,9 @@ void AGE::configure(int x, int y, string window_mode, string window_title){
     }else if(window_mode == "windowed"){
         this->window_mode = SDL_WINDOW_SHOWN;
 
+    }else if(window_mode == "maximized"){
+        this->window_mode = SDL_WINDOW_MAXIMIZED;
+
     }else{
         this->window_mode = SDL_WINDOW_SHOWN;
 
@@ -82,8 +85,6 @@ int AGE::deployAnimation(string src, int x, int y){
 
 }
 
-
-//---------------------------------------------------------------------------
 
 int AGE::deployAnimation(string src){
 
@@ -127,40 +128,45 @@ int AGE::deployAnimation(string src){
             }
             animation_file.close();
 
-            frames = new AGEAnimationFrameIndex();
-            animation_id = this->animation_index->createRegister(strings_index->getEntry2By1("DESCRIPTION"));
-            this->animation_index->setElementData(animation_id,
-                                                  frames,
-                                                  strings_index->getEntry2By1("FILE").c_str(),
-                                                  strings_index->getEntry2By1("DESCRIPTION").c_str(),
-                                                  atoi(strings_index->getEntry2By1("BGCOLOR1").c_str()),
-                                                  atoi(strings_index->getEntry2By1("BGCOLOR2").c_str()),
-                                                  atoi(strings_index->getEntry2By1("BGCOLOR3").c_str()),
-                                                  atoi(strings_index->getEntry2By1("IMAGES").c_str()),
-                                                  atoi(strings_index->getEntry2By1("INIT").c_str())
-                                                  );
-
             temp_surface = IMG_Load(strings_index->getEntry2By1("FILE").c_str());
-            SDL_SetColorKey(temp_surface, SDL_TRUE, SDL_MapRGB(temp_surface->format, this->animation_index->getBgcolor1(animation_id), this->animation_index->getBgcolor2(animation_id), this->animation_index->getBgcolor3(animation_id)));
-            temp_texture = SDL_CreateTextureFromSurface(this->renderer, temp_surface);
-            SDL_FreeSurface(temp_surface);
-            SDL_QueryTexture(temp_texture, nullptr, nullptr, &texture_w, &texture_h);
-            this->animation_index->setTexture(animation_id, temp_texture);
-            this->animation_index->setTexture_w(animation_id, texture_w);
-            this->animation_index->setTexture_h(animation_id, texture_h);
 
-            counter = 0;
-            while(counter < atoi(strings_index->getEntry2By1("IMAGES").c_str()) ){
+            if(temp_surface != nullptr){
 
-                frames->createRegister(strings_index->getEntry2By1("DESCRIPTION") + " - " + this->itos(counter));
-                frames->setElementData(counter,
-                                       atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "X").c_str()),
-                                       atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "Y").c_str()),
-                                       atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "W").c_str()),
-                                       atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "H").c_str()),
-                                       atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "D").c_str())
-                                       );
-                counter++;
+                frames = new AGEAnimationFrameIndex();
+                animation_id = this->animation_index->createRegister(strings_index->getEntry2By1("DESCRIPTION"));
+                this->animation_index->setElementData(animation_id,
+                                                      frames,
+                                                      strings_index->getEntry2By1("FILE").c_str(),
+                                                      strings_index->getEntry2By1("DESCRIPTION").c_str(),
+                                                      atoi(strings_index->getEntry2By1("BGCOLOR1").c_str()),
+                                                      atoi(strings_index->getEntry2By1("BGCOLOR2").c_str()),
+                                                      atoi(strings_index->getEntry2By1("BGCOLOR3").c_str()),
+                                                      atoi(strings_index->getEntry2By1("IMAGES").c_str()),
+                                                      atoi(strings_index->getEntry2By1("INIT").c_str())
+                                                      );
+
+                SDL_SetColorKey(temp_surface, SDL_TRUE, SDL_MapRGB(temp_surface->format, this->animation_index->getBgcolor1(animation_id), this->animation_index->getBgcolor2(animation_id), this->animation_index->getBgcolor3(animation_id)));
+                temp_texture = SDL_CreateTextureFromSurface(this->renderer, temp_surface);
+                SDL_QueryTexture(temp_texture, nullptr, nullptr, &texture_w, &texture_h);
+                this->animation_index->setTexture(animation_id, temp_texture);
+                this->animation_index->setTexture_w(animation_id, texture_w);
+                this->animation_index->setTexture_h(animation_id, texture_h);
+                this->animation_index->setSurface(animation_id, temp_surface);
+
+                counter = 0;
+                while(counter < atoi(strings_index->getEntry2By1("IMAGES").c_str()) ){
+
+                    frames->createRegister(strings_index->getEntry2By1("DESCRIPTION") + " - " + this->itos(counter));
+                    frames->setElementData(counter,
+                                           atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "X").c_str()),
+                                           atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "Y").c_str()),
+                                           atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "W").c_str()),
+                                           atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "H").c_str()),
+                                           atoi(strings_index->getEntry2By1("IMAGE" +  this->itos(counter+1) + "D").c_str())
+                                           );
+                    counter++;
+
+                }
 
             }
 
@@ -204,7 +210,6 @@ int AGE::deployImage(string src){
 
             temp_surface = IMG_Load(src.c_str());
             temp_texture = SDL_CreateTextureFromSurface(this->renderer, temp_surface);
-            SDL_FreeSurface(temp_surface);
 
             //If we need to create a new register (there are not available registers)
             if(image_id == -1){
@@ -213,10 +218,12 @@ int AGE::deployImage(string src){
             //if we have found an available register for the new image
             }else{
                 SDL_DestroyTexture(this->texture_index->getTexture(image_id));
+                SDL_FreeSurface(this->texture_index->getSurface(image_id));
                 this->texture_index->setSrc(image_id, src);
             }
 
             this->texture_index->setTexture(image_id, temp_texture);
+            this->texture_index->setSurface(image_id, temp_surface);
 
         //If the file is not valid, we return an invalid id
         }else{
@@ -446,10 +453,9 @@ int AGE::moveAnimation(int animation_id, int frame_id, int x, int y, double angl
 
 //---------------------------------------------------------------------------
 
-void AGE::moveImage(int id, int x, int y, double angle, SDL_Point* center, SDL_RendererFlip flip){
+void AGE::moveImage(int id, int x, int y, double size_mod, double angle, SDL_Point* center, SDL_RendererFlip flip){
 
     SDL_Texture* texture;
-
     bool available = false;
     int w;
     int h;
@@ -464,11 +470,11 @@ void AGE::moveImage(int id, int x, int y, double angle, SDL_Point* center, SDL_R
         w = this->texture_index->getTextureW(id);
         h = this->texture_index->getTextureH(id);
 
-        if((angle == 0.0) && (center == NULL) && (flip == AGE_FLIPN)){
+        if((angle == 0.0) && (size_mod == 0.0) && (center == NULL) && (flip == AGE_FLIPN)){
             this->applyImage(texture, x, y, w, h);
 
         }else{
-            this->applyImage(texture, x, y, w, h, angle, center, flip);
+            this->applyImage(texture, x, y, w, h, size_mod, angle, center, flip);
 
         }
 
@@ -481,7 +487,7 @@ void AGE::moveImage(int id, int x, int y, double angle, SDL_Point* center, SDL_R
 
 //---------------------------------------------------------------------------
 
-void AGE::moveLabel(int label_id, int x, int y, double angle, SDL_Point* center, SDL_RendererFlip flip){
+void AGE::moveLabel(int label_id, int x, int y,  double angle, SDL_Point* center, SDL_RendererFlip flip){
 
     SDL_Texture* texture = nullptr;
     SDL_Color label_color;
@@ -543,10 +549,10 @@ void AGE::moveLabel(int label_id, int x, int y, double angle, SDL_Point* center,
 
             }
 
-            this->applyImage(texture, x, y, w, h, angle, center, flip);
+            this->applyImage(texture, x, y, w, h, 1, angle, center, flip);
 
         }else{
-            this->applyImage(texture, x, y, w, h, angle, center, flip);
+            this->applyImage(texture, x, y, w, h, 1, angle, center, flip);
 
         }
 
@@ -578,7 +584,7 @@ void AGE::applyImage(SDL_Texture* texture, int x, int y, int w, int h){
 
 //---------------------------------------------------------------------------
 
-void AGE::applyImage(SDL_Texture* texture, int x, int y, int w, int h, double angle, SDL_Point* center, SDL_RendererFlip flip){
+void AGE::applyImage(SDL_Texture* texture, int x, int y, int w, int h, double size_mod, double angle, SDL_Point* center, SDL_RendererFlip flip){
 
     SDL_Rect image_rect;
     image_rect.x = 0;
@@ -589,8 +595,8 @@ void AGE::applyImage(SDL_Texture* texture, int x, int y, int w, int h, double an
     SDL_Rect destination_rect;
     destination_rect.x = x;
     destination_rect.y = y;
-    destination_rect.h = h;
-    destination_rect.w = w;
+    destination_rect.h = h*size_mod;
+    destination_rect.w = w*size_mod;
 
     SDL_RenderCopyEx(this->renderer, texture, &image_rect, &destination_rect, angle, center, flip);
 
@@ -712,6 +718,23 @@ AGETextureListIndex* AGE::getTextureIndex(){
 
 //---------------------------------------------------------------------------
 
+bool AGE::createFile(string file_src, string content){
+
+    bool result = false;
+
+    ofstream file(file_src);
+    file << content;
+    file.close();
+
+    result = this->checkFile(file_src);
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
 bool AGE::checkFile(string src){
 
     bool result = false;
@@ -758,6 +781,7 @@ void AGE::deleteImage(int id){
 
     this->texture_index->setAvailable(id, true);
     SDL_DestroyTexture(this->texture_index->getTexture(id));
+    SDL_FreeSurface(this->texture_index->getSurface(id));
     this->texture_index->setTexture(id, nullptr);
 
 }
@@ -1404,6 +1428,218 @@ SDL_Texture* AGE::renderTTF(TTF_Font* font, string value, SDL_Color label_color,
 }
 
 
-//------------------- --------------------------------------------------------
+//---------------------------------------------------------------------------
+
+SDL_Rect AGE::getWindowSize(){
+
+    SDL_Rect result;
+
+    SDL_GetWindowSize(this->window, &result.w, &result.h);
+
+    return result;
+
+}
 
 
+//---------------------------------------------------------------------------
+
+SDL_Rect AGE::getLabelSize(int label_id){
+
+    SDL_Rect label_size;
+    SDL_Texture* texture = nullptr;
+
+    label_size.w = 0;
+    label_size.h = 0;
+
+    if(label_id == this->labelttf_index->getId(label_id)){
+
+        texture = this->labelttf_index->getTexture(label_id);
+
+        if(not (texture == nullptr)){
+
+            SDL_QueryTexture(texture, nullptr, nullptr, &label_size.w, &label_size.h);
+
+        }
+
+    }
+
+    return label_size;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+SDL_Rect AGE::getImageSize(int image_id){
+
+    SDL_Rect image_size;
+    SDL_Texture* texture = nullptr;
+
+    image_size.w = 0;
+    image_size.h = 0;
+
+    if(image_id == this->texture_index->getId(image_id)){
+
+        texture = this->texture_index->getTexture(image_id);
+
+        if(not (texture == nullptr)){
+
+            SDL_QueryTexture(texture, nullptr, nullptr, &image_size.w, &image_size.h);
+
+        }
+
+    }
+
+    return image_size;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::getRandom(int limit1){
+
+    return this->getRandom(0, limit1);
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::getRandom(int limit1, int limit2){
+
+    int result = -1;
+
+    if (limit1 == limit2){
+        result = limit1;
+
+    }else if(limit1 > limit2){
+        result = (rand() % (limit2-limit1)+limit1);
+
+    }
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+AGE_Color AGE::getPixelColor(int texture_id, int x, int y){
+
+    AGE_Color result = {0,0,0,0};
+    Uint32 pixel = 0;
+    SDL_Surface* surface;
+    int bpp = 0;
+
+    if(x < 0){x = 0;}
+    if(y < 0){y = 0;}
+
+    surface = this->texture_index->getSurface(texture_id);
+
+    SDL_LockSurface(this->texture_index->getSurface(texture_id));
+    bpp = surface->format->BytesPerPixel;
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+    pixel = *(Uint32 *)p;
+    SDL_GetRGBA(pixel, this->texture_index->getSurface(texture_id)->format, &result.r, &result.g, &result.b, &result.a);
+    SDL_UnlockSurface(this->texture_index->getSurface(texture_id));
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::deployString(string value1, string value2, string value3){
+
+    int result = -1;
+
+    result = this->string_index->setElementData(this->string_index->createRegister(""), value1, value2, value3);
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::modifyString(int string_id, string value1, string value2, string value3){
+
+    int result = -1;
+
+    result = this->string_index->searchById(string_id);
+
+    if (value1 != AGE_NO_STRING_SET){this->string_index->setEntry1(result, value1);}
+    if (value2 != AGE_NO_STRING_SET){this->string_index->setEntry2(result, value2);}
+    if (value3 != AGE_NO_STRING_SET){this->string_index->setEntry3(result, value3);}
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+void AGE::removeString(int string_id){
+
+    this->string_index->setAvailable(string_id, true);
+
+}
+
+
+//---------------------------------------------------------------------------
+
+string AGE::getString(int register_id, int string_id){
+
+    switch(string_id){
+
+        case 0:
+            return this->string_index->getEntry1(register_id);
+        break;
+
+        case 1:
+            return this->string_index->getEntry2(register_id);
+        break;
+
+        case 2:
+            return this->string_index->getEntry3(register_id);
+        break;
+
+        default:
+            return AGE_NO_STRING_SET;
+        break;
+
+    }
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::searchString(string value, int position){
+
+
+    switch(position){
+
+        case 0:
+            return this->string_index->searchByEntry1(value);
+        break;
+
+        case 1:
+            return this->string_index->searchByEntry2(value);
+        break;
+
+        case 2:
+            return this->string_index->searchByEntry3(value);
+        break;
+
+        default:
+            return -1;
+        break;
+
+    }
+
+}
+
+//---------------------------------------------------------------------------

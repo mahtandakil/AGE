@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 25/08/2015
-* Last change: 27/08/2015
+* Last change: 27/09/2015
 * Autogen: CListGen 1.0.7
 ****************************************************************************/
 
@@ -691,8 +691,9 @@ int AGEStringsIndex::setEntry3(int id, string entry3){
 //---------------------------------------------------------------------------
 
 AGEStringsElement* AGEStringsIndex::getElementById(int id){
-	AGEStringsElement* result;
-	AGEStringsElement* pointer;
+
+	AGEStringsElement* result = nullptr;
+	AGEStringsElement* pointer = nullptr;
 
 	if (this->counter == 0){
 		result = nullptr;

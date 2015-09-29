@@ -2,7 +2,7 @@
 * Created for: AGE v1
 * Dev line: AGE v1
 * Creation day: 02/08/2015
-* Last change: 27/08/2015
+* Last change: 06/09/2015
 ****************************************************************************/
 
 
@@ -29,6 +29,7 @@ class AGETextureListIndex
         AGETextureListElement* getElementById(int id); /**< Search a register using its id, and returns the full register. */
         int getId(int id); /**< This function can be used to check the proper link of the list and if some element exists. */
         string getSrc(int id); /**< Returns the 'src' value for a specific register. */
+        SDL_Surface* getSurface(int id); /**< Returns the 'texture' value for a specific register. */
         SDL_Texture* getTexture(int id); /**< Returns the 'texture' value for a specific register. */
         int getNextId(int id); /**< Returns the 'next' value for a specific register. */
         int getTextureH(int id); /**< Returns the 'texture_h' value for a specific register. */
@@ -41,6 +42,7 @@ class AGETextureListIndex
         int setPosition(int id, int x, int y); /**< Modifies the 'x' & 'y' values for a specific register. This values are used to establish the exactly position of the image on the screen. */
         int setSrc(int id, string src); /**< Modifies the 'string' value for a specific register */
         int setTexture(int id, SDL_Texture* texture); /**< Modifies the pointer for the texture recorded in a specific register */
+        int setSurface(int id, SDL_Surface* surface); /**< Modifies the pointer for the surface recorded in a specific register */
 
     protected:
 

@@ -2,7 +2,7 @@
 * Created for: AGE v1
 * Dev line: AGE v1
 * Creation day: 02/08/2015
-* Last change: 22/08/2015
+* Last change: 06/09/2015
 ****************************************************************************/
 
 
@@ -30,6 +30,7 @@ class AGETextureListElement
         int getTextureH(); /**< Returns the 'texture_h' value for this register. */
         int getTextureW(); /**< Returns the 'position_w' value for this register. */
         string getSrc(); /**< Returns the 'src' value for this register. */
+        SDL_Surface* getSurface(); /**< Returns the 'texture' value for this register. */
         AGECollisionAreaIndex* initAreaIndex(); /**< Creates an AGECollisionAreaIndex object binded to the image. */
         void setAvailable(bool available); /**< Modifies the 'available' value for this register. */
         void setId(int texture_id); /**< Modifies the 'id' value for this register. */
@@ -37,6 +38,7 @@ class AGETextureListElement
         void setPosition(int x, int y); /**< Sets the x & y values of the position of the image on the screen. This function is required to do a proper collision checking. */
         void setSrc(string src); /**< Modifies the 'src' value for this register. */
         void setTexture(SDL_Texture* texture); /**< Modifies the 'texture' value for this register. */
+        void setSurface(SDL_Surface* surface); /**< Modifies the surface of the image. This is stored to allow faster changes. */
 
 
     protected:
@@ -47,6 +49,8 @@ class AGETextureListElement
         bool available;
         AGETextureListElement* next;
         string src;
+        SDL_Surface* surface;
+        SDL_Texture* modified_texture;
         SDL_Texture* texture;
         int texture_id;
         int texture_h;

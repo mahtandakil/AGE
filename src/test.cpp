@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 17/07/2015
-* Last change: 02/09/2015
+* Last change: 27/09/2015
 ****************************************************************************/
 
 
@@ -14,7 +14,7 @@ test::test(int id){
 
     this->api = new AGE();
 
-    cout << "AGE Test" << endl;
+    cout << "AGE options" << endl;
     cout << endl << "API version: " << API_VERSION << endl << endl;
 
     switch(id){
@@ -50,11 +50,11 @@ test::test(int id){
         default:
             cout << endl;
             cout << "TOOLS:" << endl;
-            cout << "   ANC: " << endl;
-            cout << "   AGG: " << endl;
+            cout << "   ADC: age ADC <image_file> <gan_file>" << endl;
 
             cout << endl;
             cout << "TESTS:" << endl;
+            cout << "   Usage: age test <test_number>" << endl;
             cout << "   1: Six files are loaded and one is a missing file" << endl;
             cout << "   2: Memory manage & dynamic load system form images" << endl;
             cout << "   3: Fade screen & drawsquare function" << endl;
@@ -774,10 +774,11 @@ void test::test6(){
 
         this->api->clearScreen(0x00, 0x97, 0xbd);
 
+        //this->api->moveImage(0, 1040, 10, 0, 0, nullptr, AGE_FLIPH);
+        //this->api->moveImage(0, 10, 540, 0, 0, nullptr, AGE_FLIPV);
+        //this->api->moveImage(0, 1040, 540, 0, 0, nullptr, AGE_FLIPHV);
         this->api->moveImage(0, 10, 10);
-        this->api->moveImage(0, 1040, 10, 0, nullptr, AGE_FLIPH);
-        this->api->moveImage(0, 10, 540, 0, nullptr, AGE_FLIPV);
-        this->api->moveImage(0, 1040, 540, 0, nullptr, AGE_FLIPHV);
+        this->api->moveImage(0, 1040, 10, 0, 0, nullptr, AGE_FLIPH);
 
         walk_frame1 = this->api->moveAnimation(walk, walk_frame1, x1, 190);
         walk_frame2 = this->api->moveAnimation(walk, walk_frame2, x2, 350, 0, nullptr, AGE_FLIPH);
@@ -889,7 +890,7 @@ void test::test7(){
     label52 = this->api->deployLabel("But there are no problems with flipping", font2, AGE_RENDER_N, 40, 40, 10, true, 9, 255, 255, 255, true, 7, 0,0,0);
     cout << "Label52: " << label52 << endl;
 
-    labelX1= this->api->deployLabel("An invalid font id where used to create this label, so AGE uses the default font.", 9999, AGE_RENDER_N, 200, 250, 230);
+    labelX1= this->api->deployLabel("An invalid font id where used to create this label, so AGE uses the default font. The next label, uses an invalid label id.", 9999, AGE_RENDER_N, 200, 250, 230);
     cout << "LabelX1: " << labelX1 << " -> " << "This label uses a wrong font" << endl;
     labelX2= 9999999;
     cout << "LabelX2: " << labelX2 << " -> " << "This is a wrong label id" << endl;
@@ -898,10 +899,10 @@ void test::test7(){
     labelR2 = this->api->deployLabel("Probably you have noticed the ugly look of the characters.", font6, AGE_RENDER_N, 250, 0, 55, true, 9, 255, 255, 143);
     labelR3 = this->api->deployLabel("That happens because we don't have use any render (AGE_RENDER_N). There are 2 solutions", font6, AGE_RENDER_N, 250, 0, 55, true, 9, 255, 255, 143);
     labelR4 = this->api->deployLabel("First one is use of AGE_RENDER_S, the result is much better.", font6, AGE_RENDER_S, 250, 0, 55, true, 9, 204, 255, 255);
-    labelR5 = this->api->deployLabel("The problem is that requires more resources and the use of background is mandatory.", font6, AGE_RENDER_S, 250, 0, 55, true, 9, 204, 255, 255);
+    labelR5 = this->api->deployLabel("The problem is that this method requires more resources and the use of background is mandatory.", font6, AGE_RENDER_S, 250, 0, 55, true, 9, 204, 255, 255);
     labelR6 = this->api->deployLabel("This is the default look of this mode if you don't provide any color for background.", font6, AGE_RENDER_S, 250, 0, 55);
     labelR7 = this->api->deployLabel("The other option is AGE_RENDER_B. It requires even (a little) more resources.", font6, AGE_RENDER_B, 250, 0, 55, true, 9, 255, 193, 255);
-    labelR8 = this->api->deployLabel("The good news are that this mode can be used without background.", font6, AGE_RENDER_B, 117, 255, 152);
+    labelR8 = this->api->deployLabel("The good news are that this mode can be used without background.", font6, AGE_RENDER_B, 225, 255, 200);
     labelR9 = this->api->deployLabel("Press <SPACE> to change the looking of this label created with render.", font6, AGE_RENDER_S, 250, 0, 55, true, 9, 255, 193, 255 );
 
     while (keep){
@@ -982,7 +983,7 @@ void test::test7(){
         }
 
         this->api->refresh();
-        this->api->pause(1000);
+        this->api->pause(33);
 
     }
 

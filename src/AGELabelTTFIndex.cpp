@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 29/08/2015
-* Last change: 02/09/2015
+* Last change: 27/09/2015
 * Autogen: CListGen 1.0.8
 ****************************************************************************/
 
@@ -1713,8 +1713,9 @@ int AGELabelTTFIndex::setBg_color3(int id, Uint8 bg_color3){
 //---------------------------------------------------------------------------
 
 AGELabelTTFElement* AGELabelTTFIndex::getElementById(int id){
-	AGELabelTTFElement* result;
-	AGELabelTTFElement* pointer;
+
+	AGELabelTTFElement* result = nullptr;
+	AGELabelTTFElement* pointer = nullptr;
 
 	if (this->counter == 0){
 		result = nullptr;

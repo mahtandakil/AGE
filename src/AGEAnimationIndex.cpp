@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 25/08/2015
-* Last change: 27/08/2015
+* Last change: 27/09/2015
 * Autogen: CListGen 1.0.8
 ****************************************************************************/
 
@@ -1084,8 +1084,9 @@ int AGEAnimationIndex::setInit(int id, int init){
 //---------------------------------------------------------------------------
 
 AGEAnimationElement* AGEAnimationIndex::getElementById(int id){
-	AGEAnimationElement* result;
-	AGEAnimationElement* pointer;
+
+	AGEAnimationElement* result = nullptr;
+	AGEAnimationElement* pointer = nullptr;
 
 	if (this->counter == 0){
 		result = nullptr;
@@ -1159,6 +1160,27 @@ int AGEAnimationIndex::setTexture(int id, SDL_Texture* texture){
 
 //---------------------------------------------------------------------------
 
+int AGEAnimationIndex::setSurface(int id, SDL_Surface* surface){
+
+	AGEAnimationElement* pointer;
+	int result = -1;
+
+	pointer = this->getElementById(id);
+
+	if (pointer != nullptr){
+
+		pointer->setSurface(surface);
+		result = pointer->getId();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
 int AGEAnimationIndex::setTexture_h(int id, int texture_h){
 
 	AGEAnimationElement* pointer;
@@ -1214,6 +1236,29 @@ SDL_Texture*  AGEAnimationIndex::getTexture(int id){
 
 	}else{
 		result = pointer->getTexture();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+SDL_Surface*  AGEAnimationIndex::getSurface(int id){
+
+	SDL_Surface* result = nullptr;
+	AGEAnimationElement* pointer;
+
+	pointer = this->getElementById(id);
+
+	if ((pointer == nullptr) or (id < 0) or (id >= this->counter)){
+		result = nullptr;
+
+
+	}else{
+		result = pointer->getSurface();
 
 	}
 

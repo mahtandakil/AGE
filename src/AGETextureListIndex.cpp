@@ -2,7 +2,7 @@
 * Created for: AGE v1
 * Dev line: AGE v1
 * Creation day: 02/08/2015
-* Last change: 27/08/2015
+* Last change: 06/09/2015
 ****************************************************************************/
 
 
@@ -256,6 +256,27 @@ int AGETextureListIndex::setTexture(int id, SDL_Texture* texture){
 
 //---------------------------------------------------------------------------
 
+int AGETextureListIndex::setSurface(int id, SDL_Surface* surface){
+
+    AGETextureListElement* pointer;
+    int result = -1;
+
+    pointer = getElementById(id);
+
+    if (pointer != nullptr){
+
+        pointer->setSurface(surface);
+        result = pointer->getId();
+
+    }
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
 int AGETextureListIndex::setAvailable(int id, bool available){
 
     AGETextureListElement* pointer;
@@ -360,6 +381,28 @@ SDL_Texture* AGETextureListIndex::getTexture(int id){
 
     }else{
         result = pointer->getTexture();
+
+    }
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+SDL_Surface* AGETextureListIndex::getSurface(int id){
+
+    SDL_Surface* result = nullptr;
+    AGETextureListElement* pointer;
+
+    pointer = this->getElementById(id);
+
+    if ((pointer == nullptr) or (id < 0) or (id >= this->counter)){
+        result = nullptr;
+
+    }else{
+        result = pointer->getSurface();
 
     }
 
@@ -536,6 +579,7 @@ int AGETextureListIndex::freeList(){
 
             if(pointer->getTexture() != nullptr){
                 SDL_DestroyTexture(pointer->getTexture());
+                SDL_FreeSurface(pointer->getSurface());
 
             }
 

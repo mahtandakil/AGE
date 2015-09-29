@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 25/08/2015
-* Last change: 27/08/2015
+* Last change: 06/09/2015
 * Autogen: CListGen 1.0.8
 ****************************************************************************/
 
@@ -42,6 +42,7 @@ class AGEAnimationElement
 		int getTexture_h();
 		int getTexture_w();
 		SDL_Texture* getTexture();
+		SDL_Surface* getSurface();
 		void setId(int id);
 		void setTag(string tag);
 		void setAvailable(bool available);
@@ -57,6 +58,7 @@ class AGEAnimationElement
 		void setTexture_h(int texture_h);
 		void setTexture_w(int texture_w);
 		void setTexture(SDL_Texture* texture);
+		void setSurface(SDL_Surface* surface);
 
 
 	protected:
@@ -69,6 +71,7 @@ class AGEAnimationElement
 		AGEAnimationElement* next;
 		AGEAnimationFrameIndex* frames;
 		SDL_Texture* texture;
+		SDL_Surface* surface;
 		int texture_w;
 		int texture_h;
 		string file;

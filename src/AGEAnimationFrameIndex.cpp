@@ -2,7 +2,7 @@
 * Created for: AGE
 * Dev line: AGE v1
 * Creation day: 27/08/2015
-* Last change: 27/08/2015
+* Last change: 27/09/2015
 * Autogen: CListGen 1.0.8
 ****************************************************************************/
 
@@ -838,8 +838,9 @@ int AGEAnimationFrameIndex::setImage_d(int id, int image_d){
 //---------------------------------------------------------------------------
 
 AGEAnimationFrameElement* AGEAnimationFrameIndex::getElementById(int id){
-	AGEAnimationFrameElement* result;
-	AGEAnimationFrameElement* pointer;
+
+	AGEAnimationFrameElement* result = nullptr;
+	AGEAnimationFrameElement* pointer = nullptr;
 
 	if (this->counter == 0){
 		result = nullptr;
