@@ -1,0 +1,2 @@
+ARG="SDL_Window*,window"
+ARG="SDL_Renderer*,render"

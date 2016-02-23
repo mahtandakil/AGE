@@ -1,14 +1,3 @@
-0.5.7a
-- A bug in the flip system for images have been fixed.
+r0.0.2
 
-
-0.5.7
-- A new tool have been included. ADC allow to create the gan animation files easily with a graphic interface.
-- The SDL_Surface object is now stored for animations & textures to allow some changes on the images.
-- The app can access to the main string_index object using the deployString(), modifyString(), searchString(), getString() and removeString() functions.
-- The getRandom() function is implemented. It returns a pseudorandom number between the specified limit.
-- The moveImage() and moveLabel() functions have been modified to allow size modifications.
-- The getPixelColor() function is implemented. It return a AGE_Color value for an specific pixel of an image.
-- The deployAnimation() function have been modified to prevent some crashes if the "FILE" field have a wrong value.
-
-
+- Window, DMOM and events support.
