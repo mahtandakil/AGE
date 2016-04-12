@@ -1,3 +1,6 @@
-r0.0.2
+r0.0.3
+- Library integration for linux & windows mingw
+- Test & tools have been removed
 
+r0.0.2
 - Window, DMOM and events support.

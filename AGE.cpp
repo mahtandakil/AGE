@@ -1,8 +1,8 @@
 /****************************************************************************
-* Created for: AGE v2
+* Created for: AGE v1
 * Dev line: AGE v2
-* Creation day: 08/02/2016
-* Last change: 22/02/2016
+* Creation day: 17/07/2015
+* Last change: 24/03/2016
 ****************************************************************************/
 
 
@@ -14,7 +14,7 @@
 AGE::AGE(){
 
 	this->dmom = new DMOM();
-	
+
 	this->event_index = new AGE_EventIndex();
 	this->dmom->dmom_eventIndex_set(this->event_index);
 
@@ -24,7 +24,10 @@ AGE::AGE(){
 }
 
 
+//---------------------------------------------------------------------------
+
 AGE::~AGE(){
+
 }
 
 
@@ -51,7 +54,7 @@ int AGE::age_window_create(string title, AGE_Cartesian coords, Uint32 wflags, Ui
 	window = SDL_CreateWindow(title.c_str(), coords.x, coords.y, coords.w, coords.h, wflags);
 
 	if(window != nullptr){
-	
+
 		render = SDL_CreateRenderer(window, -1, rflags);
 
 		if(render != nullptr){
@@ -120,7 +123,7 @@ int AGE::age_window_remove(int window_id){
 //---------------------------------------------------------------------------
 
 int AGE::age_window_set_focus(int window_id){
-	
+
 	AGE_Window* mwindow = nullptr;
 	int updated_window = -1;
 
@@ -184,10 +187,10 @@ AGE_Event_Status AGE::age_event_get_status(){
 		status.count = event_node->getCount();
 
 		this->event_index->deleteNode(event_id);
-		
+
 	}
 	else {
-	
+
 		this->event_index->deleteList();
 		status.event = AGE_EVENT_NOEVENTS;
 	}
@@ -201,7 +204,7 @@ AGE_Event_Status AGE::age_event_get_status(){
 //---------------------------------------------------------------------------
 
 int AGE::age_event_process(){
-	
+
 	int events = AGE_EVENT_NOEVENTS;
 	int node = -1;
 	Uint32 event = 0;
@@ -625,7 +628,7 @@ int AGE::age_event_process(){
 		}
 
 		if(reg){
-			node = this->event_index->createNode(to_string(event) + "-" + to_string(events));
+			node = this->event_index->createNode(age_util_itos(event) + "-" + age_util_itos(events));
 			this->event_index->setValues(node, event, device, window, timestamp, state, x, y, w, h, count, mod);
 		}
 
@@ -639,7 +642,7 @@ int AGE::age_event_process(){
 //---------------------------------------------------------------------------
 
 void AGE::age_pause(int miliseconds){
-	
+
 	SDL_Delay(miliseconds);
 
 }
@@ -692,3 +695,4 @@ int AGE::age_window_refresh(int window_id){
 
 
 //---------------------------------------------------------------------------
+
