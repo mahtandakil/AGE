@@ -2,7 +2,7 @@
 * Created for: AGE v1
 * Dev line: AGE v2
 * Creation day: 17/07/2015
-* Last change: 24/03/2016
+* Last change: 23/04/2016
 ****************************************************************************/
 
 
@@ -18,6 +18,9 @@ AGE::AGE(){
 	this->event_index = new AGE_EventIndex();
 	this->dmom->dmom_eventIndex_set(this->event_index);
 
+	this->image_index = new AGE_ImageIndex();
+	this->dmom->dmom_imageIndex_set(this->image_index);
+
 	this->window_index = new AGE_WindowIndex();
 	this->dmom->dmom_windowIndex_set(this->window_index);
 
@@ -27,6 +30,211 @@ AGE::AGE(){
 //---------------------------------------------------------------------------
 
 AGE::~AGE(){
+
+}
+
+
+//---------------------------------------------------------------------------
+
+AGE_Cartesian AGE::age_window_cartesian_get(int window_id){
+
+	AGE_Cartesian result = { -1, -1, -1, -1 };
+	SDL_Window* window;
+
+	window = this->window_index->getWindow(window_id);
+	if(window != nullptr){
+
+		SDL_GetWindowSize(window, &result.w, &result.h);
+		SDL_GetWindowPosition(window, &result.x, &result.y);
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::age_window_clear(int window_id){
+
+	AGE_Cartesian window_values;
+	AGE_Color color;
+
+	window_values = this->age_window_cartesian_get(window_id);
+	color = { 0, 0, 0, 255};
+
+	if(window_values.h != -1 && window_values.w != -1){
+
+		this->age_square_draw(window_values, color, window_id);
+
+	}
+
+	return 0;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+bool AGE::age_sdltexture_apply(SDL_Texture * texture, SDL_Renderer* render, int x, int y, int w, int h){
+
+	int sdl_result = -1;
+	bool result = false;
+
+	SDL_Rect image_rect;
+	image_rect.x = 0;
+	image_rect.y = 0;
+	image_rect.h = h;
+	image_rect.w = w;
+
+	SDL_Rect destination_rect;
+	destination_rect.x = x;
+	destination_rect.y = y;
+	destination_rect.h = h;
+	destination_rect.w = w;
+
+	sdl_result = SDL_RenderCopy(render, texture, &image_rect, &destination_rect);
+
+	if (sdl_result == 0) {
+		result = true;
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::age_square_draw(AGE_Cartesian square, AGE_Color color, int window_id){
+
+	SDL_Renderer* render;
+
+	render = this->window_index->getRender(window_id);
+	if(render != nullptr){
+
+		SDL_SetRenderDrawBlendMode(render, SDL_BLENDMODE_BLEND);
+		SDL_Rect fillRect = {0, 0, square.w, square.h};
+		SDL_SetRenderDrawColor(render, color.r, color.g, color.b, color.a);
+		SDL_RenderFillRect(render, &fillRect);
+		SDL_SetRenderDrawBlendMode(render, SDL_BLENDMODE_NONE);
+
+	}else{
+		window_id = -1;
+	}
+
+	return window_id;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::age_image_move(int image_id, int x, int y, int window_id){
+
+	bool op_result = false;
+	AGE_Image* image_node = nullptr;
+	SDL_Texture* texture = nullptr;
+	SDL_Renderer* render = nullptr;
+	int w;
+	int h;
+
+	image_node = this->image_index->getNode(image_id);
+	render = this->window_index->getRender(window_id);
+
+	if(image_node != nullptr && render != nullptr){
+
+		image_node->setAvailable(false);
+
+		texture = image_node->getTexture();
+		w = image_node->getTexture_w();
+		h = image_node->getTexture_h();
+
+		op_result = this->age_sdltexture_apply(texture, render, x, y, w, h);
+		if(!op_result){
+			image_id = -1;
+		}
+
+	}else{
+
+		image_id = -1;
+
+	}
+
+	return image_id;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::age_image_free(int image_id){
+
+    AGE_Image* image_node = nullptr;
+
+    image_node = this->image_index->getNode(image_id);
+
+    if(image_node != nullptr){
+
+        image_node->setAvailable(true);
+
+    }else{
+
+		image_id = -1;
+
+	}
+
+	return image_id;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::age_image_unload(int image_id){
+
+	int node_id = 0;
+	AGE_Image* image_node = nullptr;
+	SDL_Texture* image_texture = nullptr;
+	SDL_Surface* image_surface = nullptr;
+
+	image_node = this->image_index->getNode(image_id);
+
+	if(image_node != nullptr){
+
+        image_texture = image_node->getTexture();
+        image_surface = image_node->getSurface();
+
+        if(image_texture != nullptr){
+            SDL_DestroyTexture(image_texture);
+        }
+
+        if(image_surface != nullptr){
+            SDL_FreeSurface(image_surface);
+        }
+
+        node_id = image_node->getIdent();
+
+	}else{
+
+		node_id = -1;
+
+	}
+
+	return node_id;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::age_image_delete(int image_id){
+
+    image_id = this->age_image_unload(image_id);
+    image_id = this->image_index->deleteNode(image_id);
+
+	return image_id;
 
 }
 
@@ -197,6 +405,78 @@ AGE_Event_Status AGE::age_event_get_status(){
 
 
 	return status;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::age_image_deploy(string src, int window_id) {
+
+	SDL_Texture* temp_texture = nullptr;
+	SDL_Surface* temp_surface = nullptr;
+	SDL_Renderer* render = nullptr;
+	int image_w = -1;
+	int image_h = -1;
+	int image_id = -1;
+
+	image_id = this->image_index->searchByTag(src);
+
+	if (image_id == -1){
+
+        image_id = this->image_index->searchByAvailable(true);
+
+        if(age_util_file_check(src)){
+
+            temp_surface = IMG_Load(src.c_str());
+			render = this->window_index->getRender(window_id);
+			temp_texture = SDL_CreateTextureFromSurface(render, temp_surface);
+
+			if(image_id == -1){
+
+			    image_id = this->image_index->createNode(src);
+			    this->image_index->setSrc(image_id, src);
+
+			}else{
+
+                this->age_image_unload(image_id);
+                this->image_index->setTag(image_id, src);
+                this->image_index->setSrc(image_id, src);
+			}
+
+			this->image_index->setTexture(image_id, temp_texture);
+			this->image_index->setSurface(image_id, temp_surface);
+			SDL_QueryTexture(temp_texture, nullptr, nullptr, &image_w, &image_h);
+			this->image_index->setTexture_h(image_id, image_h);
+			this->image_index->setTexture_w(image_id, image_w);
+
+        }else{
+
+            image_id = -1;
+
+        }
+
+	}else{
+
+        this->image_index->setAvailable(image_id, false);
+
+	}
+
+
+
+	return image_id;
+
+}
+
+
+int AGE::age_image_deploy(string src, int x, int y, int window_id){
+
+	int image_id = -1;
+
+	image_id = this->age_image_deploy(src, window_id);
+	this->age_image_move(image_id, x, y, window_id);
+
+	return image_id;
 
 }
 

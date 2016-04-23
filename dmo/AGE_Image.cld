@@ -1,0 +1,6 @@
+ARG="string,src"
+ARG="SDL_Surface*,surface"
+ARG="SDL_Texture*,texture"
+ARG="int,texture_h"
+ARG="int,texture_w"
+

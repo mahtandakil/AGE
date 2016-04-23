@@ -1,0 +1,68 @@
+/****************************************************************************
+* Created for: <[PROJECT]>
+* Dev line: <[DEVLINE]>
+* Creation date: <[CREATIONDATE]>
+* Last change: <[TODAY]>
+* Autogen: <[VERSION]>
+****************************************************************************/
+
+
+#include "<[BASENAME]>.h"
+
+
+#include <iostream>
+#include <string>
+
+
+using namespace std;
+
+
+#ifndef <[BASENAME]{capital}>INDEX_H
+#define <[BASENAME]{capital}>INDEX_H
+
+
+class <[BASENAME]>Index
+{
+	public:
+		<[BASENAME]>Index();
+		virtual ~<[BASENAME]>Index();
+
+		int createNode(string tag="");
+		int freeNode(int ident);
+		int freeList();
+		int deleteNode(int ident);
+		int deleteList();
+		<[BASENAME]>* getFirst();
+		<[BASENAME]>* getNode(int id);
+		int getPrevious(int ident);
+		int printNodes();
+		int purge();
+		int searchAvailable(int limit=0);
+		int setValues(int ident, <[FULLLIST_ARGS]>);
+		<<<FOR_BASE&ARGS>>>
+		<[ARG_TYPE]> get<[ARG_NAME]{first}>(int id);
+		<<</FOR_BASE&ARGS>>>
+		<<<FOR_BASE&ARGS{ignore:ident}>>>
+		int set<[ARG_NAME]{first}>(int ident, <[ARG_TYPE]> <[ARG_NAME]>);
+		<<</FOR_BASE&ARGS>>>
+		<<<FOR_BASE&ARGS>>>
+		int searchBy<[ARG_NAME]{first}>(<[ARG_TYPE]> <[ARG_NAME]>);
+		<<</FOR_BASE&ARGS>>>
+
+
+	protected:
+
+
+
+	private:
+		int nodes;
+		int next_ident;
+		<[BASENAME]>* first;
+		<[BASENAME]>* last;
+
+
+};
+
+
+#endif // <[BASENAME]{capital}>INDEX_H
+

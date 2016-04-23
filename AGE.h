@@ -2,14 +2,16 @@
 * Created for: AGE v1
 * Dev line: AGE v2
 * Creation day: 17/07/2015
-* Last change: 24/03/2016
+* Last change: 20/04/2016
 ****************************************************************************/
 
 
 #include "AGE_util.h"
 #include "dmo/DMOM.h"
 
+
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 
 #include <iostream>
@@ -22,7 +24,7 @@ using namespace std;
 #define AGE_H_INCLUDED
 
 
-const string AGE_VERSION = "r0.0.1a";
+const string AGE_VERSION = "r0.0.3_dev1";
 const int AGE_30FPS = 33;
 const int AGE_60FPS = 16;
 
@@ -132,6 +134,7 @@ const Uint32 AGE_EVENT_MOUSE_RIGHT = 86;
 const Uint32 AGE_EVENT_MOUSE_X1 = 87;
 const Uint32 AGE_EVENT_MOUSE_X2 = 88;
 
+
 //---------------------------------------------------------------------------
 
 struct AGE_Cartesian {
@@ -176,12 +179,19 @@ class AGE {
 public:
 	AGE();
 	virtual ~AGE();
-
 	bool age_core_load_libs();
 	DMOM* age_dmom_get();
 	AGE_Event_Status age_event_get_status();
 	int age_event_process();
+	int age_image_delete(int image_id);
+	int age_image_deploy(string src, int window_id = 0);
+	int age_image_deploy(string src, int x, int y, int window_id = 0);
+	int age_image_free(int image_id);
+	int age_image_move(int image_id, int x, int y, int window_id = 0);
 	void age_pause(int miliseconds);
+	int age_square_draw(AGE_Cartesian square, AGE_Color color, int window_id = 0);
+	AGE_Cartesian age_window_cartesian_get(int window_id = 0);
+	int age_window_clear(int window_id = 0);
 	int age_window_create(string title, AGE_Cartesian coords, Uint32 wflags = 0, Uint32 rflags = 0);
 	int age_window_set_visible(int window_id, bool visible);
 	int age_window_refresh();
@@ -190,10 +200,14 @@ public:
 	int age_window_set_focus(int window_id);
 
 private:
-	AGE_EventIndex* event_index;
-	AGE_WindowIndex* window_index;
 	DMOM* dmom;
+	AGE_EventIndex* event_index;
+	AGE_ImageIndex* image_index;
 	SDL_Event sdl_event_handler;
+	AGE_WindowIndex* window_index;
+
+    int age_image_unload(int image_id);
+	bool age_sdltexture_apply(SDL_Texture* texture, SDL_Renderer* render, int x, int y, int w, int h);
 
 };
 

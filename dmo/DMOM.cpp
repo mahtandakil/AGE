@@ -2,7 +2,7 @@
 * Created for: AGE v2
 * Dev line: AGE v2
 * Creation day: 08/02/2016
-* Last change: 14/02/2016
+* Last change: 24/03/2016
 ****************************************************************************/
 
 
@@ -13,8 +13,9 @@
 
 DMOM::DMOM(){
 
-	this->window_index = nullptr;
 	this->event_index = nullptr;
+	this->image_index = nullptr;
+	this->window_index = nullptr;
 
 }
 
@@ -35,6 +36,23 @@ AGE_EventIndex* DMOM::dmom_eventIndex_get()
 bool DMOM::dmom_eventIndex_set(AGE_EventIndex* pointer)
 {
 	this->event_index = pointer;
+	return true;
+}
+
+
+//---------------------------------------------------------------------------
+
+AGE_ImageIndex * DMOM::dmom_imageIndex_get()
+{
+	return this->image_index;
+}
+
+
+//---------------------------------------------------------------------------
+
+bool DMOM::dmom_imageIndex_set(AGE_ImageIndex * pointer)
+{
+	this->image_index = pointer;
 	return true;
 }
 
