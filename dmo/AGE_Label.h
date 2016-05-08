@@ -18,36 +18,38 @@
 using namespace std;
 
 
-#ifndef AGE_IMAGE_H
-#define AGE_IMAGE_H
+#ifndef AGE_LABEL_H
+#define AGE_LABEL_H
 
 
-class AGE_Image
+class AGE_Label
 {
 	public:
-		AGE_Image();
-		virtual ~AGE_Image();
+		AGE_Label();
+		virtual ~AGE_Label();
 
 		int printNode();
 		int getIdent();
 		string getTag();
 		bool getAvailable();
-		AGE_Image* getNext();
-		string getSrc();
-		SDL_Surface* getSurface();
+		AGE_Label* getNext();
+		string getContent();
 		SDL_Texture* getTexture();
-		int getTexture_h();
-		int getTexture_w();
+		int getFont();
+		int getFont_color_r();
+		int getFont_color_g();
+		int getFont_color_b();
 		int setIdent(int ident);
 		int setTag(string tag);
 		int setAvailable(bool available);
-		int setNext(AGE_Image* next);
-		int setSrc(string src);
-		int setSurface(SDL_Surface* surface);
+		int setNext(AGE_Label* next);
+		int setContent(string content);
 		int setTexture(SDL_Texture* texture);
-		int setTexture_h(int texture_h);
-		int setTexture_w(int texture_w);
-
+		int setFont(int font);
+		int setFont_color_r(int font_color_r);
+		int setFont_color_g(int font_color_g);
+		int setFont_color_b(int font_color_b);
+		
 
 
 	protected:
@@ -57,17 +59,18 @@ class AGE_Image
 		int ident;
 		string tag;
 		bool available;
-		AGE_Image* next;
-		string src;
-		SDL_Surface* surface;
+		AGE_Label* next;
+		string content;
 		SDL_Texture* texture;
-		int texture_h;
-		int texture_w;
+		int font;
+		int font_color_r;
+		int font_color_g;
+		int font_color_b;
 
 };
 
 
-#endif // AGE_IMAGE_H
+#endif // AGE_LABEL_H
 
 
 

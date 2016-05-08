@@ -7,12 +7,12 @@
 ****************************************************************************/
 
 
-#include "AGE_Image.h"
+#include "AGE_Font.h"
 
 
 //---------------------------------------------------------------------------
 
-AGE_Image::AGE_Image()
+AGE_Font::AGE_Font()
 {
 
 	this->ident = -1;
@@ -20,14 +20,11 @@ AGE_Image::AGE_Image()
 	this->available = false;
 	this->next = nullptr;
 	this->src = "";
-	this->surface = nullptr;
-	this->texture = nullptr;
-	this->texture_h = -1;
-	this->texture_w = -1;
+	this->font = nullptr;
 
 }
 
-AGE_Image::~AGE_Image()
+AGE_Font::~AGE_Font()
 {
 	//dtor
 }
@@ -35,7 +32,7 @@ AGE_Image::~AGE_Image()
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::printNode(){
+int AGE_Font::printNode(){
 
 	cout << "ID: " << this->ident << endl;
 	cout << "POINTER: " << this << endl;
@@ -43,10 +40,7 @@ int AGE_Image::printNode(){
 	cout << "AVAILABLE: " << this->available << endl;
 	cout << "NEXT: " << this->next << endl;
 	cout << "SRC: " << this->src << endl;
-	cout << "SURFACE: " << this->surface << endl;
-	cout << "TEXTURE: " << this->texture << endl;
-	cout << "TEXTURE_H: " << this->texture_h << endl;
-	cout << "TEXTURE_W: " << this->texture_w << endl;
+	cout << "FONT: " << this->font << endl;
 	cout << endl;
 	
 	return this->ident;
@@ -56,7 +50,7 @@ int AGE_Image::printNode(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setIdent(int ident){
+int AGE_Font::setIdent(int ident){
 
 	this->ident = ident;
 	
@@ -67,7 +61,7 @@ int AGE_Image::setIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::getIdent(){
+int AGE_Font::getIdent(){
 
 	return this->ident;
 
@@ -76,7 +70,7 @@ int AGE_Image::getIdent(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setTag(string tag){
+int AGE_Font::setTag(string tag){
 
 	this->tag = tag;
 	
@@ -87,7 +81,7 @@ int AGE_Image::setTag(string tag){
 
 //---------------------------------------------------------------------------
 
-string AGE_Image::getTag(){
+string AGE_Font::getTag(){
 
 	return this->tag;
 
@@ -96,7 +90,7 @@ string AGE_Image::getTag(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setAvailable(bool available){
+int AGE_Font::setAvailable(bool available){
 
 	this->available = available;
 	
@@ -107,7 +101,7 @@ int AGE_Image::setAvailable(bool available){
 
 //---------------------------------------------------------------------------
 
-bool AGE_Image::getAvailable(){
+bool AGE_Font::getAvailable(){
 
 	return this->available;
 
@@ -116,7 +110,7 @@ bool AGE_Image::getAvailable(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setNext(AGE_Image* next){
+int AGE_Font::setNext(AGE_Font* next){
 
 	this->next = next;
 	
@@ -127,7 +121,7 @@ int AGE_Image::setNext(AGE_Image* next){
 
 //---------------------------------------------------------------------------
 
-AGE_Image* AGE_Image::getNext(){
+AGE_Font* AGE_Font::getNext(){
 
 	return this->next;
 
@@ -136,7 +130,7 @@ AGE_Image* AGE_Image::getNext(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setSrc(string src){
+int AGE_Font::setSrc(string src){
 
 	this->src = src;
 	
@@ -147,7 +141,7 @@ int AGE_Image::setSrc(string src){
 
 //---------------------------------------------------------------------------
 
-string AGE_Image::getSrc(){
+string AGE_Font::getSrc(){
 
 	return this->src;
 
@@ -156,9 +150,9 @@ string AGE_Image::getSrc(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setSurface(SDL_Surface* surface){
+int AGE_Font::setFont(TTF_Font* font){
 
-	this->surface = surface;
+	this->font = font;
 	
 	return this->ident;
 
@@ -167,69 +161,9 @@ int AGE_Image::setSurface(SDL_Surface* surface){
 
 //---------------------------------------------------------------------------
 
-SDL_Surface* AGE_Image::getSurface(){
+TTF_Font* AGE_Font::getFont(){
 
-	return this->surface;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Image::setTexture(SDL_Texture* texture){
-
-	this->texture = texture;
-	
-	return this->ident;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-SDL_Texture* AGE_Image::getTexture(){
-
-	return this->texture;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Image::setTexture_h(int texture_h){
-
-	this->texture_h = texture_h;
-	
-	return this->ident;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Image::getTexture_h(){
-
-	return this->texture_h;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Image::setTexture_w(int texture_w){
-
-	this->texture_w = texture_w;
-	
-	return this->ident;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Image::getTexture_w(){
-
-	return this->texture_w;
+	return this->font;
 
 }
 

@@ -1,0 +1,6 @@
+ARG="string,content"
+ARG="SDL_Texture*,texture"
+ARG="int,font"
+ARG="int,font_color_r"
+ARG="int,font_color_g"
+ARG="int,font_color_b"

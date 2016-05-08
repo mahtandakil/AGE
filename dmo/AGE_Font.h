@@ -7,8 +7,7 @@
 ****************************************************************************/
 
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 
 #include <iostream>
@@ -18,36 +17,30 @@
 using namespace std;
 
 
-#ifndef AGE_IMAGE_H
-#define AGE_IMAGE_H
+#ifndef AGE_FONT_H
+#define AGE_FONT_H
 
 
-class AGE_Image
+class AGE_Font
 {
 	public:
-		AGE_Image();
-		virtual ~AGE_Image();
+		AGE_Font();
+		virtual ~AGE_Font();
 
 		int printNode();
 		int getIdent();
 		string getTag();
 		bool getAvailable();
-		AGE_Image* getNext();
+		AGE_Font* getNext();
 		string getSrc();
-		SDL_Surface* getSurface();
-		SDL_Texture* getTexture();
-		int getTexture_h();
-		int getTexture_w();
+		TTF_Font* getFont();
 		int setIdent(int ident);
 		int setTag(string tag);
 		int setAvailable(bool available);
-		int setNext(AGE_Image* next);
+		int setNext(AGE_Font* next);
 		int setSrc(string src);
-		int setSurface(SDL_Surface* surface);
-		int setTexture(SDL_Texture* texture);
-		int setTexture_h(int texture_h);
-		int setTexture_w(int texture_w);
-
+		int setFont(TTF_Font* font);
+		
 
 
 	protected:
@@ -57,17 +50,14 @@ class AGE_Image
 		int ident;
 		string tag;
 		bool available;
-		AGE_Image* next;
+		AGE_Font* next;
 		string src;
-		SDL_Surface* surface;
-		SDL_Texture* texture;
-		int texture_h;
-		int texture_w;
+		TTF_Font* font;
 
 };
 
 
-#endif // AGE_IMAGE_H
+#endif // AGE_FONT_H
 
 
 

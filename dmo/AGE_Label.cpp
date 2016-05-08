@@ -7,27 +7,28 @@
 ****************************************************************************/
 
 
-#include "AGE_Image.h"
+#include "AGE_Label.h"
 
 
 //---------------------------------------------------------------------------
 
-AGE_Image::AGE_Image()
+AGE_Label::AGE_Label()
 {
 
 	this->ident = -1;
 	this->tag = "";
 	this->available = false;
 	this->next = nullptr;
-	this->src = "";
-	this->surface = nullptr;
+	this->content = "";
 	this->texture = nullptr;
-	this->texture_h = -1;
-	this->texture_w = -1;
+	this->font = -1;
+	this->font_color_r = -1;
+	this->font_color_g = -1;
+	this->font_color_b = -1;
 
 }
 
-AGE_Image::~AGE_Image()
+AGE_Label::~AGE_Label()
 {
 	//dtor
 }
@@ -35,18 +36,19 @@ AGE_Image::~AGE_Image()
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::printNode(){
+int AGE_Label::printNode(){
 
 	cout << "ID: " << this->ident << endl;
 	cout << "POINTER: " << this << endl;
 	cout << "TAG: " << this->tag << endl;
 	cout << "AVAILABLE: " << this->available << endl;
 	cout << "NEXT: " << this->next << endl;
-	cout << "SRC: " << this->src << endl;
-	cout << "SURFACE: " << this->surface << endl;
+	cout << "CONTENT: " << this->content << endl;
 	cout << "TEXTURE: " << this->texture << endl;
-	cout << "TEXTURE_H: " << this->texture_h << endl;
-	cout << "TEXTURE_W: " << this->texture_w << endl;
+	cout << "FONT: " << this->font << endl;
+	cout << "FONT_COLOR_R: " << this->font_color_r << endl;
+	cout << "FONT_COLOR_G: " << this->font_color_g << endl;
+	cout << "FONT_COLOR_B: " << this->font_color_b << endl;
 	cout << endl;
 	
 	return this->ident;
@@ -56,7 +58,7 @@ int AGE_Image::printNode(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setIdent(int ident){
+int AGE_Label::setIdent(int ident){
 
 	this->ident = ident;
 	
@@ -67,7 +69,7 @@ int AGE_Image::setIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::getIdent(){
+int AGE_Label::getIdent(){
 
 	return this->ident;
 
@@ -76,7 +78,7 @@ int AGE_Image::getIdent(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setTag(string tag){
+int AGE_Label::setTag(string tag){
 
 	this->tag = tag;
 	
@@ -87,7 +89,7 @@ int AGE_Image::setTag(string tag){
 
 //---------------------------------------------------------------------------
 
-string AGE_Image::getTag(){
+string AGE_Label::getTag(){
 
 	return this->tag;
 
@@ -96,7 +98,7 @@ string AGE_Image::getTag(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setAvailable(bool available){
+int AGE_Label::setAvailable(bool available){
 
 	this->available = available;
 	
@@ -107,7 +109,7 @@ int AGE_Image::setAvailable(bool available){
 
 //---------------------------------------------------------------------------
 
-bool AGE_Image::getAvailable(){
+bool AGE_Label::getAvailable(){
 
 	return this->available;
 
@@ -116,7 +118,7 @@ bool AGE_Image::getAvailable(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setNext(AGE_Image* next){
+int AGE_Label::setNext(AGE_Label* next){
 
 	this->next = next;
 	
@@ -127,7 +129,7 @@ int AGE_Image::setNext(AGE_Image* next){
 
 //---------------------------------------------------------------------------
 
-AGE_Image* AGE_Image::getNext(){
+AGE_Label* AGE_Label::getNext(){
 
 	return this->next;
 
@@ -136,9 +138,9 @@ AGE_Image* AGE_Image::getNext(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setSrc(string src){
+int AGE_Label::setContent(string content){
 
-	this->src = src;
+	this->content = content;
 	
 	return this->ident;
 
@@ -147,36 +149,16 @@ int AGE_Image::setSrc(string src){
 
 //---------------------------------------------------------------------------
 
-string AGE_Image::getSrc(){
+string AGE_Label::getContent(){
 
-	return this->src;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Image::setSurface(SDL_Surface* surface){
-
-	this->surface = surface;
-	
-	return this->ident;
+	return this->content;
 
 }
 
 
 //---------------------------------------------------------------------------
 
-SDL_Surface* AGE_Image::getSurface(){
-
-	return this->surface;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Image::setTexture(SDL_Texture* texture){
+int AGE_Label::setTexture(SDL_Texture* texture){
 
 	this->texture = texture;
 	
@@ -187,7 +169,7 @@ int AGE_Image::setTexture(SDL_Texture* texture){
 
 //---------------------------------------------------------------------------
 
-SDL_Texture* AGE_Image::getTexture(){
+SDL_Texture* AGE_Label::getTexture(){
 
 	return this->texture;
 
@@ -196,9 +178,9 @@ SDL_Texture* AGE_Image::getTexture(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setTexture_h(int texture_h){
+int AGE_Label::setFont(int font){
 
-	this->texture_h = texture_h;
+	this->font = font;
 	
 	return this->ident;
 
@@ -207,18 +189,18 @@ int AGE_Image::setTexture_h(int texture_h){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::getTexture_h(){
+int AGE_Label::getFont(){
 
-	return this->texture_h;
+	return this->font;
 
 }
 
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setTexture_w(int texture_w){
+int AGE_Label::setFont_color_r(int font_color_r){
 
-	this->texture_w = texture_w;
+	this->font_color_r = font_color_r;
 	
 	return this->ident;
 
@@ -227,9 +209,49 @@ int AGE_Image::setTexture_w(int texture_w){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::getTexture_w(){
+int AGE_Label::getFont_color_r(){
 
-	return this->texture_w;
+	return this->font_color_r;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_Label::setFont_color_g(int font_color_g){
+
+	this->font_color_g = font_color_g;
+	
+	return this->ident;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_Label::getFont_color_g(){
+
+	return this->font_color_g;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_Label::setFont_color_b(int font_color_b){
+
+	this->font_color_b = font_color_b;
+	
+	return this->ident;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_Label::getFont_color_b(){
+
+	return this->font_color_b;
 
 }
 

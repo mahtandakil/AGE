@@ -2,7 +2,7 @@
 * Created for: AGE v1
 * Dev line: AGE v2
 * Creation day: 17/07/2015
-* Last change: 23/04/2016
+* Last change: 08/05/2016
 ****************************************************************************/
 
 
@@ -18,8 +18,14 @@ AGE::AGE(){
 	this->event_index = new AGE_EventIndex();
 	this->dmom->dmom_eventIndex_set(this->event_index);
 
+	this->font_index = new AGE_FontIndex();
+	this->dmom->dmom_fontIndex_set(this->font_index);
+
 	this->image_index = new AGE_ImageIndex();
 	this->dmom->dmom_imageIndex_set(this->image_index);
+
+	this->label_index = new AGE_LabelIndex();
+	this->dmom->dmom_labelIndex_set(this->label_index);
 
 	this->window_index = new AGE_WindowIndex();
 	this->dmom->dmom_windowIndex_set(this->window_index);
@@ -38,7 +44,7 @@ AGE::~AGE(){
 
 AGE_Cartesian AGE::age_window_cartesian_get(int window_id){
 
-	AGE_Cartesian result = { -1, -1, -1, -1 };
+	AGE_Cartesian result = {-1, -1, -1, -1 };
 	SDL_Window* window;
 
 	window = this->window_index->getWindow(window_id);
@@ -66,6 +72,8 @@ int AGE::age_window_clear(int window_id){
 
 	if(window_values.h != -1 && window_values.w != -1){
 
+        window_values.x = 0;
+        window_values.y = 0;
 		this->age_square_draw(window_values, color, window_id);
 
 	}
@@ -107,6 +115,123 @@ bool AGE::age_sdltexture_apply(SDL_Texture * texture, SDL_Renderer* render, int 
 
 //---------------------------------------------------------------------------
 
+int AGE::age_circle_draw(AGE_Cartesian cartesian, AGE_Color color, bool filled, int window_id){
+
+	SDL_Renderer* render;
+
+	render = this->window_index->getRender(window_id);
+	if(render != nullptr){
+
+        if (filled){
+            filledEllipseRGBA(render, cartesian.x, cartesian.y, cartesian.w, cartesian.h, color.r, color.g, color.b, color.a);
+        }else{
+            ellipseRGBA(render, cartesian.x, cartesian.y, cartesian.w, cartesian.h, color.r, color.g, color.b, color.a);
+        }
+
+	}else{
+		window_id = -1;
+	}
+
+	return window_id;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::age_label_deploy(string value, int font_id, AGE_Color color, int window_id){
+
+    SDL_Texture* temp_texture = nullptr;
+    int label_id = -1;
+    string tag = "";
+    TTF_Font* font = nullptr;
+    SDL_Color label_color;
+    SDL_Color bg_color;
+
+    tag = value + "-" + this->font_index->getTag(font_id);
+    label_id = this->label_index->searchByTag(tag);
+
+    if(label_id == -1){
+
+        font = this->font_index->getFont(font_id);
+
+        if(font != nullptr){
+
+            label_id = this->label_index->createNode(tag);
+            temp_texture = this->age_ttf_render(font, value, color, window_id);
+
+            this->label_index->setTexture(label_id, temp_texture);
+            this->label_index->setFont_color_r(label_id, color.r);
+            this->label_index->setFont_color_g(label_id, color.g);
+            this->label_index->setFont_color_b(label_id, color.b);
+            this->label_index->setFont(label_id, font_id);
+            this->label_index->setContent(label_id, value);
+
+        }
+
+    }else{
+        this->label_index->setAvailable(label_id, false);
+
+    }
+
+
+    return label_id;
+
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::age_line_draw(AGE_Cartesian point1, AGE_Cartesian point2, AGE_Color color, int window_id){
+
+	SDL_Renderer* render;
+
+	render = this->window_index->getRender(window_id);
+	if(render != nullptr){
+
+        SDL_SetRenderDrawBlendMode(render, SDL_BLENDMODE_BLEND);
+        SDL_SetRenderDrawColor(render, color.r, color.g, color.b, color.a);
+        SDL_RenderDrawLine(render, point1.x, point1.y, point2.x, point2.y);
+        SDL_SetRenderDrawBlendMode(render, SDL_BLENDMODE_NONE);
+
+	}else{
+		window_id = -1;
+	}
+
+	return window_id;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::age_label_move(int label_id, int x, int y, int window_id){
+
+    SDL_Texture* texture = nullptr;
+    SDL_Color label_color;
+    SDL_Color bg_color;
+    bool available = false;
+    int w;
+    int h;
+    int margin = 0;
+
+    texture = this->label_index->getTexture(label_id);
+    available = this->label_index->getAvailable(label_id);
+
+    if (texture != nullptr){
+        SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
+        this->age_sdltexture_apply(texture, this->window_index->getRender(window_id), x, y, w, h);
+
+    }
+
+    return this->label_index->getIdent(label_id);
+
+}
+
+
+//---------------------------------------------------------------------------
+
 int AGE::age_square_draw(AGE_Cartesian square, AGE_Color color, int window_id){
 
 	SDL_Renderer* render;
@@ -115,7 +240,7 @@ int AGE::age_square_draw(AGE_Cartesian square, AGE_Color color, int window_id){
 	if(render != nullptr){
 
 		SDL_SetRenderDrawBlendMode(render, SDL_BLENDMODE_BLEND);
-		SDL_Rect fillRect = {0, 0, square.w, square.h};
+		SDL_Rect fillRect = {square.x, square.y, square.w, square.h};
 		SDL_SetRenderDrawColor(render, color.r, color.g, color.b, color.a);
 		SDL_RenderFillRect(render, &fillRect);
 		SDL_SetRenderDrawBlendMode(render, SDL_BLENDMODE_NONE);
@@ -223,6 +348,60 @@ int AGE::age_image_unload(int image_id){
 	}
 
 	return node_id;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE::age_font_deploy(string src, int font_size, string mod){
+
+    TTF_Font *temp_font = nullptr;
+    int font_id = -1;
+    string tag = "";
+
+    tag = src + " - " + age_util_itos(font_size) + " - " + mod;
+    font_id = this->font_index->searchByTag(tag);
+
+    //Font is not registered, this block loads the font and creates the register
+    if (font_id == -1){
+
+        //We search for an available register
+        font_id = this->font_index->searchByAvailable(true);
+
+        if (age_util_file_check(src)){
+
+            temp_font =  TTF_OpenFont(src.c_str(), font_size);
+
+            //If we need to create a new register (there are not available registers)
+            if(font_id == -1){
+                font_id = this->font_index->createNode(src);
+
+            //if we have found an available register for the new image
+            }else{
+                TTF_CloseFont(this->font_index->getFont(font_id));
+
+            }
+
+            this->font_index->setSrc(font_id, src);
+            this->font_index->setTag(font_id, tag);
+            this->font_index->setFont(font_id, temp_font);
+
+        //If the file is not valid, we return an invalid id
+        }else{
+            font_id = -1;
+
+        }
+
+
+    //font was loaded previously, so the available flag is set to 'false' to avoid image unload
+    }else{
+        this->font_index->setAvailable(font_id, false);
+
+    }
+
+    return font_id;
+
 
 }
 
@@ -355,8 +534,11 @@ bool AGE::age_core_load_libs(){
 
 	bool load_status = true;
 
-	//Start SDL
+	//Initializing full SDL
 	SDL_Init(SDL_INIT_EVERYTHING);
+
+	//Initializing TTF
+	TTF_Init();
 
 	return load_status;
 
@@ -976,3 +1158,29 @@ int AGE::age_window_refresh(int window_id){
 
 //---------------------------------------------------------------------------
 
+SDL_Texture* AGE::age_ttf_render(TTF_Font* font, string value, AGE_Color color, int window_id){
+
+    SDL_Surface* temp_surface = nullptr;
+    SDL_Texture* temp_texture = nullptr;
+    SDL_Color scolor = {color.r, color.g, color.b, color.a};
+
+    if(value == ""){
+        value = " ";
+
+    }
+
+    temp_surface = TTF_RenderText_Blended(font, value.c_str(), scolor);
+
+    temp_texture = SDL_CreateTextureFromSurface(this->window_index->getRender(window_id), temp_surface);
+
+    SDL_FreeSurface(temp_surface);
+
+
+    return temp_texture;
+
+
+}
+
+
+
+//---------------------------------------------------------------------------
