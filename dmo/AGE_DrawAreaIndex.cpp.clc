@@ -1,0 +1,455 @@
+/****************************************************************************
+* Created for: <[PROJECT]>
+* Dev line: <[DEVLINE]>
+* Creation date: <[CREATIONDATE]>
+* Last change: <[TODAY]>
+* Autogen: <[VERSION]>
+****************************************************************************/
+
+
+#include "<[BASENAME]>Index.h"
+
+
+//---------------------------------------------------------------------------
+
+<[BASENAME]>Index::<[BASENAME]>Index()
+{
+
+	this->nodes = 0;
+	this->next_ident = 0;
+	this->first = nullptr;
+	this->last = nullptr;
+
+}
+
+<[BASENAME]>Index::~<[BASENAME]>Index()
+{
+
+	this->freeList();
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int <[BASENAME]>Index::createNode(string tag){
+
+	<[BASENAME]>* pointer = new <[BASENAME]>();
+	pointer->setTag(tag);
+
+	if (this->nodes == 0){
+	
+		this->nodes = 1;
+		pointer->setIdent(0);
+		this->next_ident = 1;
+		this->first = pointer;
+		this->last = pointer;
+	
+	}else{
+	
+		this->nodes++;
+		pointer->setIdent(this->next_ident);
+		this->next_ident++;
+		this->last->setNext(pointer);
+		this->last = pointer;
+		
+	}
+
+	return pointer->getIdent();
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int <[BASENAME]>Index::freeNode(int ident){
+
+	<[BASENAME]>* pointer = nullptr;
+	int result= -1;
+
+	pointer = this->getNode(ident);
+	
+	if(pointer != nullptr){
+		
+		pointer->setAvailable(true);
+		result = pointer->getIdent();
+		
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int <[BASENAME]>Index::getPrevious(int ident){
+
+	<[BASENAME]>* pointer = nullptr;
+	<[BASENAME]>* next = nullptr;
+	bool keep = true;
+	int result = -1;
+
+    if(this->nodes > 0){
+
+        pointer = this->first;
+
+        while(keep){
+
+            if(pointer->getNext() == nullptr){
+
+                keep = false;
+
+            }else{
+
+                next = pointer->getNext();
+
+                if(ident == next->getIdent()){
+
+                    keep = false;
+                    result = pointer->getIdent();
+
+                }else{
+
+                    pointer = next;
+
+                }
+
+            }
+
+        }
+
+    }
+	
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int <[BASENAME]>Index::freeList(){
+
+	<[BASENAME]>* pointer = nullptr;
+	int result= 0;
+
+	pointer = this->first;
+
+	while(pointer != nullptr){
+	
+		this->freeNode(pointer->getIdent());
+		result++;
+		pointer = pointer->getNext();
+	
+	}
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int <[BASENAME]>Index::deleteNode(int ident){
+
+	<[BASENAME]>* pointer = nullptr;
+	<[BASENAME]>* next = nullptr;
+	<[BASENAME]>* previous = nullptr;
+	int previous_id = -1;
+	int result = -1;
+
+	pointer = this->getNode(ident);
+
+	if(pointer != nullptr){
+
+        if(ident == this->first->getIdent()){
+
+            this->first = pointer->getNext();
+
+        }else{
+
+            previous_id = this->getPrevious(pointer->getIdent());
+            previous = this->getNode(previous_id);
+            next = pointer->getNext();
+
+            if(ident == this->last->getIdent()){
+
+                this->last = this->getNode(this->getPrevious(this->last->getIdent()));
+
+            }
+
+            previous->setNext(next);
+
+        }
+
+        result = pointer->getIdent();
+        delete(pointer);
+        this->nodes--;
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int <[BASENAME]>Index::deleteList(){
+
+	<[BASENAME]>* pointer = nullptr;
+	int result = 0;
+
+	pointer = this->first;
+
+	while(pointer != nullptr){
+	
+		this->deleteNode(pointer->getIdent());
+		pointer = this->first;
+		result++;
+		
+	}
+
+	this->nodes = 0;
+	this->next_ident = 0;
+	this->first = nullptr;
+	this->last = nullptr;
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int <[BASENAME]>Index::purge(){
+
+	<[BASENAME]>* pointer = nullptr;
+	int available_ident = -1;
+	int result = -1;
+
+	available_ident = this->searchAvailable();
+	pointer = this->getNode(available_ident);
+	
+	while(pointer != nullptr){
+
+		this->deleteNode(pointer->getIdent());
+
+		available_ident = this->searchAvailable();
+		pointer = this->getNode(available_ident);		
+	
+	}
+	
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int <[BASENAME]>Index::searchAvailable(int limit){
+
+	<[BASENAME]>* pointer = nullptr;
+	bool found = false;
+	int result = -1;
+	
+	pointer = this->first;
+	while(pointer != nullptr && found == false){
+	
+		if(pointer->getAvailable() && pointer->getIdent() >= limit){
+		
+			found = true;
+			result = pointer->getIdent();
+		
+		}else{
+		
+			pointer = pointer->getNext();
+		
+		}
+	
+	}
+	
+	return result;
+	
+}
+
+
+//---------------------------------------------------------------------------
+
+<[BASENAME]>* <[BASENAME]>Index::getFirst(){
+
+	return this->first;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+<[BASENAME]>* <[BASENAME]>Index::getNode(int ident){
+
+	<[BASENAME]>* result = nullptr;
+	<[BASENAME]>* pointer = nullptr;
+	
+	if (this->nodes > 0){
+	
+		pointer = this->first;
+		
+		while (pointer != nullptr){
+			if (ident == pointer->getIdent()){
+				result = pointer;
+		
+			}
+		
+		pointer = pointer->getNext();
+		
+		}
+		
+	}
+	
+	return result;
+	
+}
+
+
+//---------------------------------------------------------------------------
+
+int <[BASENAME]>Index::setValues(int ident, <[FULLLIST_ARGS]>){
+
+	<[BASENAME]>* pointer;
+	int result = -1;
+	
+	pointer = this->getNode(ident);
+	
+	if(pointer != nullptr){
+	
+		<<<FOR_ARGS>>>
+		pointer->set<[ARG_NAME]{first}>(<[ARG_NAME]>);
+		<<</FOR_ARGS>>>
+		result = pointer->getIdent();
+	
+	}
+	
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int <[BASENAME]>Index::printNodes(){
+
+	<[BASENAME]>* pointer;
+	int result = 0;
+	
+	pointer = this->first;
+	
+	cout << "LIST NODES: " << this->nodes << endl;
+	cout << "NEXT IDENT: " << this->next_ident << endl;
+	cout << "FIRST: " << this->first << endl;
+	cout << "LAST: " << this->last << endl;
+	cout << endl;
+	
+	while(pointer != nullptr){
+	
+		pointer->printNode();
+		pointer = pointer->getNext();
+		result++;
+	
+	}
+	
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+<<<FOR_BASE&ARGS>>>
+<[ARG_TYPE]> <[BASENAME]>Index::get<[ARG_NAME]{first}>(int ident){
+
+	<[ARG_TYPE]> result = <[ARG_INIT]>;
+	<[BASENAME]>* pointer;
+
+	pointer = this->getNode(ident);
+
+	if ((pointer == nullptr) || (ident < 0)){
+		result = <[ARG_INIT]>;
+
+
+	}else{
+		result = pointer->get<[ARG_NAME]{first}>();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+<<</FOR_BASE&ARGS>>>
+<<<FOR_BASE&ARGS>>>
+int <[BASENAME]>Index::searchBy<[ARG_NAME]{first}>(<[ARG_DEF]>){
+
+	int result = -1;
+	bool found = false;
+	<[BASENAME]>* pointer;
+
+	if (this->nodes == 0){
+		result = -1;
+
+	}else{
+
+		pointer = this->first;
+
+		while (! ((pointer == nullptr) || (found))){
+
+			if (<[ARG_NAME]> == pointer->get<[ARG_NAME]{first}>()){
+
+				result = pointer->getIdent();
+				found = true;
+
+			}
+
+			pointer = pointer->getNext();
+
+		}
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+<<</FOR_BASE&ARGS>>>
+<<<FOR_BASE&ARGS{ignore:ident}>>>
+int <[BASENAME]>Index::set<[ARG_NAME]{first}>(int ident, <[ARG_DEF]>){
+
+	<[BASENAME]>* pointer;
+	int result = -1;
+
+	pointer = this->getNode(ident);
+
+	if (pointer != nullptr){
+
+		pointer->set<[ARG_NAME]{first}>(<[ARG_NAME]>);
+		result = pointer->getIdent();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+<<</FOR_BASE&ARGS>>>
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+

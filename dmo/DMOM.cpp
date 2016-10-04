@@ -2,7 +2,7 @@
 * Created for: AGE v2
 * Dev line: AGE v2
 * Creation day: 08/02/2016
-* Last change: 24/03/2016
+* Last change: 22/06/2016
 ****************************************************************************/
 
 
@@ -13,6 +13,7 @@
 
 DMOM::DMOM(){
 
+    this->draw_area_index = nullptr;
 	this->event_index = nullptr;
 	this->image_index = nullptr;
 	this->window_index = nullptr;
@@ -20,6 +21,23 @@ DMOM::DMOM(){
 }
 
 DMOM::~DMOM(){
+}
+
+
+//---------------------------------------------------------------------------
+
+AGE_DrawAreaIndex* DMOM::dmom_drawareaIndex_get()
+{
+	return this->draw_area_index;
+}
+
+
+//---------------------------------------------------------------------------
+
+bool DMOM::dmom_drawareaIndex_set(AGE_DrawAreaIndex* pointer)
+{
+	this->draw_area_index = pointer;
+	return true;
 }
 
 

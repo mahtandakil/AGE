@@ -7,9 +7,6 @@
 ****************************************************************************/
 
 
-#include <SDL2/SDL.h>
-
-
 #include <iostream>
 #include <string>
 
@@ -17,29 +14,37 @@
 using namespace std;
 
 
-#ifndef AGE_WINDOW_H
-#define AGE_WINDOW_H
+#ifndef AGE_DRAWAREA_H
+#define AGE_DRAWAREA_H
 
 
-class AGE_Window
+class AGE_DrawArea
 {
 	public:
-		AGE_Window();
-		virtual ~AGE_Window();
+		AGE_DrawArea();
+		virtual ~AGE_DrawArea();
 
 		int printNode();
 		int getIdent();
 		string getTag();
 		bool getAvailable();
-		AGE_Window* getNext();
-		SDL_Window* getWindow();
-		SDL_Renderer* getRender();
+		AGE_DrawArea* getNext();
+		int getX();
+		int getY();
+		int getW();
+		int getH();
+		bool getSolid();
+		int getWindow_id();
 		int setIdent(int ident);
 		int setTag(string tag);
 		int setAvailable(bool available);
-		int setNext(AGE_Window* next);
-		int setWindow(SDL_Window* window);
-		int setRender(SDL_Renderer* render);
+		int setNext(AGE_DrawArea* next);
+		int setX(int x);
+		int setY(int y);
+		int setW(int w);
+		int setH(int h);
+		int setSolid(bool solid);
+		int setWindow_id(int window_id);
 		
 
 
@@ -50,14 +55,18 @@ class AGE_Window
 		int ident;
 		string tag;
 		bool available;
-		AGE_Window* next;
-		SDL_Window* window;
-		SDL_Renderer* render;
+		AGE_DrawArea* next;
+		int x;
+		int y;
+		int w;
+		int h;
+		bool solid;
+		int window_id;
 
 };
 
 
-#endif // AGE_WINDOW_H
+#endif // AGE_DRAWAREA_H
 
 
 

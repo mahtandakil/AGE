@@ -7,12 +7,12 @@
 ****************************************************************************/
 
 
-#include "AGE_WindowIndex.h"
+#include "AGE_DrawAreaIndex.h"
 
 
 //---------------------------------------------------------------------------
 
-AGE_WindowIndex::AGE_WindowIndex()
+AGE_DrawAreaIndex::AGE_DrawAreaIndex()
 {
 
 	this->nodes = 0;
@@ -22,7 +22,7 @@ AGE_WindowIndex::AGE_WindowIndex()
 
 }
 
-AGE_WindowIndex::~AGE_WindowIndex()
+AGE_DrawAreaIndex::~AGE_DrawAreaIndex()
 {
 
 	this->freeList();
@@ -32,9 +32,9 @@ AGE_WindowIndex::~AGE_WindowIndex()
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::createNode(string tag){
+int AGE_DrawAreaIndex::createNode(string tag){
 
-	AGE_Window* pointer = new AGE_Window();
+	AGE_DrawArea* pointer = new AGE_DrawArea();
 	pointer->setTag(tag);
 
 	if (this->nodes == 0){
@@ -62,9 +62,9 @@ int AGE_WindowIndex::createNode(string tag){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::freeNode(int ident){
+int AGE_DrawAreaIndex::freeNode(int ident){
 
-	AGE_Window* pointer = nullptr;
+	AGE_DrawArea* pointer = nullptr;
 	int result= -1;
 
 	pointer = this->getNode(ident);
@@ -83,10 +83,10 @@ int AGE_WindowIndex::freeNode(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::getPrevious(int ident){
+int AGE_DrawAreaIndex::getPrevious(int ident){
 
-	AGE_Window* pointer = nullptr;
-	AGE_Window* next = nullptr;
+	AGE_DrawArea* pointer = nullptr;
+	AGE_DrawArea* next = nullptr;
 	bool keep = true;
 	int result = -1;
 
@@ -128,9 +128,9 @@ int AGE_WindowIndex::getPrevious(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::freeList(){
+int AGE_DrawAreaIndex::freeList(){
 
-	AGE_Window* pointer = nullptr;
+	AGE_DrawArea* pointer = nullptr;
 	int result= 0;
 
 	pointer = this->first;
@@ -150,11 +150,11 @@ int AGE_WindowIndex::freeList(){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::deleteNode(int ident){
+int AGE_DrawAreaIndex::deleteNode(int ident){
 
-	AGE_Window* pointer = nullptr;
-	AGE_Window* next = nullptr;
-	AGE_Window* previous = nullptr;
+	AGE_DrawArea* pointer = nullptr;
+	AGE_DrawArea* next = nullptr;
+	AGE_DrawArea* previous = nullptr;
 	int previous_id = -1;
 	int result = -1;
 
@@ -195,9 +195,9 @@ int AGE_WindowIndex::deleteNode(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::deleteList(){
+int AGE_DrawAreaIndex::deleteList(){
 
-	AGE_Window* pointer = nullptr;
+	AGE_DrawArea* pointer = nullptr;
 	int result = 0;
 
 	pointer = this->first;
@@ -222,9 +222,9 @@ int AGE_WindowIndex::deleteList(){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::purge(){
+int AGE_DrawAreaIndex::purge(){
 
-	AGE_Window* pointer = nullptr;
+	AGE_DrawArea* pointer = nullptr;
 	int available_ident = -1;
 	int result = -1;
 
@@ -247,9 +247,9 @@ int AGE_WindowIndex::purge(){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::searchAvailable(int limit){
+int AGE_DrawAreaIndex::searchAvailable(int limit){
 
-	AGE_Window* pointer = nullptr;
+	AGE_DrawArea* pointer = nullptr;
 	bool found = false;
 	int result = -1;
 	
@@ -276,7 +276,7 @@ int AGE_WindowIndex::searchAvailable(int limit){
 
 //---------------------------------------------------------------------------
 
-AGE_Window* AGE_WindowIndex::getFirst(){
+AGE_DrawArea* AGE_DrawAreaIndex::getFirst(){
 
 	return this->first;
 
@@ -285,10 +285,10 @@ AGE_Window* AGE_WindowIndex::getFirst(){
 
 //---------------------------------------------------------------------------
 
-AGE_Window* AGE_WindowIndex::getNode(int ident){
+AGE_DrawArea* AGE_DrawAreaIndex::getNode(int ident){
 
-	AGE_Window* result = nullptr;
-	AGE_Window* pointer = nullptr;
+	AGE_DrawArea* result = nullptr;
+	AGE_DrawArea* pointer = nullptr;
 	
 	if (this->nodes > 0){
 	
@@ -313,17 +313,21 @@ AGE_Window* AGE_WindowIndex::getNode(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::setValues(int ident, SDL_Window* window, SDL_Renderer* render){
+int AGE_DrawAreaIndex::setValues(int ident, int x, int y, int w, int h, bool solid, int window_id){
 
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 	int result = -1;
 	
 	pointer = this->getNode(ident);
 	
 	if(pointer != nullptr){
 	
-		pointer->setWindow(window);
-		pointer->setRender(render);
+		pointer->setX(x);
+		pointer->setY(y);
+		pointer->setW(w);
+		pointer->setH(h);
+		pointer->setSolid(solid);
+		pointer->setWindow_id(window_id);
 		result = pointer->getIdent();
 	
 	}
@@ -335,9 +339,9 @@ int AGE_WindowIndex::setValues(int ident, SDL_Window* window, SDL_Renderer* rend
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::printNodes(){
+int AGE_DrawAreaIndex::printNodes(){
 
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 	int result = 0;
 	
 	pointer = this->first;
@@ -363,10 +367,10 @@ int AGE_WindowIndex::printNodes(){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::getIdent(int ident){
+int AGE_DrawAreaIndex::getIdent(int ident){
 
 	int result = -1;
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -386,10 +390,10 @@ int AGE_WindowIndex::getIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-string AGE_WindowIndex::getTag(int ident){
+string AGE_DrawAreaIndex::getTag(int ident){
 
 	string result = "";
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -409,10 +413,10 @@ string AGE_WindowIndex::getTag(int ident){
 
 //---------------------------------------------------------------------------
 
-bool AGE_WindowIndex::getAvailable(int ident){
+bool AGE_DrawAreaIndex::getAvailable(int ident){
 
 	bool result = false;
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -432,10 +436,10 @@ bool AGE_WindowIndex::getAvailable(int ident){
 
 //---------------------------------------------------------------------------
 
-AGE_Window* AGE_WindowIndex::getNext(int ident){
+AGE_DrawArea* AGE_DrawAreaIndex::getNext(int ident){
 
-	AGE_Window* result = nullptr;
-	AGE_Window* pointer;
+	AGE_DrawArea* result = nullptr;
+	AGE_DrawArea* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -455,19 +459,19 @@ AGE_Window* AGE_WindowIndex::getNext(int ident){
 
 //---------------------------------------------------------------------------
 
-SDL_Window* AGE_WindowIndex::getWindow(int ident){
+int AGE_DrawAreaIndex::getX(int ident){
 
-	SDL_Window* result = nullptr;
-	AGE_Window* pointer;
+	int result = -1;
+	AGE_DrawArea* pointer;
 
 	pointer = this->getNode(ident);
 
 	if ((pointer == nullptr) || (ident < 0)){
-		result = nullptr;
+		result = -1;
 
 
 	}else{
-		result = pointer->getWindow();
+		result = pointer->getX();
 
 	}
 
@@ -478,19 +482,19 @@ SDL_Window* AGE_WindowIndex::getWindow(int ident){
 
 //---------------------------------------------------------------------------
 
-SDL_Renderer* AGE_WindowIndex::getRender(int ident){
+int AGE_DrawAreaIndex::getY(int ident){
 
-	SDL_Renderer* result = nullptr;
-	AGE_Window* pointer;
+	int result = -1;
+	AGE_DrawArea* pointer;
 
 	pointer = this->getNode(ident);
 
 	if ((pointer == nullptr) || (ident < 0)){
-		result = nullptr;
+		result = -1;
 
 
 	}else{
-		result = pointer->getRender();
+		result = pointer->getY();
 
 	}
 
@@ -501,11 +505,103 @@ SDL_Renderer* AGE_WindowIndex::getRender(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::searchByIdent(int ident){
+int AGE_DrawAreaIndex::getW(int ident){
+
+	int result = -1;
+	AGE_DrawArea* pointer;
+
+	pointer = this->getNode(ident);
+
+	if ((pointer == nullptr) || (ident < 0)){
+		result = -1;
+
+
+	}else{
+		result = pointer->getW();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_DrawAreaIndex::getH(int ident){
+
+	int result = -1;
+	AGE_DrawArea* pointer;
+
+	pointer = this->getNode(ident);
+
+	if ((pointer == nullptr) || (ident < 0)){
+		result = -1;
+
+
+	}else{
+		result = pointer->getH();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+bool AGE_DrawAreaIndex::getSolid(int ident){
+
+	bool result = false;
+	AGE_DrawArea* pointer;
+
+	pointer = this->getNode(ident);
+
+	if ((pointer == nullptr) || (ident < 0)){
+		result = false;
+
+
+	}else{
+		result = pointer->getSolid();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_DrawAreaIndex::getWindow_id(int ident){
+
+	int result = -1;
+	AGE_DrawArea* pointer;
+
+	pointer = this->getNode(ident);
+
+	if ((pointer == nullptr) || (ident < 0)){
+		result = -1;
+
+
+	}else{
+		result = pointer->getWindow_id();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_DrawAreaIndex::searchByIdent(int ident){
 
 	int result = -1;
 	bool found = false;
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -536,11 +632,11 @@ int AGE_WindowIndex::searchByIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::searchByTag(string tag){
+int AGE_DrawAreaIndex::searchByTag(string tag){
 
 	int result = -1;
 	bool found = false;
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -571,11 +667,11 @@ int AGE_WindowIndex::searchByTag(string tag){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::searchByAvailable(bool available){
+int AGE_DrawAreaIndex::searchByAvailable(bool available){
 
 	int result = -1;
 	bool found = false;
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -606,11 +702,11 @@ int AGE_WindowIndex::searchByAvailable(bool available){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::searchByNext(AGE_Window* next){
+int AGE_DrawAreaIndex::searchByNext(AGE_DrawArea* next){
 
 	int result = -1;
 	bool found = false;
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -641,11 +737,11 @@ int AGE_WindowIndex::searchByNext(AGE_Window* next){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::searchByWindow(SDL_Window* window){
+int AGE_DrawAreaIndex::searchByX(int x){
 
 	int result = -1;
 	bool found = false;
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -656,7 +752,7 @@ int AGE_WindowIndex::searchByWindow(SDL_Window* window){
 
 		while (! ((pointer == nullptr) || (found))){
 
-			if (window == pointer->getWindow()){
+			if (x == pointer->getX()){
 
 				result = pointer->getIdent();
 				found = true;
@@ -676,11 +772,11 @@ int AGE_WindowIndex::searchByWindow(SDL_Window* window){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::searchByRender(SDL_Renderer* render){
+int AGE_DrawAreaIndex::searchByY(int y){
 
 	int result = -1;
 	bool found = false;
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -691,7 +787,7 @@ int AGE_WindowIndex::searchByRender(SDL_Renderer* render){
 
 		while (! ((pointer == nullptr) || (found))){
 
-			if (render == pointer->getRender()){
+			if (y == pointer->getY()){
 
 				result = pointer->getIdent();
 				found = true;
@@ -711,9 +807,149 @@ int AGE_WindowIndex::searchByRender(SDL_Renderer* render){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::setTag(int ident, string tag){
+int AGE_DrawAreaIndex::searchByW(int w){
 
-	AGE_Window* pointer;
+	int result = -1;
+	bool found = false;
+	AGE_DrawArea* pointer;
+
+	if (this->nodes == 0){
+		result = -1;
+
+	}else{
+
+		pointer = this->first;
+
+		while (! ((pointer == nullptr) || (found))){
+
+			if (w == pointer->getW()){
+
+				result = pointer->getIdent();
+				found = true;
+
+			}
+
+			pointer = pointer->getNext();
+
+		}
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_DrawAreaIndex::searchByH(int h){
+
+	int result = -1;
+	bool found = false;
+	AGE_DrawArea* pointer;
+
+	if (this->nodes == 0){
+		result = -1;
+
+	}else{
+
+		pointer = this->first;
+
+		while (! ((pointer == nullptr) || (found))){
+
+			if (h == pointer->getH()){
+
+				result = pointer->getIdent();
+				found = true;
+
+			}
+
+			pointer = pointer->getNext();
+
+		}
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_DrawAreaIndex::searchBySolid(bool solid){
+
+	int result = -1;
+	bool found = false;
+	AGE_DrawArea* pointer;
+
+	if (this->nodes == 0){
+		result = -1;
+
+	}else{
+
+		pointer = this->first;
+
+		while (! ((pointer == nullptr) || (found))){
+
+			if (solid == pointer->getSolid()){
+
+				result = pointer->getIdent();
+				found = true;
+
+			}
+
+			pointer = pointer->getNext();
+
+		}
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_DrawAreaIndex::searchByWindow_id(int window_id){
+
+	int result = -1;
+	bool found = false;
+	AGE_DrawArea* pointer;
+
+	if (this->nodes == 0){
+		result = -1;
+
+	}else{
+
+		pointer = this->first;
+
+		while (! ((pointer == nullptr) || (found))){
+
+			if (window_id == pointer->getWindow_id()){
+
+				result = pointer->getIdent();
+				found = true;
+
+			}
+
+			pointer = pointer->getNext();
+
+		}
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_DrawAreaIndex::setTag(int ident, string tag){
+
+	AGE_DrawArea* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -732,9 +968,9 @@ int AGE_WindowIndex::setTag(int ident, string tag){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::setAvailable(int ident, bool available){
+int AGE_DrawAreaIndex::setAvailable(int ident, bool available){
 
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -753,9 +989,9 @@ int AGE_WindowIndex::setAvailable(int ident, bool available){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::setNext(int ident, AGE_Window* next){
+int AGE_DrawAreaIndex::setNext(int ident, AGE_DrawArea* next){
 
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -774,16 +1010,16 @@ int AGE_WindowIndex::setNext(int ident, AGE_Window* next){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::setWindow(int ident, SDL_Window* window){
+int AGE_DrawAreaIndex::setX(int ident, int x){
 
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
 
 	if (pointer != nullptr){
 
-		pointer->setWindow(window);
+		pointer->setX(x);
 		result = pointer->getIdent();
 
 	}
@@ -795,16 +1031,100 @@ int AGE_WindowIndex::setWindow(int ident, SDL_Window* window){
 
 //---------------------------------------------------------------------------
 
-int AGE_WindowIndex::setRender(int ident, SDL_Renderer* render){
+int AGE_DrawAreaIndex::setY(int ident, int y){
 
-	AGE_Window* pointer;
+	AGE_DrawArea* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
 
 	if (pointer != nullptr){
 
-		pointer->setRender(render);
+		pointer->setY(y);
+		result = pointer->getIdent();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_DrawAreaIndex::setW(int ident, int w){
+
+	AGE_DrawArea* pointer;
+	int result = -1;
+
+	pointer = this->getNode(ident);
+
+	if (pointer != nullptr){
+
+		pointer->setW(w);
+		result = pointer->getIdent();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_DrawAreaIndex::setH(int ident, int h){
+
+	AGE_DrawArea* pointer;
+	int result = -1;
+
+	pointer = this->getNode(ident);
+
+	if (pointer != nullptr){
+
+		pointer->setH(h);
+		result = pointer->getIdent();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_DrawAreaIndex::setSolid(int ident, bool solid){
+
+	AGE_DrawArea* pointer;
+	int result = -1;
+
+	pointer = this->getNode(ident);
+
+	if (pointer != nullptr){
+
+		pointer->setSolid(solid);
+		result = pointer->getIdent();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_DrawAreaIndex::setWindow_id(int ident, int window_id){
+
+	AGE_DrawArea* pointer;
+	int result = -1;
+
+	pointer = this->getNode(ident);
+
+	if (pointer != nullptr){
+
+		pointer->setWindow_id(window_id);
 		result = pointer->getIdent();
 
 	}

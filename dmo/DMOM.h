@@ -2,10 +2,11 @@
 * Created for: AGE v2
 * Dev line: AGE v2
 * Creation day: 08/02/2016
-* Last change: 24/03/2016
+* Last change: 22/06/2016
 ****************************************************************************/
 
 
+#include "AGE_DrawAreaIndex.h"
 #include "AGE_EventIndex.h"
 #include "AGE_ImageIndex.h"
 #include "AGE_WindowIndex.h"
@@ -23,6 +24,8 @@ public:
 	DMOM();
 	~DMOM();
 
+	AGE_DrawAreaIndex* dmom_drawareaIndex_get();
+	bool dmom_drawareaIndex_set(AGE_DrawAreaIndex* pointer);
 	AGE_EventIndex* dmom_eventIndex_get();
 	bool dmom_eventIndex_set(AGE_EventIndex* pointer);
 	AGE_ImageIndex* dmom_imageIndex_get();
@@ -33,6 +36,7 @@ public:
 
 private:
 
+	AGE_DrawAreaIndex* draw_area_index;
 	AGE_EventIndex* event_index;
 	AGE_ImageIndex* image_index;
 	AGE_WindowIndex* window_index;

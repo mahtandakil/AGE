@@ -1,0 +1,7 @@
+ARG="int,x"
+ARG="int,y"
+ARG="int,w"
+ARG="int,h"
+ARG="bool,solid"
+ARG="int,window_id"
+

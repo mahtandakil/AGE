@@ -7,27 +7,28 @@
 ****************************************************************************/
 
 
-#include "AGE_Image.h"
+#include "AGE_DrawArea.h"
 
 
 //---------------------------------------------------------------------------
 
-AGE_Image::AGE_Image()
+AGE_DrawArea::AGE_DrawArea()
 {
 
 	this->ident = -1;
 	this->tag = "";
 	this->available = false;
 	this->next = nullptr;
-	this->src = "";
-	this->surface = nullptr;
-	this->texture = nullptr;
-	this->texture_h = -1;
-	this->texture_w = -1;
+	this->x = -1;
+	this->y = -1;
+	this->w = -1;
+	this->h = -1;
+	this->solid = false;
+	this->window_id = -1;
 
 }
 
-AGE_Image::~AGE_Image()
+AGE_DrawArea::~AGE_DrawArea()
 {
 	//dtor
 }
@@ -35,18 +36,19 @@ AGE_Image::~AGE_Image()
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::printNode(){
+int AGE_DrawArea::printNode(){
 
 	cout << "ID: " << this->ident << endl;
 	cout << "POINTER: " << this << endl;
 	cout << "TAG: " << this->tag << endl;
 	cout << "AVAILABLE: " << this->available << endl;
 	cout << "NEXT: " << this->next << endl;
-	cout << "SRC: " << this->src << endl;
-	cout << "SURFACE: " << this->surface << endl;
-	cout << "TEXTURE: " << this->texture << endl;
-	cout << "TEXTURE_H: " << this->texture_h << endl;
-	cout << "TEXTURE_W: " << this->texture_w << endl;
+	cout << "X: " << this->x << endl;
+	cout << "Y: " << this->y << endl;
+	cout << "W: " << this->w << endl;
+	cout << "H: " << this->h << endl;
+	cout << "SOLID: " << this->solid << endl;
+	cout << "WINDOW_ID: " << this->window_id << endl;
 	cout << endl;
 	
 	return this->ident;
@@ -56,7 +58,7 @@ int AGE_Image::printNode(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setIdent(int ident){
+int AGE_DrawArea::setIdent(int ident){
 
 	this->ident = ident;
 	
@@ -67,7 +69,7 @@ int AGE_Image::setIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::getIdent(){
+int AGE_DrawArea::getIdent(){
 
 	return this->ident;
 
@@ -76,7 +78,7 @@ int AGE_Image::getIdent(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setTag(string tag){
+int AGE_DrawArea::setTag(string tag){
 
 	this->tag = tag;
 	
@@ -87,7 +89,7 @@ int AGE_Image::setTag(string tag){
 
 //---------------------------------------------------------------------------
 
-string AGE_Image::getTag(){
+string AGE_DrawArea::getTag(){
 
 	return this->tag;
 
@@ -96,7 +98,7 @@ string AGE_Image::getTag(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setAvailable(bool available){
+int AGE_DrawArea::setAvailable(bool available){
 
 	this->available = available;
 	
@@ -107,7 +109,7 @@ int AGE_Image::setAvailable(bool available){
 
 //---------------------------------------------------------------------------
 
-bool AGE_Image::getAvailable(){
+bool AGE_DrawArea::getAvailable(){
 
 	return this->available;
 
@@ -116,7 +118,7 @@ bool AGE_Image::getAvailable(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setNext(AGE_Image* next){
+int AGE_DrawArea::setNext(AGE_DrawArea* next){
 
 	this->next = next;
 	
@@ -127,7 +129,7 @@ int AGE_Image::setNext(AGE_Image* next){
 
 //---------------------------------------------------------------------------
 
-AGE_Image* AGE_Image::getNext(){
+AGE_DrawArea* AGE_DrawArea::getNext(){
 
 	return this->next;
 
@@ -136,9 +138,9 @@ AGE_Image* AGE_Image::getNext(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setSrc(string src){
+int AGE_DrawArea::setX(int x){
 
-	this->src = src;
+	this->x = x;
 	
 	return this->ident;
 
@@ -147,18 +149,18 @@ int AGE_Image::setSrc(string src){
 
 //---------------------------------------------------------------------------
 
-string AGE_Image::getSrc(){
+int AGE_DrawArea::getX(){
 
-	return this->src;
+	return this->x;
 
 }
 
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setSurface(SDL_Surface* surface){
+int AGE_DrawArea::setY(int y){
 
-	this->surface = surface;
+	this->y = y;
 	
 	return this->ident;
 
@@ -167,18 +169,18 @@ int AGE_Image::setSurface(SDL_Surface* surface){
 
 //---------------------------------------------------------------------------
 
-SDL_Surface* AGE_Image::getSurface(){
+int AGE_DrawArea::getY(){
 
-	return this->surface;
+	return this->y;
 
 }
 
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setTexture(SDL_Texture* texture){
+int AGE_DrawArea::setW(int w){
 
-	this->texture = texture;
+	this->w = w;
 	
 	return this->ident;
 
@@ -187,18 +189,18 @@ int AGE_Image::setTexture(SDL_Texture* texture){
 
 //---------------------------------------------------------------------------
 
-SDL_Texture* AGE_Image::getTexture(){
+int AGE_DrawArea::getW(){
 
-	return this->texture;
+	return this->w;
 
 }
 
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setTexture_h(int texture_h){
+int AGE_DrawArea::setH(int h){
 
-	this->texture_h = texture_h;
+	this->h = h;
 	
 	return this->ident;
 
@@ -207,18 +209,18 @@ int AGE_Image::setTexture_h(int texture_h){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::getTexture_h(){
+int AGE_DrawArea::getH(){
 
-	return this->texture_h;
+	return this->h;
 
 }
 
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setTexture_w(int texture_w){
+int AGE_DrawArea::setSolid(bool solid){
 
-	this->texture_w = texture_w;
+	this->solid = solid;
 	
 	return this->ident;
 
@@ -227,9 +229,29 @@ int AGE_Image::setTexture_w(int texture_w){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::getTexture_w(){
+bool AGE_DrawArea::getSolid(){
 
-	return this->texture_w;
+	return this->solid;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_DrawArea::setWindow_id(int window_id){
+
+	this->window_id = window_id;
+	
+	return this->ident;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_DrawArea::getWindow_id(){
+
+	return this->window_id;
 
 }
 

@@ -2,16 +2,13 @@
 * Created for: AGE v1
 * Dev line: AGE v2
 * Creation day: 17/07/2015
-* Last change: 20/04/2016
+* Last change: 28/09/2016
 ****************************************************************************/
 
 
+#include "AGE_definitions.h"
 #include "AGE_util.h"
 #include "dmo/DMOM.h"
-
-
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 
 
 #include <iostream>
@@ -23,155 +20,6 @@ using namespace std;
 #ifndef AGE_H_INCLUDED
 #define AGE_H_INCLUDED
 
-
-const string AGE_VERSION = "r0.0.3_dev1";
-const int AGE_30FPS = 33;
-const int AGE_60FPS = 16;
-
-//Window FLAGS
-const int AGE_WINDOWFLAG_XCENTERED = -1;
-const int AGE_WINDOWFLAG_YCENTERED = -2;
-const Uint32 AGE_WINDOWFLAG_FULLSCREEN = SDL_WINDOW_FULLSCREEN;
-const Uint32 AGE_WINDOWFLAG_FULLDESKTOP = SDL_WINDOW_FULLSCREEN_DESKTOP;
-const Uint32 AGE_WINDOWFLAG_VISIBLE = SDL_WINDOW_SHOWN;
-const Uint32 AGE_WINDOWFLAG_NOVISIBLE = SDL_WINDOW_HIDDEN;
-const Uint32 AGE_WINDOWFLAG_NOBORDER = SDL_WINDOW_BORDERLESS;
-const Uint32 AGE_WINDOWFLAG_RESIZABLE = SDL_WINDOW_RESIZABLE;
-
-//Renderer FLAGS
-const Uint32 AGE_RENDERFLAG_SOFTWARE = SDL_RENDERER_SOFTWARE;
-const Uint32 AGE_RENDERFLAG_HARDWARE = SDL_RENDERER_ACCELERATED;
-const Uint32 AGE_RENDERFLAG_VSYNC = SDL_RENDERER_PRESENTVSYNC;
-
-//EVENT FLAGS
-const Uint32 AGE_EVENT_NOEVENTS = 0;
-const Uint32 AGE_EVENT_WINDOW_CLOSE = 1;
-const Uint32 AGE_EVENT_WINDOW_MOVE = 2;
-const Uint32 AGE_EVENT_WINDOW_RESIZE = 3;
-const Uint32 AGE_EVENT_WINDOW_MAXIMIZE = 4;
-const Uint32 AGE_EVENT_WINDOW_MINIMIZE = 5;
-const Uint32 AGE_EVENT_WINDOW_VISIBLE = 6;
-const Uint32 AGE_EVENT_WINDOW_NOVISIBLE = 7;
-const Uint32 AGE_EVENT_WINDOW_EXPOSE = 8;
-const Uint32 AGE_EVENT_WINDOW_RESTORE = 9;
-const Uint32 AGE_EVENT_WINDOW_ENTER = 10;
-const Uint32 AGE_EVENT_WINDOW_LEAVE = 11;
-const Uint32 AGE_EVENT_WINDOW_FOCUS = 12;
-const Uint32 AGE_EVENT_WINDOW_NOFOCUS = 13;
-const Uint32 AGE_EVENT_KEY_ESC = 14;
-const Uint32 AGE_EVENT_KEY_F1 = 15;
-const Uint32 AGE_EVENT_KEY_F2 = 16;
-const Uint32 AGE_EVENT_KEY_F3 = 17;
-const Uint32 AGE_EVENT_KEY_F4 = 18;
-const Uint32 AGE_EVENT_KEY_F5 = 19;
-const Uint32 AGE_EVENT_KEY_F6 = 20;
-const Uint32 AGE_EVENT_KEY_F7 = 21;
-const Uint32 AGE_EVENT_KEY_F8 = 22;
-const Uint32 AGE_EVENT_KEY_F9 = 23;
-const Uint32 AGE_EVENT_KEY_F10 = 24;
-const Uint32 AGE_EVENT_KEY_F11 = 25;
-const Uint32 AGE_EVENT_KEY_F12 = 26;
-const Uint32 AGE_EVENT_KEY_PAUSE = 27;
-const Uint32 AGE_EVENT_KEY_INSERT = 28;
-const Uint32 AGE_EVENT_KEY_DELETE = 29;
-const Uint32 AGE_EVENT_KEY_1 = 30;
-const Uint32 AGE_EVENT_KEY_2 = 31;
-const Uint32 AGE_EVENT_KEY_3 = 32;
-const Uint32 AGE_EVENT_KEY_4 = 33;
-const Uint32 AGE_EVENT_KEY_5 = 34;
-const Uint32 AGE_EVENT_KEY_6 = 35;
-const Uint32 AGE_EVENT_KEY_7 = 36;
-const Uint32 AGE_EVENT_KEY_8 = 37;
-const Uint32 AGE_EVENT_KEY_9 = 38;
-const Uint32 AGE_EVENT_KEY_0 = 39;
-const Uint32 AGE_EVENT_KEY_TAB = 40;
-const Uint32 AGE_EVENT_KEY_Q = 41;
-const Uint32 AGE_EVENT_KEY_W = 42;
-const Uint32 AGE_EVENT_KEY_E = 43;
-const Uint32 AGE_EVENT_KEY_R = 44;
-const Uint32 AGE_EVENT_KEY_T = 45;
-const Uint32 AGE_EVENT_KEY_Y = 46;
-const Uint32 AGE_EVENT_KEY_U = 47;
-const Uint32 AGE_EVENT_KEY_I = 48;
-const Uint32 AGE_EVENT_KEY_O = 49;
-const Uint32 AGE_EVENT_KEY_P = 50;
-const Uint32 AGE_EVENT_KEY_A = 51;
-const Uint32 AGE_EVENT_KEY_S = 52;
-const Uint32 AGE_EVENT_KEY_D = 53;
-const Uint32 AGE_EVENT_KEY_F = 54;
-const Uint32 AGE_EVENT_KEY_G = 55;
-const Uint32 AGE_EVENT_KEY_H = 56;
-const Uint32 AGE_EVENT_KEY_J = 57;
-const Uint32 AGE_EVENT_KEY_K = 58;
-const Uint32 AGE_EVENT_KEY_L = 59;
-const Uint32 AGE_EVENT_KEY_Z = 60;
-const Uint32 AGE_EVENT_KEY_X = 61;
-const Uint32 AGE_EVENT_KEY_C = 62;
-const Uint32 AGE_EVENT_KEY_V = 63;
-const Uint32 AGE_EVENT_KEY_B = 64;
-const Uint32 AGE_EVENT_KEY_N = 65;
-const Uint32 AGE_EVENT_KEY_M = 66;
-const Uint32 AGE_EVENT_KEY_LSHIFT = 67;
-const Uint32 AGE_EVENT_KEY_RSHIFT = 68;
-const Uint32 AGE_EVENT_KEY_CAPSLOCK = 69;
-const Uint32 AGE_EVENT_KEY_RCTRL = 70;
-const Uint32 AGE_EVENT_KEY_LCTRL = 71;
-const Uint32 AGE_EVENT_KEY_RALT = 72;
-const Uint32 AGE_EVENT_KEY_LALT = 73;
-const Uint32 AGE_EVENT_KEY_SPACE = 74;
-const Uint32 AGE_EVENT_KEY_LEFT = 75;
-const Uint32 AGE_EVENT_KEY_UP = 76;
-const Uint32 AGE_EVENT_KEY_DOWN = 77;
-const Uint32 AGE_EVENT_KEY_RIGHT = 78;
-const Uint32 AGE_EVENT_KEY_HOME = 79;
-const Uint32 AGE_EVENT_KEY_END = 80;
-const Uint32 AGE_EVENT_KEY_PAGEUP = 81;
-const Uint32 AGE_EVENT_KEY_PAGEDOWN = 82;
-const Uint32 AGE_EVENT_KEY_RETURN = 83;
-const Uint32 AGE_EVENT_MOUSE_LEFT = 84;
-const Uint32 AGE_EVENT_MOUSE_MIDDLE = 85;
-const Uint32 AGE_EVENT_MOUSE_RIGHT = 86;
-const Uint32 AGE_EVENT_MOUSE_X1 = 87;
-const Uint32 AGE_EVENT_MOUSE_X2 = 88;
-
-
-//---------------------------------------------------------------------------
-
-struct AGE_Cartesian {
-	int x;
-	int y;
-	int w;
-	int h;
-};
-
-
-//---------------------------------------------------------------------------
-
-struct AGE_Color {
-	Uint8 r;
-	Uint8 g;
-	Uint8 b;
-	Uint8 a;
-};
-
-
-//---------------------------------------------------------------------------
-
-struct AGE_Event_Status {
-	Uint32 event = 0;
-	Uint32 device = 0;
-	int window = -1;
-	Uint32 timestamp = 0;
-	Uint32 state = 0;
-	int x = -1;
-	int y = -1;
-	int w = -1;
-	int h = -1;
-	Uint8 count = 0;
-	Uint16 mod = 0;
-};
-
-
 //---------------------------------------------------------------------------
 
 class AGE {
@@ -181,6 +29,7 @@ public:
 	virtual ~AGE();
 	bool age_core_load_libs();
 	DMOM* age_dmom_get();
+	int age_draw_area_create(AGE_Cartesian coords, bool solid, int window_id = 0);
 	AGE_Event_Status age_event_get_status();
 	int age_event_process();
 	int age_image_delete(int image_id);
@@ -188,6 +37,7 @@ public:
 	int age_image_deploy(string src, int x, int y, int window_id = 0);
 	int age_image_free(int image_id);
 	int age_image_move(int image_id, int x, int y, int window_id = 0);
+	int age_image_move_to_draw_area(int image_id, int draw_area_id, int x, int y);
 	void age_pause(int miliseconds);
 	int age_square_draw(AGE_Cartesian square, AGE_Color color, int window_id = 0);
 	AGE_Cartesian age_window_cartesian_get(int window_id = 0);
@@ -201,6 +51,7 @@ public:
 
 private:
 	DMOM* dmom;
+	AGE_DrawAreaIndex* draw_area_index;
 	AGE_EventIndex* event_index;
 	AGE_ImageIndex* image_index;
 	SDL_Event sdl_event_handler;
@@ -208,6 +59,7 @@ private:
 
     int age_image_unload(int image_id);
 	bool age_sdltexture_apply(SDL_Texture* texture, SDL_Renderer* render, int x, int y, int w, int h);
+	bool age_sdltexture_apply(SDL_Texture* texture, SDL_Renderer* render, int img_x, int img_y, int img_w, int img_h, int dst_x, int dst_y, int dst_w, int dst_h);
 
 };
 
