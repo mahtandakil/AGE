@@ -2,7 +2,7 @@
 * Created for: AGE v1
 * Dev line: AGE v2
 * Creation day: 17/07/2015
-* Last change: 28/09/2016
+* Last change: 10/12/2016
 ****************************************************************************/
 
 
@@ -38,16 +38,21 @@ public:
 	int age_image_free(int image_id);
 	int age_image_move(int image_id, int x, int y, int window_id = 0);
 	int age_image_move_to_draw_area(int image_id, int draw_area_id, int x, int y);
+    int age_line_draw(AGE_Cartesian point1, AGE_Cartesian point2, AGE_Color color, SDL_BlendMode blend_mode = AGE_BLENDINGFLAG_BLEND, int window_id = 0);
 	void age_pause(int miliseconds);
-	int age_square_draw(AGE_Cartesian square, AGE_Color color, int window_id = 0);
+	int age_square_draw(AGE_Cartesian square, AGE_Color color, SDL_BlendMode blend_mode = AGE_BLENDINGFLAG_BLEND, int window_id = 0);
 	AGE_Cartesian age_window_cartesian_get(int window_id = 0);
+	int age_window_cartesian_set(AGE_Cartesian cartesian, int window_id = 0);
 	int age_window_clear(int window_id = 0);
 	int age_window_create(string title, AGE_Cartesian coords, Uint32 wflags = 0, Uint32 rflags = 0);
-	int age_window_set_visible(int window_id, bool visible);
+	int age_window_fading(Uint8 alpha, int window_id = 0, AGE_Color color = {0,0,0,255});
+	int age_window_position_set(AGE_Cartesian position, int window_id = 0);
 	int age_window_refresh();
 	int age_window_refresh(int window_id);
 	int age_window_remove(int window_id);
 	int age_window_set_focus(int window_id);
+	int age_window_set_visible(int window_id, bool visible);
+    int age_window_size_set(AGE_Cartesian size, int window_id = 0);
 
 private:
 	DMOM* dmom;

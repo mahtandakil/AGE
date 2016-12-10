@@ -1,3 +1,9 @@
+r0.2.0
+- Lines, squares & fading effect support.
+- Window size & position change
+- Added the AGE_WINDOWFLAG_MAXIMIZED window flag.
+- Improved the age_image_deploy error codes.
+
 r0.1.1
 - Draw area system
 - Fixed age_window_clear to solve a problem with the starting paint point

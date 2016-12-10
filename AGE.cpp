@@ -2,7 +2,7 @@
 * Created for: AGE v1
 * Dev line: AGE v2
 * Creation day: 17/07/2015
-* Last change: 04/10/2016
+* Last change: 10/12/2016
 ****************************************************************************/
 
 
@@ -61,6 +61,79 @@ AGE_Cartesian AGE::age_window_cartesian_get(int window_id){
 
 //---------------------------------------------------------------------------
 
+//This function sets the window position value
+int AGE::age_window_position_set(AGE_Cartesian position, int window_id){
+
+	SDL_Window* window;
+	int result = -1;
+
+	window = this->window_index->getWindow(window_id);
+	if(window != nullptr){
+
+		SDL_SetWindowPosition(window, position.x, position.y);
+        result = window_id;
+
+	}else{
+        result = -1;
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+//This function sets the window size value
+int AGE::age_window_size_set(AGE_Cartesian size, int window_id){
+
+	SDL_Window* window;
+	int result = -1;
+
+	window = this->window_index->getWindow(window_id);
+	if(window != nullptr){
+
+		SDL_SetWindowSize(window, size.w, size.h);
+        result = window_id;
+
+	}else{
+        result = -1;
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+//This function sets the window position & size values
+int AGE::age_window_cartesian_set(AGE_Cartesian cartesian, int window_id){
+
+	SDL_Window* window;
+	int result = -1;
+
+	window = this->window_index->getWindow(window_id);
+	if(window != nullptr){
+
+        SDL_SetWindowPosition(window, cartesian.x, cartesian.y);
+		SDL_SetWindowSize(window, cartesian.w, cartesian.h);
+        result = window_id;
+
+	}else{
+        result = -1;
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
 //This function overwrites the full window canvas
 int AGE::age_window_clear(int window_id){
 
@@ -77,7 +150,7 @@ int AGE::age_window_clear(int window_id){
     //If the square will be draw only if the window has an adecuate size,
 	if(window_values.h != -1 && window_values.w != -1){
 
-		this->age_square_draw(window_values, color, window_id);
+		this->age_square_draw(window_values, color, AGE_BLENDINGFLAG_BLEND, window_id);
 
 	}
 
@@ -150,24 +223,34 @@ bool AGE::age_sdltexture_apply(SDL_Texture * texture, SDL_Renderer* render, int 
 
 //---------------------------------------------------------------------------
 
-int AGE::age_square_draw(AGE_Cartesian square, AGE_Color color, int window_id){
+//This function draws a square in a window
+int AGE::age_square_draw(AGE_Cartesian square, AGE_Color color, SDL_BlendMode blend_mode, int window_id){
 
-	SDL_Renderer* render;
+	SDL_Renderer* render = nullptr;
+	int result = -1;
 
 	render = this->window_index->getRender(window_id);
 	if(render != nullptr){
 
-		SDL_SetRenderDrawBlendMode(render, SDL_BLENDMODE_BLEND);
+        //If the square is not going to have a totally solid color, the engine needs to change the render configuration
+	    if(color.a != 255){
+            SDL_SetRenderDrawBlendMode(render, blend_mode);
+        }
+
 		SDL_Rect fillRect = {square.x, square.y, square.w, square.h};
 		SDL_SetRenderDrawColor(render, color.r, color.g, color.b, color.a);
 		SDL_RenderFillRect(render, &fillRect);
-		SDL_SetRenderDrawBlendMode(render, SDL_BLENDMODE_NONE);
 
-	}else{
-		window_id = -1;
+        //The render configuration is restored
+	    if(color.a != 255){
+            SDL_SetRenderDrawBlendMode(render, AGE_BLENDINGFLAG_NONE);
+        }
+
+        result = window_id;
+
 	}
 
-	return window_id;
+	return result;
 
 }
 
@@ -380,8 +463,8 @@ int AGE::age_image_delete(int image_id){
 //This function creates a new window
 int AGE::age_window_create(string title, AGE_Cartesian coords, Uint32 wflags, Uint32 rflags){
 
-	SDL_Window* window;
-	SDL_Renderer* render;
+	SDL_Window* window = nullptr;
+	SDL_Renderer* render = nullptr;
 	SDL_DisplayMode display_mode;
 	int window_id = -1;
 
@@ -412,6 +495,22 @@ int AGE::age_window_create(string title, AGE_Cartesian coords, Uint32 wflags, Ui
 	}
 
 	return window_id;
+
+}
+
+//---------------------------------------------------------------------------
+
+//This function can be used to create a fading effect.
+int AGE::age_window_fading(Uint8 alpha, int window_id, AGE_Color color){
+
+    AGE_Cartesian window_size = {-1, -1, -1, -1};
+    int result = -1;
+
+    window_size = this->age_window_cartesian_get(window_id);
+
+    result = this->age_square_draw({0, 0, window_size.w, window_size.h}, {color.r, color.g, color.b, alpha}, AGE_BLENDINGFLAG_BLEND, window_id);
+
+    return result;
 
 }
 
@@ -607,7 +706,7 @@ int AGE::age_image_deploy(string src, int window_id) {
 
         //If the image file is not present, an error value is assigned to the output
         }else{
-            image_id = -1;
+            image_id = -2;
 
         }
 
@@ -1143,6 +1242,40 @@ int AGE::age_draw_area_create(AGE_Cartesian coords, bool solid, int window_id){
     this->draw_area_index->setValues(da_id, coords.x, coords.y, coords.w, coords.h, solid, window_id);
 
     return da_id;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+//This functions draws a line in the specified window
+int AGE::age_line_draw(AGE_Cartesian point1, AGE_Cartesian point2, AGE_Color color, SDL_BlendMode blend_mode, int window_id){
+
+    SDL_Renderer* render = nullptr;
+    int result = -1;
+
+    render = this->window_index->getRender(window_id);
+
+    if(render != nullptr){
+
+        //If the line is not going to have a totally solid color, the engine needs to change the render configuration
+        if(color.a != 255){
+            SDL_SetRenderDrawBlendMode(render, blend_mode);
+        }
+
+        SDL_SetRenderDrawColor(render, color.r, color.g, color.b, color.a);
+        SDL_RenderDrawLine(render, point1.x, point1.y, point2.x, point2.y);
+
+        //The render configuration is restored
+        if(color.a != 255){
+            SDL_SetRenderDrawBlendMode(render, AGE_BLENDINGFLAG_NONE);
+        }
+
+        result = window_id;
+
+    }
+
+    return result;
 
 }
 
