@@ -1,3 +1,14 @@
+r0.2.1
+- Fixed the age_image_tag_set name
+
+r0.2.1
+- Fonts & labels support.
+- Basic collision function support.
+- AGE_ERRORFLAG provides more information
+- age_util_actos function added.
+- Improved the tag system for images
+- Now, a color code can be assigned to age_window_clear
+
 r0.2.0
 - Lines, squares & fading effect support.
 - Window size & position change

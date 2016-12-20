@@ -7,12 +7,12 @@
 ****************************************************************************/
 
 
-#include "AGE_ImageIndex.h"
+#include "AGE_FontIndex.h"
 
 
 //---------------------------------------------------------------------------
 
-AGE_ImageIndex::AGE_ImageIndex()
+AGE_FontIndex::AGE_FontIndex()
 {
 
 	this->nodes = 0;
@@ -22,7 +22,7 @@ AGE_ImageIndex::AGE_ImageIndex()
 
 }
 
-AGE_ImageIndex::~AGE_ImageIndex()
+AGE_FontIndex::~AGE_FontIndex()
 {
 
 	this->freeList();
@@ -32,9 +32,9 @@ AGE_ImageIndex::~AGE_ImageIndex()
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::createNode(string tag){
+int AGE_FontIndex::createNode(string tag){
 
-	AGE_Image* pointer = new AGE_Image();
+	AGE_Font* pointer = new AGE_Font();
 	pointer->setTag(tag);
 
 	if (this->nodes == 0){
@@ -62,9 +62,9 @@ int AGE_ImageIndex::createNode(string tag){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::freeNode(int ident){
+int AGE_FontIndex::freeNode(int ident){
 
-	AGE_Image* pointer = nullptr;
+	AGE_Font* pointer = nullptr;
 	int result= -1;
 
 	pointer = this->getNode(ident);
@@ -83,10 +83,10 @@ int AGE_ImageIndex::freeNode(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::getPrevious(int ident){
+int AGE_FontIndex::getPrevious(int ident){
 
-	AGE_Image* pointer = nullptr;
-	AGE_Image* next = nullptr;
+	AGE_Font* pointer = nullptr;
+	AGE_Font* next = nullptr;
 	bool keep = true;
 	int result = -1;
 
@@ -128,9 +128,9 @@ int AGE_ImageIndex::getPrevious(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::freeList(){
+int AGE_FontIndex::freeList(){
 
-	AGE_Image* pointer = nullptr;
+	AGE_Font* pointer = nullptr;
 	int result= 0;
 
 	pointer = this->first;
@@ -150,11 +150,11 @@ int AGE_ImageIndex::freeList(){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::deleteNode(int ident){
+int AGE_FontIndex::deleteNode(int ident){
 
-	AGE_Image* pointer = nullptr;
-	AGE_Image* next = nullptr;
-	AGE_Image* previous = nullptr;
+	AGE_Font* pointer = nullptr;
+	AGE_Font* next = nullptr;
+	AGE_Font* previous = nullptr;
 	int previous_id = -1;
 	int result = -1;
 
@@ -195,9 +195,9 @@ int AGE_ImageIndex::deleteNode(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::deleteList(){
+int AGE_FontIndex::deleteList(){
 
-	AGE_Image* pointer = nullptr;
+	AGE_Font* pointer = nullptr;
 	int result = 0;
 
 	pointer = this->first;
@@ -222,9 +222,9 @@ int AGE_ImageIndex::deleteList(){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::purge(){
+int AGE_FontIndex::purge(){
 
-	AGE_Image* pointer = nullptr;
+	AGE_Font* pointer = nullptr;
 	int available_ident = -1;
 	int result = -1;
 
@@ -247,9 +247,9 @@ int AGE_ImageIndex::purge(){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::searchAvailable(int limit){
+int AGE_FontIndex::searchAvailable(int limit){
 
-	AGE_Image* pointer = nullptr;
+	AGE_Font* pointer = nullptr;
 	bool found = false;
 	int result = -1;
 	
@@ -276,7 +276,7 @@ int AGE_ImageIndex::searchAvailable(int limit){
 
 //---------------------------------------------------------------------------
 
-AGE_Image* AGE_ImageIndex::getFirst(){
+AGE_Font* AGE_FontIndex::getFirst(){
 
 	return this->first;
 
@@ -285,10 +285,10 @@ AGE_Image* AGE_ImageIndex::getFirst(){
 
 //---------------------------------------------------------------------------
 
-AGE_Image* AGE_ImageIndex::getNode(int ident){
+AGE_Font* AGE_FontIndex::getNode(int ident){
 
-	AGE_Image* result = nullptr;
-	AGE_Image* pointer = nullptr;
+	AGE_Font* result = nullptr;
+	AGE_Font* pointer = nullptr;
 	
 	if (this->nodes > 0){
 	
@@ -313,20 +313,18 @@ AGE_Image* AGE_ImageIndex::getNode(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::setValues(int ident, string src, SDL_Surface* surface, SDL_Texture* texture, int texture_h, int texture_w){
+int AGE_FontIndex::setValues(int ident, TTF_Font* font, string src, int size){
 
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 	int result = -1;
 	
 	pointer = this->getNode(ident);
 	
 	if(pointer != nullptr){
 	
+		pointer->setFont(font);
 		pointer->setSrc(src);
-		pointer->setSurface(surface);
-		pointer->setTexture(texture);
-		pointer->setTexture_h(texture_h);
-		pointer->setTexture_w(texture_w);
+		pointer->setSize(size);
 		result = pointer->getIdent();
 	
 	}
@@ -338,9 +336,9 @@ int AGE_ImageIndex::setValues(int ident, string src, SDL_Surface* surface, SDL_T
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::printNodes(){
+int AGE_FontIndex::printNodes(){
 
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 	int result = 0;
 	
 	pointer = this->first;
@@ -366,10 +364,10 @@ int AGE_ImageIndex::printNodes(){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::getIdent(int ident){
+int AGE_FontIndex::getIdent(int ident){
 
 	int result = -1;
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -389,10 +387,10 @@ int AGE_ImageIndex::getIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-string AGE_ImageIndex::getTag(int ident){
+string AGE_FontIndex::getTag(int ident){
 
 	string result = "";
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -412,10 +410,10 @@ string AGE_ImageIndex::getTag(int ident){
 
 //---------------------------------------------------------------------------
 
-bool AGE_ImageIndex::getAvailable(int ident){
+bool AGE_FontIndex::getAvailable(int ident){
 
 	bool result = false;
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -435,10 +433,10 @@ bool AGE_ImageIndex::getAvailable(int ident){
 
 //---------------------------------------------------------------------------
 
-AGE_Image* AGE_ImageIndex::getNext(int ident){
+AGE_Font* AGE_FontIndex::getNext(int ident){
 
-	AGE_Image* result = nullptr;
-	AGE_Image* pointer;
+	AGE_Font* result = nullptr;
+	AGE_Font* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -458,10 +456,33 @@ AGE_Image* AGE_ImageIndex::getNext(int ident){
 
 //---------------------------------------------------------------------------
 
-string AGE_ImageIndex::getSrc(int ident){
+TTF_Font* AGE_FontIndex::getFont(int ident){
+
+	TTF_Font* result = nullptr;
+	AGE_Font* pointer;
+
+	pointer = this->getNode(ident);
+
+	if ((pointer == nullptr) || (ident < 0)){
+		result = nullptr;
+
+
+	}else{
+		result = pointer->getFont();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+string AGE_FontIndex::getSrc(int ident){
 
 	string result = "";
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -481,56 +502,10 @@ string AGE_ImageIndex::getSrc(int ident){
 
 //---------------------------------------------------------------------------
 
-SDL_Surface* AGE_ImageIndex::getSurface(int ident){
-
-	SDL_Surface* result = nullptr;
-	AGE_Image* pointer;
-
-	pointer = this->getNode(ident);
-
-	if ((pointer == nullptr) || (ident < 0)){
-		result = nullptr;
-
-
-	}else{
-		result = pointer->getSurface();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-SDL_Texture* AGE_ImageIndex::getTexture(int ident){
-
-	SDL_Texture* result = nullptr;
-	AGE_Image* pointer;
-
-	pointer = this->getNode(ident);
-
-	if ((pointer == nullptr) || (ident < 0)){
-		result = nullptr;
-
-
-	}else{
-		result = pointer->getTexture();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_ImageIndex::getTexture_h(int ident){
+int AGE_FontIndex::getSize(int ident){
 
 	int result = -1;
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -539,7 +514,7 @@ int AGE_ImageIndex::getTexture_h(int ident){
 
 
 	}else{
-		result = pointer->getTexture_h();
+		result = pointer->getSize();
 
 	}
 
@@ -550,34 +525,11 @@ int AGE_ImageIndex::getTexture_h(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::getTexture_w(int ident){
-
-	int result = -1;
-	AGE_Image* pointer;
-
-	pointer = this->getNode(ident);
-
-	if ((pointer == nullptr) || (ident < 0)){
-		result = -1;
-
-
-	}else{
-		result = pointer->getTexture_w();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_ImageIndex::searchByIdent(int ident){
+int AGE_FontIndex::searchByIdent(int ident){
 
 	int result = -1;
 	bool found = false;
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -608,11 +560,11 @@ int AGE_ImageIndex::searchByIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::searchByTag(string tag){
+int AGE_FontIndex::searchByTag(string tag){
 
 	int result = -1;
 	bool found = false;
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -643,11 +595,11 @@ int AGE_ImageIndex::searchByTag(string tag){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::searchByAvailable(bool available){
+int AGE_FontIndex::searchByAvailable(bool available){
 
 	int result = -1;
 	bool found = false;
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -678,11 +630,11 @@ int AGE_ImageIndex::searchByAvailable(bool available){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::searchByNext(AGE_Image* next){
+int AGE_FontIndex::searchByNext(AGE_Font* next){
 
 	int result = -1;
 	bool found = false;
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -713,11 +665,46 @@ int AGE_ImageIndex::searchByNext(AGE_Image* next){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::searchBySrc(string src){
+int AGE_FontIndex::searchByFont(TTF_Font* font){
 
 	int result = -1;
 	bool found = false;
-	AGE_Image* pointer;
+	AGE_Font* pointer;
+
+	if (this->nodes == 0){
+		result = -1;
+
+	}else{
+
+		pointer = this->first;
+
+		while (! ((pointer == nullptr) || (found))){
+
+			if (font == pointer->getFont()){
+
+				result = pointer->getIdent();
+				found = true;
+
+			}
+
+			pointer = pointer->getNext();
+
+		}
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_FontIndex::searchBySrc(string src){
+
+	int result = -1;
+	bool found = false;
+	AGE_Font* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -748,11 +735,11 @@ int AGE_ImageIndex::searchBySrc(string src){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::searchBySurface(SDL_Surface* surface){
+int AGE_FontIndex::searchBySize(int size){
 
 	int result = -1;
 	bool found = false;
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -763,7 +750,7 @@ int AGE_ImageIndex::searchBySurface(SDL_Surface* surface){
 
 		while (! ((pointer == nullptr) || (found))){
 
-			if (surface == pointer->getSurface()){
+			if (size == pointer->getSize()){
 
 				result = pointer->getIdent();
 				found = true;
@@ -783,114 +770,9 @@ int AGE_ImageIndex::searchBySurface(SDL_Surface* surface){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::searchByTexture(SDL_Texture* texture){
+int AGE_FontIndex::setTag(int ident, string tag){
 
-	int result = -1;
-	bool found = false;
-	AGE_Image* pointer;
-
-	if (this->nodes == 0){
-		result = -1;
-
-	}else{
-
-		pointer = this->first;
-
-		while (! ((pointer == nullptr) || (found))){
-
-			if (texture == pointer->getTexture()){
-
-				result = pointer->getIdent();
-				found = true;
-
-			}
-
-			pointer = pointer->getNext();
-
-		}
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_ImageIndex::searchByTexture_h(int texture_h){
-
-	int result = -1;
-	bool found = false;
-	AGE_Image* pointer;
-
-	if (this->nodes == 0){
-		result = -1;
-
-	}else{
-
-		pointer = this->first;
-
-		while (! ((pointer == nullptr) || (found))){
-
-			if (texture_h == pointer->getTexture_h()){
-
-				result = pointer->getIdent();
-				found = true;
-
-			}
-
-			pointer = pointer->getNext();
-
-		}
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_ImageIndex::searchByTexture_w(int texture_w){
-
-	int result = -1;
-	bool found = false;
-	AGE_Image* pointer;
-
-	if (this->nodes == 0){
-		result = -1;
-
-	}else{
-
-		pointer = this->first;
-
-		while (! ((pointer == nullptr) || (found))){
-
-			if (texture_w == pointer->getTexture_w()){
-
-				result = pointer->getIdent();
-				found = true;
-
-			}
-
-			pointer = pointer->getNext();
-
-		}
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_ImageIndex::setTag(int ident, string tag){
-
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -909,9 +791,9 @@ int AGE_ImageIndex::setTag(int ident, string tag){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::setAvailable(int ident, bool available){
+int AGE_FontIndex::setAvailable(int ident, bool available){
 
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -930,9 +812,9 @@ int AGE_ImageIndex::setAvailable(int ident, bool available){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::setNext(int ident, AGE_Image* next){
+int AGE_FontIndex::setNext(int ident, AGE_Font* next){
 
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -951,9 +833,30 @@ int AGE_ImageIndex::setNext(int ident, AGE_Image* next){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::setSrc(int ident, string src){
+int AGE_FontIndex::setFont(int ident, TTF_Font* font){
 
-	AGE_Image* pointer;
+	AGE_Font* pointer;
+	int result = -1;
+
+	pointer = this->getNode(ident);
+
+	if (pointer != nullptr){
+
+		pointer->setFont(font);
+		result = pointer->getIdent();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int AGE_FontIndex::setSrc(int ident, string src){
+
+	AGE_Font* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -972,79 +875,16 @@ int AGE_ImageIndex::setSrc(int ident, string src){
 
 //---------------------------------------------------------------------------
 
-int AGE_ImageIndex::setSurface(int ident, SDL_Surface* surface){
+int AGE_FontIndex::setSize(int ident, int size){
 
-	AGE_Image* pointer;
+	AGE_Font* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
 
 	if (pointer != nullptr){
 
-		pointer->setSurface(surface);
-		result = pointer->getIdent();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_ImageIndex::setTexture(int ident, SDL_Texture* texture){
-
-	AGE_Image* pointer;
-	int result = -1;
-
-	pointer = this->getNode(ident);
-
-	if (pointer != nullptr){
-
-		pointer->setTexture(texture);
-		result = pointer->getIdent();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_ImageIndex::setTexture_h(int ident, int texture_h){
-
-	AGE_Image* pointer;
-	int result = -1;
-
-	pointer = this->getNode(ident);
-
-	if (pointer != nullptr){
-
-		pointer->setTexture_h(texture_h);
-		result = pointer->getIdent();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_ImageIndex::setTexture_w(int ident, int texture_w){
-
-	AGE_Image* pointer;
-	int result = -1;
-
-	pointer = this->getNode(ident);
-
-	if (pointer != nullptr){
-
-		pointer->setTexture_w(texture_w);
+		pointer->setSize(size);
 		result = pointer->getIdent();
 
 	}

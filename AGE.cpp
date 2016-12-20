@@ -2,7 +2,7 @@
 * Created for: AGE v1
 * Dev line: AGE v2
 * Creation day: 17/07/2015
-* Last change: 10/12/2016
+* Last change: 20/12/2016
 ****************************************************************************/
 
 
@@ -22,6 +22,9 @@ AGE::AGE(){
 	this->event_index = new AGE_EventIndex();
 	this->dmom->dmom_eventIndex_set(this->event_index);
 
+	this->font_index = new AGE_FontIndex();
+	this->dmom->dmom_fontIndex_set(this->font_index);
+
 	this->image_index = new AGE_ImageIndex();
 	this->dmom->dmom_imageIndex_set(this->image_index);
 
@@ -34,7 +37,7 @@ AGE::AGE(){
 //---------------------------------------------------------------------------
 
 AGE::~AGE(){
-
+    //dtor
 }
 
 
@@ -65,16 +68,18 @@ AGE_Cartesian AGE::age_window_cartesian_get(int window_id){
 int AGE::age_window_position_set(AGE_Cartesian position, int window_id){
 
 	SDL_Window* window;
-	int result = -1;
+	int result = AGE_ERRORFLAG_GENERIC;
 
+	//Looking for a window in the index
 	window = this->window_index->getWindow(window_id);
 	if(window != nullptr){
 
 		SDL_SetWindowPosition(window, position.x, position.y);
         result = window_id;
 
+    //The index does not contains any node with that id
 	}else{
-        result = -1;
+        result = AGE_ERRORFLAG_NOWINDOW;
 
 	}
 
@@ -89,16 +94,18 @@ int AGE::age_window_position_set(AGE_Cartesian position, int window_id){
 int AGE::age_window_size_set(AGE_Cartesian size, int window_id){
 
 	SDL_Window* window;
-	int result = -1;
+	int result = AGE_ERRORFLAG_GENERIC;
 
+	//Looking for a window in the index
 	window = this->window_index->getWindow(window_id);
 	if(window != nullptr){
 
 		SDL_SetWindowSize(window, size.w, size.h);
         result = window_id;
 
+    //The index does not contains any node with that id
 	}else{
-        result = -1;
+        result = AGE_ERRORFLAG_NOREGISTER;
 
 	}
 
@@ -113,8 +120,9 @@ int AGE::age_window_size_set(AGE_Cartesian size, int window_id){
 int AGE::age_window_cartesian_set(AGE_Cartesian cartesian, int window_id){
 
 	SDL_Window* window;
-	int result = -1;
+	int result = AGE_ERRORFLAG_GENERIC;
 
+	//Looking for a window in the index
 	window = this->window_index->getWindow(window_id);
 	if(window != nullptr){
 
@@ -122,8 +130,9 @@ int AGE::age_window_cartesian_set(AGE_Cartesian cartesian, int window_id){
 		SDL_SetWindowSize(window, cartesian.w, cartesian.h);
         result = window_id;
 
+    //The index does not contains any node with that id
 	}else{
-        result = -1;
+        result = AGE_ERRORFLAG_NOWINDOW;
 
 	}
 
@@ -135,26 +144,29 @@ int AGE::age_window_cartesian_set(AGE_Cartesian cartesian, int window_id){
 //---------------------------------------------------------------------------
 
 //This function overwrites the full window canvas
-int AGE::age_window_clear(int window_id){
+int AGE::age_window_clear(int window_id, AGE_Color color){
 
 	AGE_Cartesian window_values;
-	AGE_Color color;
-
-	color = {0, 0, 0, 255};
+	int result = AGE_ERRORFLAG_GENERIC;
 
     //We retrieve the window values and correct the 'x' and 'y' values to apply the square in the full screen
 	window_values = this->age_window_cartesian_get(window_id);
     window_values.x = 0;
     window_values.y = 0;
 
-    //If the square will be draw only if the window has an adecuate size,
+    //If the square will be draw only if the window has an adequate size,
 	if(window_values.h != -1 && window_values.w != -1){
 
 		this->age_square_draw(window_values, color, AGE_BLENDINGFLAG_BLEND, window_id);
+		result = window_id;
+
+    //The window values were incorrect
+	}else{
+        result = AGE_ERRORFLAG_SIZE;
 
 	}
 
-	return 0;
+	return result;
 
 }
 
@@ -227,7 +239,7 @@ bool AGE::age_sdltexture_apply(SDL_Texture * texture, SDL_Renderer* render, int 
 int AGE::age_square_draw(AGE_Cartesian square, AGE_Color color, SDL_BlendMode blend_mode, int window_id){
 
 	SDL_Renderer* render = nullptr;
-	int result = -1;
+	int result = AGE_ERRORFLAG_GENERIC;
 
 	render = this->window_index->getRender(window_id);
 	if(render != nullptr){
@@ -268,8 +280,9 @@ int AGE::age_image_move_to_draw_area(int image_id, int draw_area_id, int x, int 
 	int window_id = -1;
 	AGE_Cartesian img_cart = {0,0,0,0};
 	AGE_Cartesian dst_cart = {0,0,0,0};
+	int result = AGE_ERRORFLAG_GENERIC;
 
-    //Recover data
+    //Recovering data
    	image_node = this->image_index->getNode(image_id);
     da_node = this->draw_area_index->getNode(draw_area_id);
     window_id = da_node->getWindow_id();
@@ -320,24 +333,54 @@ int AGE::age_image_move_to_draw_area(int image_id, int draw_area_id, int x, int 
            }
 
             op_result = this->age_sdltexture_apply(texture, render, img_cart.x, img_cart.y, img_cart.w, img_cart.h, dst_cart.x, dst_cart.y, dst_cart.w, dst_cart.h);
+            result = image_id;
 
         //Draw area is not solid
         }else{
             op_result = this->age_sdltexture_apply(texture, render, dst_cart.x, dst_cart.y, dst_cart.w, dst_cart.h);
+            result = image_id;
+
         }
 
 		if(!op_result){
-			image_id = -1;
+			result = AGE_ERRORFLAG_RENDERPROCESS;
 		}
 
-    //Result is -1 if something went wrong
+    //Result is AGE_ERRORFLAG_GENERIC if something went wrong
 	}else{
 
-		image_id = -1;
+		result = AGE_ERRORFLAG_GENERIC;
 
 	}
 
-	return image_id;
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+//With this function, the tag node linked to the image can be modified
+int AGE::age_image_tag_set(int image_id, string tag){
+
+    int result = AGE_ERRORFLAG_GENERIC;
+    AGE_Image* image_node = nullptr;
+
+    image_node = this->image_index->getNode(image_id);
+
+    //Looking for a image in the index
+    if(image_node != nullptr){
+
+        image_node->setTag(tag);
+        result = image_id;
+
+    //The index does not contains any node with that id
+    }else{
+        result = AGE_ERRORFLAG_NOREGISTER;
+
+    }
+
+    return result;
 
 }
 
@@ -351,8 +394,9 @@ int AGE::age_image_move(int image_id, int x, int y, int window_id){
 	AGE_Image* image_node = nullptr;
 	SDL_Texture* texture = nullptr;
 	SDL_Renderer* render = nullptr;
-	int w;
-	int h;
+	int w = 0;
+	int h = 0;
+	int result = AGE_ERRORFLAG_GENERIC;
 
 	image_node = this->image_index->getNode(image_id);
 	render = this->window_index->getRender(window_id);
@@ -369,16 +413,17 @@ int AGE::age_image_move(int image_id, int x, int y, int window_id){
         //The proper SDL controller function is called
 		op_result = this->age_sdltexture_apply(texture, render, x, y, w, h);
 		if(!op_result){
-			image_id = -1;
+			result = AGE_ERRORFLAG_IMAGEDRAW;
+
 		}
 
+    //There was a problem trying to recover the action data
 	}else{
-
-		image_id = -1;
+		result = AGE_ERRORFLAG_NOREGISTER;
 
 	}
 
-	return image_id;
+	return result;
 
 }
 
@@ -388,21 +433,24 @@ int AGE::age_image_move(int image_id, int x, int y, int window_id){
 //This function marks an image as 'available', but the image is still in the memory program
 int AGE::age_image_free(int image_id){
 
+    int result = AGE_ERRORFLAG_GENERIC;
     AGE_Image* image_node = nullptr;
 
     image_node = this->image_index->getNode(image_id);
 
+    //Looking for a image in the index
     if(image_node != nullptr){
 
         image_node->setAvailable(true);
+        result = image_id;
 
+    //The index does not contains any node with that id
     }else{
-
-		image_id = -1;
+		result = AGE_ERRORFLAG_NOREGISTER;
 
 	}
 
-	return image_id;
+	return result;
 
 }
 
@@ -412,18 +460,19 @@ int AGE::age_image_free(int image_id){
 //This function unloads an image from the memory program
 int AGE::age_image_unload(int image_id){
 
-	int node_id = 0;
 	AGE_Image* image_node = nullptr;
 	SDL_Texture* image_texture = nullptr;
 	SDL_Surface* image_surface = nullptr;
+	int result = AGE_ERRORFLAG_GENERIC;
 
+	//Looking for a image in the index
 	image_node = this->image_index->getNode(image_id);
-
 	if(image_node != nullptr){
 
         image_texture = image_node->getTexture();
         image_surface = image_node->getSurface();
 
+        //Only if there area a loaded element, the system tries to unload it from memory
         if(image_texture != nullptr){
             SDL_DestroyTexture(image_texture);
         }
@@ -432,15 +481,15 @@ int AGE::age_image_unload(int image_id){
             SDL_FreeSurface(image_surface);
         }
 
-        node_id = image_node->getIdent();
+        result = image_node->getIdent();
 
+    //The index does not contains any node with that id
 	}else{
-
-		node_id = -1;
+		result = AGE_ERRORFLAG_NOREGISTER;
 
 	}
 
-	return node_id;
+	return result;
 
 }
 
@@ -467,10 +516,12 @@ int AGE::age_window_create(string title, AGE_Cartesian coords, Uint32 wflags, Ui
 	SDL_Renderer* render = nullptr;
 	SDL_DisplayMode display_mode;
 	int window_id = -1;
+	int result = AGE_ERRORFLAG_GENERIC;
 
 
 	SDL_GetCurrentDisplayMode(0, &display_mode);
 
+    //The coordinate values area changed if the user sends an AGE_WINDOWFLAG
 	if (coords.x == AGE_WINDOWFLAG_XCENTERED) {
 		coords.x = (display_mode.w / 2) - (coords.w / 2);
 	}
@@ -481,20 +532,30 @@ int AGE::age_window_create(string title, AGE_Cartesian coords, Uint32 wflags, Ui
 
 	window = SDL_CreateWindow(title.c_str(), coords.x, coords.y, coords.w, coords.h, wflags);
 
+	//Checking if there was a problem creating the window...
 	if(window != nullptr){
 
 		render = SDL_CreateRenderer(window, -1, rflags);
 
+		//Also checking if the render creating was correct
 		if(render != nullptr){
 
 			window_id = this->window_index->createNode(title);
 			this->window_index->setValues(window_id, window, render);
 
+        //
+		}else{
+            result = AGE_ERRORFLAG_NORENDER;
+
 		}
+
+    //.. to send the creating error flag
+	}else{
+	    result = AGE_ERRORFLAG_NOWINDOW;
 
 	}
 
-	return window_id;
+	return result;
 
 }
 
@@ -504,7 +565,7 @@ int AGE::age_window_create(string title, AGE_Cartesian coords, Uint32 wflags, Ui
 int AGE::age_window_fading(Uint8 alpha, int window_id, AGE_Color color){
 
     AGE_Cartesian window_size = {-1, -1, -1, -1};
-    int result = -1;
+    int result = AGE_ERRORFLAG_GENERIC;
 
     window_size = this->age_window_cartesian_get(window_id);
 
@@ -521,11 +582,10 @@ int AGE::age_window_fading(Uint8 alpha, int window_id, AGE_Color color){
 int AGE::age_window_set_visible(int window_id, bool visible){
 
 	AGE_Window* mwindow = nullptr;
-	int updated_window = -1;
+	int result = AGE_ERRORFLAG_GENERIC;
 
-
+    //Looking for a window in the index
 	mwindow = this->window_index->getNode(window_id);
-
 	if(mwindow != nullptr) {
 
 		if(visible){
@@ -536,11 +596,15 @@ int AGE::age_window_set_visible(int window_id, bool visible){
 
 		}
 
-		updated_window = mwindow->getIdent();
+		result = mwindow->getIdent();
+
+	//The index does not contains any node with that id
+	}else{
+        result = AGE_ERRORFLAG_NOREGISTER;
 
 	}
 
-	return updated_window;
+	return result;
 
 }
 
@@ -550,18 +614,23 @@ int AGE::age_window_set_visible(int window_id, bool visible){
 //This function deletes a window
 int AGE::age_window_remove(int window_id){
 
-	int removed_window = -1;
+	int result = AGE_ERRORFLAG_GENERIC;
 
+	//Looking for a window in the index
 	if (this->window_index->searchByIdent(window_id) == window_id) {
 
 		SDL_DestroyRenderer(this->window_index->getRender(window_id));
 		SDL_DestroyWindow(this->window_index->getWindow(window_id));
-		removed_window = this->window_index->getIdent(window_id);
+		result = this->window_index->getIdent(window_id);
 		this->window_index->deleteNode(window_id);
 
-	}
+    //The index does not contains any node with that id
+	}else{
+	    result = AGE_ERRORFLAG_NOREGISTER;
 
-	return removed_window;
+    }
+
+	return result;
 
 }
 
@@ -572,18 +641,21 @@ int AGE::age_window_remove(int window_id){
 int AGE::age_window_set_focus(int window_id){
 
 	AGE_Window* mwindow = nullptr;
-	int updated_window = -1;
+	int result = AGE_ERRORFLAG_GENERIC;
 
+	//Looking for a window in the index
 	mwindow = this->window_index->getNode(window_id);
-
 	if (mwindow != nullptr) {
 
 		SDL_RaiseWindow(mwindow->getWindow());
-		updated_window = mwindow->getIdent();
+		result = mwindow->getIdent();
 
+    //The index does not contains any node with that id
+	}else{
+        result = AGE_ERRORFLAG_NOREGISTER;
 	}
 
-	return updated_window;
+	return result;
 
 }
 
@@ -597,6 +669,7 @@ bool AGE::age_core_load_libs(){
 
 	//Start SDL
 	SDL_Init(SDL_INIT_EVERYTHING);
+	TTF_Init();
 
 	return load_status;
 
@@ -640,8 +713,7 @@ AGE_Event_Status AGE::age_event_get_status(){
         //The event is not longer needed, so is deleted
 		this->event_index->deleteNode(event_id);
 
-	}
-	else {
+	}else {
 
         //This is returned when there are no more events in the list
 		this->event_index->deleteList();
@@ -650,6 +722,142 @@ AGE_Event_Status AGE::age_event_get_status(){
 	}
 
 	return status;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+//This function creates a label and stores it in memory as an image
+int AGE::age_label_compose(string text, int font_id, AGE_Color color, Uint8 mode, AGE_Color bg_color){
+
+    SDL_Color label_color;
+    TTF_Font* font = nullptr;
+    AGE_Font* font_node = nullptr;
+    int image_id = -1;
+	int image_w = -1;
+	int image_h = -1;
+    int result = AGE_ERRORFLAG_GENERIC;
+    string tag = "";
+    SDL_Surface* temp_surface = nullptr;
+    SDL_Texture* temp_texture = nullptr;
+
+    font_node = this->font_index->getNode(font_id);
+
+    //Font id is not valid
+    if(font_node == nullptr){
+        result = AGE_ERRORFLAG_FONTID;
+
+    }else{
+
+        //The font object is recovered
+        font = font_node->getFont();
+
+        //Searching for a previously similar composed label
+        tag = "AGELABEL|" + text + "|" + font_node->getSrc() + "|" + age_util_itos(font_node->getSize()) + "|" + age_util_actos(color);
+        image_id = this->image_index->searchByTag(tag);
+
+        //There are no similar labels
+        if(image_id == -1){
+
+            label_color = age_util_actsc(color);
+            image_id = this->image_index->searchAvailable();
+
+            //There area available registers
+            if(image_id == -1){
+
+			    image_id = this->image_index->createNode(tag);
+			    this->image_index->setSrc(image_id, tag);
+
+            //There is an available register
+            }else{
+
+                this->age_image_unload(image_id);
+                this->image_index->setTag(image_id, tag);
+                this->image_index->setSrc(image_id, tag);
+
+            }
+
+            //The image is created and the node values are updated
+            temp_surface = this->age_sdlttf_create_surface(text, font, color, mode, bg_color);
+            temp_texture = this->age_sdlttf_create_texture(temp_surface);
+
+			this->image_index->setTexture(image_id, temp_texture);
+			this->image_index->setSurface(image_id, temp_surface);
+			SDL_QueryTexture(temp_texture, nullptr, nullptr, &image_w, &image_h);
+			this->image_index->setTexture_h(image_id, image_h);
+			this->image_index->setTexture_w(image_id, image_w);
+
+			result = image_id;
+
+        //There are another similar label
+        }else{
+            result = image_id;
+
+        }
+
+    }
+
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+//This functions loads an image as a SDL_Surface
+SDL_Surface* AGE::age_sdlttf_create_surface(string text, TTF_Font* font, AGE_Color color, Uint8 mode, AGE_Color bg_color){
+
+    SDL_Surface* temp_surface = nullptr;
+
+    if(mode == AGE_LABELMODEFLAG_BLENDED){
+        temp_surface = TTF_RenderUTF8_Blended(font, text.c_str(), age_util_actsc(color));
+
+    }else if(mode == AGE_LABELMODEFLAG_SOLID){
+        temp_surface = TTF_RenderUTF8_Solid( font, text.c_str(), age_util_actsc(color));
+
+    }else if(mode == AGE_LABELMODEFLAG_SHADED){
+        temp_surface = TTF_RenderUTF8_Shaded( font, text.c_str(), age_util_actsc(color), age_util_actsc(bg_color));
+
+    }else{
+        temp_surface = TTF_RenderUTF8_Solid( font, text.c_str(), age_util_actsc(color));
+
+    }
+
+    return temp_surface;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+//This functions loads an image as a SDL_Texture
+SDL_Texture* AGE::age_sdlttf_create_texture(SDL_Surface* temp_surface, SDL_Renderer* render){
+
+    SDL_Texture* temp_texture = nullptr;
+    AGE_Window* window = nullptr;
+
+    if(render == nullptr){
+
+        window = this->window_index->getFirst();
+
+        if(window != nullptr){
+            render = window->getRender();
+
+        }else{
+            render = nullptr;
+
+        }
+
+    }
+
+    if(render != nullptr){
+        temp_texture = SDL_CreateTextureFromSurface(render, temp_surface);
+
+    }
+
+    return temp_texture;
 
 }
 
@@ -665,9 +873,12 @@ int AGE::age_image_deploy(string src, int window_id) {
 	int image_w = -1;
 	int image_h = -1;
 	int image_id = -1;
+	int result = AGE_ERRORFLAG_GENERIC;
+	string tag = "";
 
     //Here, we check if the image was previously loaded
-	image_id = this->image_index->searchByTag(src);
+    tag = src;
+	image_id = this->image_index->searchByTag(tag);
 
     //If the images was not loaded
 	if (image_id == -1){
@@ -686,14 +897,14 @@ int AGE::age_image_deploy(string src, int window_id) {
             //If there is not any available node, a new one is created...
 			if(image_id == -1){
 
-			    image_id = this->image_index->createNode(src);
-			    this->image_index->setSrc(image_id, src);
+			    image_id = this->image_index->createNode(tag);
+			    this->image_index->setSrc(image_id, tag);
 
             //... else, the image stored in the node is deleted and the node is updated with the new information
 			}else{
 
                 this->age_image_unload(image_id);
-                this->image_index->setTag(image_id, src);
+                this->image_index->setTag(image_id, tag);
                 this->image_index->setSrc(image_id, src);
 			}
 
@@ -703,10 +914,11 @@ int AGE::age_image_deploy(string src, int window_id) {
 			SDL_QueryTexture(temp_texture, nullptr, nullptr, &image_w, &image_h);
 			this->image_index->setTexture_h(image_id, image_h);
 			this->image_index->setTexture_w(image_id, image_w);
+			result = image_id;
 
         //If the image file is not present, an error value is assigned to the output
         }else{
-            image_id = -2;
+            result = AGE_ERRORFLAG_FILEACCESS;
 
         }
 
@@ -714,22 +926,24 @@ int AGE::age_image_deploy(string src, int window_id) {
 	}else{
 
         this->image_index->setAvailable(image_id, false);
+        result = image_id;
 
 	}
 
-	return image_id;
+	return result;
 
 }
 
 //This function calls the other version of 'age_image_deploy' and draws the image in the window
 int AGE::age_image_deploy(string src, int x, int y, int window_id){
 
+    int result = AGE_ERRORFLAG_GENERIC;
 	int image_id = -1;
 
 	image_id = this->age_image_deploy(src, window_id);
-	this->age_image_move(image_id, x, y, window_id);
+	result = this->age_image_move(image_id, x, y, window_id);
 
-	return image_id;
+	return result;
 
 }
 
@@ -1175,6 +1389,162 @@ int AGE::age_event_process(){
 
 //---------------------------------------------------------------------------
 
+//This function unloads a font from the memory program
+int AGE::age_font_unload(int font_id){
+
+	int result = AGE_ERRORFLAG_GENERIC;
+	AGE_Font* font_node = nullptr;
+	TTF_Font* font_pointer = nullptr;
+
+	//Looking for a font in the index
+	font_node = this->font_index->getNode(font_id);
+	if(font_node != nullptr){
+
+        font_pointer = font_node->getFont();
+
+        if(font_pointer != nullptr){
+            TTF_CloseFont(font_pointer);
+
+        }
+
+        result = font_node->getIdent();
+
+    //The index does not contains any node with that id
+	}else{
+		result = AGE_ERRORFLAG_NOREGISTER;
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+//This function marks an font as 'available', but the font is still in the memory program
+int AGE::age_font_free(int font_id){
+
+    AGE_Font* font_node = nullptr;
+    int result = AGE_ERRORFLAG_GENERIC;
+
+    //Looking for a font in the index
+    font_node = this->font_index->getNode(font_id);
+    if(font_node != nullptr){
+
+        font_node->setAvailable(true);
+        result = font_id;
+
+    //The index does not contains any node with that id
+    }else{
+        result = AGE_ERRORFLAG_FONTID;
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+//This function unloads an font from the memory program and deletes the proper DMOM node
+int AGE::age_font_delete(int font_id){
+
+    int result = AGE_ERRORFLAG_GENERIC;
+
+    font_id = this->age_font_unload(font_id);
+    result = this->image_index->deleteNode(font_id);
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+//This function load an specified file as a font
+int AGE::age_font_deploy(string src, int font_size){
+
+    TTF_Font *temp_font = nullptr;
+    int result = AGE_ERRORFLAG_GENERIC;
+    int font_id = -1;
+    string tag = "";
+
+    tag = src + "|" + age_util_itos(font_size);
+    font_id = this->font_index->searchByTag(tag);
+
+    //Font is not registered, this block loads the font and creates the register
+     if (font_id == -1){
+
+        //We search for an available register
+        font_id = this->font_index->searchByAvailable(true);
+
+        if (age_util_file_check(src)){
+
+            temp_font =  TTF_OpenFont(src.c_str(), font_size);
+
+            //There was a problem loading the font file
+            if (temp_font == nullptr){
+                result = AGE_ERRORFLAG_FONTLOAD;
+
+            }else{
+
+                //If we need to create a new register (there are not available registers)
+                if(font_id == -1){
+                    font_id = this->font_index->createNode(tag);
+
+                //if we have found an available register for the new font
+                }else{
+                    font_id = this->age_font_unload(font_id);
+
+                }
+
+                this->font_index->setTag(font_id, tag);
+                this->font_index->setAvailable(font_id, false);
+                this->font_index->setSrc(font_id, src);
+                this->font_index->setFont(font_id, temp_font);
+                this->font_index->setSize(font_id, font_size);
+                result = font_id;
+
+            }
+
+        //If the file is not accessible, we return an error value
+        }else{
+            result = AGE_ERRORFLAG_FILEACCESS;
+
+        }
+
+    //font was loaded previously, so the available flag is set to 'false' to avoid image unload
+    }else{
+
+        this->font_index->setAvailable(font_id, false);
+        result = font_id;
+
+    }
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+//This function returns the size values of an image
+AGE_Cartesian AGE::age_image_size_get(int image_id){
+
+    AGE_Cartesian result = {0,0,0,0};
+
+    result.h = this->image_index->getTexture_h(image_id);
+    result.w = this->image_index->getTexture_w(image_id);
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
 //This functions stops the execution temporarily
 void AGE::age_pause(int miliseconds){
 
@@ -1191,9 +1561,10 @@ int AGE::age_window_refresh(){
 	AGE_Window* mwindow = nullptr;
 	SDL_Renderer* mrender = nullptr;
 	int updated_windows = 0;
+	int result = AGE_ERRORFLAG_GENERIC;
 
 	mwindow = this->window_index->getFirst();
-
+    //All the window nodes are processed
 	while(mwindow != nullptr){
 
 		mrender = mwindow->getRender();
@@ -1203,7 +1574,9 @@ int AGE::age_window_refresh(){
 
 	}
 
-	return updated_windows;
+	result = updated_windows;
+
+	return result;
 
 }
 
@@ -1215,18 +1588,18 @@ int AGE::age_window_refresh(int window_id){
 
 	AGE_Window* mwindow = nullptr;
 	SDL_Renderer* mrender = nullptr;
-	int updated_window = -1;
+	int result = AGE_ERRORFLAG_GENERIC;
 
 	mwindow = this->window_index->getNode(window_id);
 	if (mwindow != nullptr) {
 
 		mrender = mwindow->getRender();
 		SDL_RenderPresent(mrender);
-		updated_window = mwindow->getIdent();
+		result = mwindow->getIdent();
 
 	}
 
-	return updated_window;
+	return result;
 
 }
 
@@ -1236,7 +1609,7 @@ int AGE::age_window_refresh(int window_id){
 //This functions is called to create draw areas
 int AGE::age_draw_area_create(AGE_Cartesian coords, bool solid, int window_id){
 
-    int da_id = -1;
+    int da_id = AGE_ERRORFLAG_GENERIC;
 
     da_id = this->draw_area_index->createNode();
     this->draw_area_index->setValues(da_id, coords.x, coords.y, coords.w, coords.h, solid, window_id);
@@ -1252,7 +1625,7 @@ int AGE::age_draw_area_create(AGE_Cartesian coords, bool solid, int window_id){
 int AGE::age_line_draw(AGE_Cartesian point1, AGE_Cartesian point2, AGE_Color color, SDL_BlendMode blend_mode, int window_id){
 
     SDL_Renderer* render = nullptr;
-    int result = -1;
+    int result = AGE_ERRORFLAG_GENERIC;
 
     render = this->window_index->getRender(window_id);
 
@@ -1272,6 +1645,28 @@ int AGE::age_line_draw(AGE_Cartesian point1, AGE_Cartesian point2, AGE_Color col
         }
 
         result = window_id;
+
+    }
+
+    return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+//This functions checks if two areas are in a collision status
+bool AGE::age_collision_check(AGE_Cartesian area1, AGE_Cartesian area2){
+
+    bool result = false;
+    int diff_x;
+    int diff_y;
+
+    diff_x = area1.x - area2.x;
+    diff_y = area1.y - area2.y;
+
+    if(((diff_x >= -area1.w) && (diff_x <= area2.w)) && ((diff_y >= -area1.h) && (diff_y <= area2.h))){
+        result = true;
 
     }
 

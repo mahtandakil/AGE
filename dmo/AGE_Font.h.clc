@@ -1,0 +1,54 @@
+/****************************************************************************
+* Created for: <[PROJECT]>
+* Dev line: <[DEVLINE]>
+* Creation date: <[CREATIONDATE]>
+* Last change: <[TODAY]>
+* Autogen: <[VERSION]>
+****************************************************************************/
+
+
+#include <SDL2/SDL_ttf.h>
+
+
+#include <iostream>
+#include <string>
+
+
+using namespace std;
+
+
+#ifndef <[BASENAME]{capital}>_H
+#define <[BASENAME]{capital}>_H
+
+
+class <[BASENAME]>
+{
+	public:
+		<[BASENAME]>();
+		virtual ~<[BASENAME]>();
+
+		int printNode();
+		<<<FOR_BASE&ARGS>>>
+		<[ARG_TYPE]> get<[ARG_NAME]{first}>();
+		<<</FOR_BASE&ARGS>>>
+		<<<FOR_BASE&ARGS>>>
+		int set<[ARG_NAME]{first}>(<[ARG_DEF]>);
+		<<</FOR_BASE&ARGS>>>
+		
+
+
+	protected:
+
+
+	private:
+		<<<FOR_BASE&ARGS>>>
+		<[ARG_DEF]>;
+		<<</FOR_BASE&ARGS>>>
+
+};
+
+
+#endif // <[BASENAME]{capital}>_H
+
+
+

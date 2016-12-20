@@ -7,7 +7,7 @@
 ****************************************************************************/
 
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 
 #include <iostream>
@@ -17,29 +17,31 @@
 using namespace std;
 
 
-#ifndef AGE_WINDOW_H
-#define AGE_WINDOW_H
+#ifndef AGE_FONT_H
+#define AGE_FONT_H
 
 
-class AGE_Window
+class AGE_Font
 {
 	public:
-		AGE_Window();
-		virtual ~AGE_Window();
+		AGE_Font();
+		virtual ~AGE_Font();
 
 		int printNode();
 		int getIdent();
 		string getTag();
 		bool getAvailable();
-		AGE_Window* getNext();
-		SDL_Window* getWindow();
-		SDL_Renderer* getRender();
+		AGE_Font* getNext();
+		TTF_Font* getFont();
+		string getSrc();
+		int getSize();
 		int setIdent(int ident);
 		int setTag(string tag);
 		int setAvailable(bool available);
-		int setNext(AGE_Window* next);
-		int setWindow(SDL_Window* window);
-		int setRender(SDL_Renderer* render);
+		int setNext(AGE_Font* next);
+		int setFont(TTF_Font* font);
+		int setSrc(string src);
+		int setSize(int size);
 		
 
 
@@ -50,14 +52,15 @@ class AGE_Window
 		int ident;
 		string tag;
 		bool available;
-		AGE_Window* next;
-		SDL_Window* window;
-		SDL_Renderer* render;
+		AGE_Font* next;
+		TTF_Font* font;
+		string src;
+		int size;
 
 };
 
 
-#endif // AGE_WINDOW_H
+#endif // AGE_FONT_H
 
 
 
