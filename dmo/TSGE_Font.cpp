@@ -1,18 +1,18 @@
 /****************************************************************************
-* Created for: AGE v2
-* Dev line: AGE v2
+* Created for: TSGE v2
+* Dev line: TSGE v2
 * Creation date: 08/02/2016
-* Last change: 12/12/16
+* Last change: 09/02/17
 * Autogen: 1.1.2c
 ****************************************************************************/
 
 
-#include "AGE_Font.h"
+#include "TSGE_Font.h"
 
 
 //---------------------------------------------------------------------------
 
-AGE_Font::AGE_Font()
+TSGE_Font::TSGE_Font()
 {
 
 	this->ident = -1;
@@ -25,7 +25,7 @@ AGE_Font::AGE_Font()
 
 }
 
-AGE_Font::~AGE_Font()
+TSGE_Font::~TSGE_Font()
 {
 	//dtor
 }
@@ -33,7 +33,7 @@ AGE_Font::~AGE_Font()
 
 //---------------------------------------------------------------------------
 
-int AGE_Font::printNode(){
+int TSGE_Font::printNode(){
 
 	cout << "ID: " << this->ident << endl;
 	cout << "POINTER: " << this << endl;
@@ -52,7 +52,7 @@ int AGE_Font::printNode(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Font::setIdent(int ident){
+int TSGE_Font::setIdent(int ident){
 
 	this->ident = ident;
 	
@@ -63,7 +63,7 @@ int AGE_Font::setIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_Font::getIdent(){
+int TSGE_Font::getIdent(){
 
 	return this->ident;
 
@@ -72,7 +72,7 @@ int AGE_Font::getIdent(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Font::setTag(string tag){
+int TSGE_Font::setTag(string tag){
 
 	this->tag = tag;
 	
@@ -83,7 +83,7 @@ int AGE_Font::setTag(string tag){
 
 //---------------------------------------------------------------------------
 
-string AGE_Font::getTag(){
+string TSGE_Font::getTag(){
 
 	return this->tag;
 
@@ -92,7 +92,7 @@ string AGE_Font::getTag(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Font::setAvailable(bool available){
+int TSGE_Font::setAvailable(bool available){
 
 	this->available = available;
 	
@@ -103,7 +103,7 @@ int AGE_Font::setAvailable(bool available){
 
 //---------------------------------------------------------------------------
 
-bool AGE_Font::getAvailable(){
+bool TSGE_Font::getAvailable(){
 
 	return this->available;
 
@@ -112,7 +112,7 @@ bool AGE_Font::getAvailable(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Font::setNext(AGE_Font* next){
+int TSGE_Font::setNext(TSGE_Font* next){
 
 	this->next = next;
 	
@@ -123,7 +123,7 @@ int AGE_Font::setNext(AGE_Font* next){
 
 //---------------------------------------------------------------------------
 
-AGE_Font* AGE_Font::getNext(){
+TSGE_Font* TSGE_Font::getNext(){
 
 	return this->next;
 
@@ -132,7 +132,7 @@ AGE_Font* AGE_Font::getNext(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Font::setFont(TTF_Font* font){
+int TSGE_Font::setFont(TTF_Font* font){
 
 	this->font = font;
 	
@@ -143,7 +143,7 @@ int AGE_Font::setFont(TTF_Font* font){
 
 //---------------------------------------------------------------------------
 
-TTF_Font* AGE_Font::getFont(){
+TTF_Font* TSGE_Font::getFont(){
 
 	return this->font;
 
@@ -152,7 +152,7 @@ TTF_Font* AGE_Font::getFont(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Font::setSrc(string src){
+int TSGE_Font::setSrc(string src){
 
 	this->src = src;
 	
@@ -163,7 +163,7 @@ int AGE_Font::setSrc(string src){
 
 //---------------------------------------------------------------------------
 
-string AGE_Font::getSrc(){
+string TSGE_Font::getSrc(){
 
 	return this->src;
 
@@ -172,7 +172,7 @@ string AGE_Font::getSrc(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Font::setSize(int size){
+int TSGE_Font::setSize(int size){
 
 	this->size = size;
 	
@@ -183,7 +183,7 @@ int AGE_Font::setSize(int size){
 
 //---------------------------------------------------------------------------
 
-int AGE_Font::getSize(){
+int TSGE_Font::getSize(){
 
 	return this->size;
 

@@ -1,13 +1,13 @@
 /****************************************************************************
-* Created for: AGE v2
-* Dev line: AGE v2
+* Created for: TSGE v2
+* Dev line: TSGE v2
 * Creation date: 08/02/2016
-* Last change: 12/12/16
+* Last change: 09/02/17
 * Autogen: 1.1.2c
 ****************************************************************************/
 
 
-#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL.h>
 
 
 #include <iostream>
@@ -17,31 +17,29 @@
 using namespace std;
 
 
-#ifndef AGE_FONT_H
-#define AGE_FONT_H
+#ifndef TSGE_WINDOW_H
+#define TSGE_WINDOW_H
 
 
-class AGE_Font
+class TSGE_Window
 {
 	public:
-		AGE_Font();
-		virtual ~AGE_Font();
+		TSGE_Window();
+		virtual ~TSGE_Window();
 
 		int printNode();
 		int getIdent();
 		string getTag();
 		bool getAvailable();
-		AGE_Font* getNext();
-		TTF_Font* getFont();
-		string getSrc();
-		int getSize();
+		TSGE_Window* getNext();
+		SDL_Window* getWindow();
+		SDL_Renderer* getRender();
 		int setIdent(int ident);
 		int setTag(string tag);
 		int setAvailable(bool available);
-		int setNext(AGE_Font* next);
-		int setFont(TTF_Font* font);
-		int setSrc(string src);
-		int setSize(int size);
+		int setNext(TSGE_Window* next);
+		int setWindow(SDL_Window* window);
+		int setRender(SDL_Renderer* render);
 		
 
 
@@ -52,15 +50,14 @@ class AGE_Font
 		int ident;
 		string tag;
 		bool available;
-		AGE_Font* next;
-		TTF_Font* font;
-		string src;
-		int size;
+		TSGE_Window* next;
+		SDL_Window* window;
+		SDL_Renderer* render;
 
 };
 
 
-#endif // AGE_FONT_H
+#endif // TSGE_WINDOW_H
 
 
 

@@ -1,17 +1,17 @@
 /****************************************************************************
 * Created for: AGE v1
-* Dev line: AGE v2
+* Dev line: TSGE v2
 * Creation day: 24/07/2015
 * Last change: 12/12/2016
 ****************************************************************************/
 
 
-#include "AGE.h"
+#include "TSGE.h"
 
 
 //---------------------------------------------------------------------------
 
-bool age_util_file_check(string src){
+bool tsge_util_file_check(string src){
 
 	struct stat buffer;
 
@@ -22,7 +22,7 @@ bool age_util_file_check(string src){
 
 //---------------------------------------------------------------------------
 
-string age_util_itos(int number){
+string tsge_util_itos(int number){
 
     stringstream stream;
     stream << number;
@@ -34,14 +34,14 @@ string age_util_itos(int number){
 
 //---------------------------------------------------------------------------
 
-string age_util_actos(AGE_Color color){
+string tsge_util_actos(TSGE_Color color){
 
     string result = "";
 
-    result = result + "r:" + age_util_itos(color.r) + "-";
-    result = result + "g:" + age_util_itos(color.g) + "-";
-    result = result + "b:" + age_util_itos(color.b) + "-";
-    result = result + "a:" + age_util_itos(color.a);
+    result = result + "r:" + tsge_util_itos(color.r) + "-";
+    result = result + "g:" + tsge_util_itos(color.g) + "-";
+    result = result + "b:" + tsge_util_itos(color.b) + "-";
+    result = result + "a:" + tsge_util_itos(color.a);
 
     return result;
 
@@ -50,7 +50,7 @@ string age_util_actos(AGE_Color color){
 
 //---------------------------------------------------------------------------
 
-SDL_Color age_util_actsc(AGE_Color color){
+SDL_Color tsge_util_actsc(TSGE_Color color){
 
     SDL_Color conv;
 

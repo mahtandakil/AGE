@@ -1,8 +1,8 @@
 /****************************************************************************
-* Created for: AGE v2
-* Dev line: AGE v2
+* Created for: TSGE v2
+* Dev line: TSGE v2
 * Creation date: 08/02/2016
-* Last change: 12/12/16
+* Last change: 09/02/17
 * Autogen: 1.1.2c
 ****************************************************************************/
 
@@ -14,21 +14,21 @@
 using namespace std;
 
 
-#ifndef AGE_DRAWAREA_H
-#define AGE_DRAWAREA_H
+#ifndef TSGE_DRAWAREA_H
+#define TSGE_DRAWAREA_H
 
 
-class AGE_DrawArea
+class TSGE_DrawArea
 {
 	public:
-		AGE_DrawArea();
-		virtual ~AGE_DrawArea();
+		TSGE_DrawArea();
+		virtual ~TSGE_DrawArea();
 
 		int printNode();
 		int getIdent();
 		string getTag();
 		bool getAvailable();
-		AGE_DrawArea* getNext();
+		TSGE_DrawArea* getNext();
 		int getX();
 		int getY();
 		int getW();
@@ -38,7 +38,7 @@ class AGE_DrawArea
 		int setIdent(int ident);
 		int setTag(string tag);
 		int setAvailable(bool available);
-		int setNext(AGE_DrawArea* next);
+		int setNext(TSGE_DrawArea* next);
 		int setX(int x);
 		int setY(int y);
 		int setW(int w);
@@ -55,7 +55,7 @@ class AGE_DrawArea
 		int ident;
 		string tag;
 		bool available;
-		AGE_DrawArea* next;
+		TSGE_DrawArea* next;
 		int x;
 		int y;
 		int w;
@@ -66,7 +66,7 @@ class AGE_DrawArea
 };
 
 
-#endif // AGE_DRAWAREA_H
+#endif // TSGE_DRAWAREA_H
 
 
 

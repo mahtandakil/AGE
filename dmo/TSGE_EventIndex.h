@@ -1,13 +1,13 @@
 /****************************************************************************
-* Created for: AGE v2
-* Dev line: AGE v2
+* Created for: TSGE v2
+* Dev line: TSGE v2
 * Creation date: 08/02/2016
-* Last change: 12/12/16
+* Last change: 09/02/17
 * Autogen: 1.1.2c
 ****************************************************************************/
 
 
-#include "AGE_Event.h"
+#include "TSGE_Event.h"
 
 
 #include <SDL2/SDL.h>
@@ -20,23 +20,23 @@
 using namespace std;
 
 
-#ifndef AGE_EVENTINDEX_H
-#define AGE_EVENTINDEX_H
+#ifndef TSGE_EVENTINDEX_H
+#define TSGE_EVENTINDEX_H
 
 
-class AGE_EventIndex
+class TSGE_EventIndex
 {
 	public:
-		AGE_EventIndex();
-		virtual ~AGE_EventIndex();
+		TSGE_EventIndex();
+		virtual ~TSGE_EventIndex();
 
 		int createNode(string tag="");
 		int freeNode(int ident);
 		int freeList();
 		int deleteNode(int ident);
 		int deleteList();
-		AGE_Event* getFirst();
-		AGE_Event* getNode(int id);
+		TSGE_Event* getFirst();
+		TSGE_Event* getNode(int id);
 		int getPrevious(int ident);
 		int printNodes();
 		int purge();
@@ -45,7 +45,7 @@ class AGE_EventIndex
 		int getIdent(int id);
 		string getTag(int id);
 		bool getAvailable(int id);
-		AGE_Event* getNext(int id);
+		TSGE_Event* getNext(int id);
 		Uint32 getEvent(int id);
 		Uint32 getDevice(int id);
 		int getWindow(int id);
@@ -59,7 +59,7 @@ class AGE_EventIndex
 		Uint16 getMod(int id);
 		int setTag(int ident, string tag);
 		int setAvailable(int ident, bool available);
-		int setNext(int ident, AGE_Event* next);
+		int setNext(int ident, TSGE_Event* next);
 		int setEvent(int ident, Uint32 event);
 		int setDevice(int ident, Uint32 device);
 		int setWindow(int ident, int window);
@@ -74,7 +74,7 @@ class AGE_EventIndex
 		int searchByIdent(int ident);
 		int searchByTag(string tag);
 		int searchByAvailable(bool available);
-		int searchByNext(AGE_Event* next);
+		int searchByNext(TSGE_Event* next);
 		int searchByEvent(Uint32 event);
 		int searchByDevice(Uint32 device);
 		int searchByWindow(int window);
@@ -95,12 +95,12 @@ class AGE_EventIndex
 	private:
 		int nodes;
 		int next_ident;
-		AGE_Event* first;
-		AGE_Event* last;
+		TSGE_Event* first;
+		TSGE_Event* last;
 
 
 };
 
 
-#endif // AGE_EVENTINDEX_H
+#endif // TSGE_EVENTINDEX_H
 

@@ -1,39 +1,34 @@
 /****************************************************************************
-* Created for: AGE v2
-* Dev line: AGE v2
+* Created for: TSGE v2
+* Dev line: TSGE v2
 * Creation date: 08/02/2016
-* Last change: 12/12/16
+* Last change: 09/02/17
 * Autogen: 1.1.2c
 ****************************************************************************/
 
 
-#include "AGE_Event.h"
+#include "TSGE_DrawArea.h"
 
 
 //---------------------------------------------------------------------------
 
-AGE_Event::AGE_Event()
+TSGE_DrawArea::TSGE_DrawArea()
 {
 
 	this->ident = -1;
 	this->tag = "";
 	this->available = false;
 	this->next = nullptr;
-	this->event = 0;
-	this->device = 0;
-	this->window = -1;
-	this->timestamp = 0;
-	this->state = 0;
 	this->x = -1;
 	this->y = -1;
 	this->w = -1;
 	this->h = -1;
-	this->count = 0;
-	this->mod = 0;
+	this->solid = false;
+	this->window_id = -1;
 
 }
 
-AGE_Event::~AGE_Event()
+TSGE_DrawArea::~TSGE_DrawArea()
 {
 	//dtor
 }
@@ -41,24 +36,19 @@ AGE_Event::~AGE_Event()
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::printNode(){
+int TSGE_DrawArea::printNode(){
 
 	cout << "ID: " << this->ident << endl;
 	cout << "POINTER: " << this << endl;
 	cout << "TAG: " << this->tag << endl;
 	cout << "AVAILABLE: " << this->available << endl;
 	cout << "NEXT: " << this->next << endl;
-	cout << "EVENT: " << this->event << endl;
-	cout << "DEVICE: " << this->device << endl;
-	cout << "WINDOW: " << this->window << endl;
-	cout << "TIMESTAMP: " << this->timestamp << endl;
-	cout << "STATE: " << this->state << endl;
 	cout << "X: " << this->x << endl;
 	cout << "Y: " << this->y << endl;
 	cout << "W: " << this->w << endl;
 	cout << "H: " << this->h << endl;
-	cout << "COUNT: " << this->count << endl;
-	cout << "MOD: " << this->mod << endl;
+	cout << "SOLID: " << this->solid << endl;
+	cout << "WINDOW_ID: " << this->window_id << endl;
 	cout << endl;
 	
 	return this->ident;
@@ -68,7 +58,7 @@ int AGE_Event::printNode(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::setIdent(int ident){
+int TSGE_DrawArea::setIdent(int ident){
 
 	this->ident = ident;
 	
@@ -79,7 +69,7 @@ int AGE_Event::setIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::getIdent(){
+int TSGE_DrawArea::getIdent(){
 
 	return this->ident;
 
@@ -88,7 +78,7 @@ int AGE_Event::getIdent(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::setTag(string tag){
+int TSGE_DrawArea::setTag(string tag){
 
 	this->tag = tag;
 	
@@ -99,7 +89,7 @@ int AGE_Event::setTag(string tag){
 
 //---------------------------------------------------------------------------
 
-string AGE_Event::getTag(){
+string TSGE_DrawArea::getTag(){
 
 	return this->tag;
 
@@ -108,7 +98,7 @@ string AGE_Event::getTag(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::setAvailable(bool available){
+int TSGE_DrawArea::setAvailable(bool available){
 
 	this->available = available;
 	
@@ -119,7 +109,7 @@ int AGE_Event::setAvailable(bool available){
 
 //---------------------------------------------------------------------------
 
-bool AGE_Event::getAvailable(){
+bool TSGE_DrawArea::getAvailable(){
 
 	return this->available;
 
@@ -128,7 +118,7 @@ bool AGE_Event::getAvailable(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::setNext(AGE_Event* next){
+int TSGE_DrawArea::setNext(TSGE_DrawArea* next){
 
 	this->next = next;
 	
@@ -139,7 +129,7 @@ int AGE_Event::setNext(AGE_Event* next){
 
 //---------------------------------------------------------------------------
 
-AGE_Event* AGE_Event::getNext(){
+TSGE_DrawArea* TSGE_DrawArea::getNext(){
 
 	return this->next;
 
@@ -148,107 +138,7 @@ AGE_Event* AGE_Event::getNext(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::setEvent(Uint32 event){
-
-	this->event = event;
-	
-	return this->ident;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-Uint32 AGE_Event::getEvent(){
-
-	return this->event;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Event::setDevice(Uint32 device){
-
-	this->device = device;
-	
-	return this->ident;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-Uint32 AGE_Event::getDevice(){
-
-	return this->device;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Event::setWindow(int window){
-
-	this->window = window;
-	
-	return this->ident;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Event::getWindow(){
-
-	return this->window;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Event::setTimestamp(Uint32 timestamp){
-
-	this->timestamp = timestamp;
-	
-	return this->ident;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-Uint32 AGE_Event::getTimestamp(){
-
-	return this->timestamp;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Event::setState(Uint32 state){
-
-	this->state = state;
-	
-	return this->ident;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-Uint32 AGE_Event::getState(){
-
-	return this->state;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Event::setX(int x){
+int TSGE_DrawArea::setX(int x){
 
 	this->x = x;
 	
@@ -259,7 +149,7 @@ int AGE_Event::setX(int x){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::getX(){
+int TSGE_DrawArea::getX(){
 
 	return this->x;
 
@@ -268,7 +158,7 @@ int AGE_Event::getX(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::setY(int y){
+int TSGE_DrawArea::setY(int y){
 
 	this->y = y;
 	
@@ -279,7 +169,7 @@ int AGE_Event::setY(int y){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::getY(){
+int TSGE_DrawArea::getY(){
 
 	return this->y;
 
@@ -288,7 +178,7 @@ int AGE_Event::getY(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::setW(int w){
+int TSGE_DrawArea::setW(int w){
 
 	this->w = w;
 	
@@ -299,7 +189,7 @@ int AGE_Event::setW(int w){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::getW(){
+int TSGE_DrawArea::getW(){
 
 	return this->w;
 
@@ -308,7 +198,7 @@ int AGE_Event::getW(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::setH(int h){
+int TSGE_DrawArea::setH(int h){
 
 	this->h = h;
 	
@@ -319,7 +209,7 @@ int AGE_Event::setH(int h){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::getH(){
+int TSGE_DrawArea::getH(){
 
 	return this->h;
 
@@ -328,9 +218,9 @@ int AGE_Event::getH(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::setCount(Uint8 count){
+int TSGE_DrawArea::setSolid(bool solid){
 
-	this->count = count;
+	this->solid = solid;
 	
 	return this->ident;
 
@@ -339,18 +229,18 @@ int AGE_Event::setCount(Uint8 count){
 
 //---------------------------------------------------------------------------
 
-Uint8 AGE_Event::getCount(){
+bool TSGE_DrawArea::getSolid(){
 
-	return this->count;
+	return this->solid;
 
 }
 
 
 //---------------------------------------------------------------------------
 
-int AGE_Event::setMod(Uint16 mod){
+int TSGE_DrawArea::setWindow_id(int window_id){
 
-	this->mod = mod;
+	this->window_id = window_id;
 	
 	return this->ident;
 
@@ -359,9 +249,9 @@ int AGE_Event::setMod(Uint16 mod){
 
 //---------------------------------------------------------------------------
 
-Uint16 AGE_Event::getMod(){
+int TSGE_DrawArea::getWindow_id(){
 
-	return this->mod;
+	return this->window_id;
 
 }
 

@@ -1,18 +1,18 @@
 /****************************************************************************
-* Created for: AGE v2
-* Dev line: AGE v2
+* Created for: TSGE v2
+* Dev line: TSGE v2
 * Creation date: 08/02/2016
-* Last change: 12/12/16
+* Last change: 09/02/17
 * Autogen: 1.1.2c
 ****************************************************************************/
 
 
-#include "AGE_DrawAreaIndex.h"
+#include "TSGE_EventIndex.h"
 
 
 //---------------------------------------------------------------------------
 
-AGE_DrawAreaIndex::AGE_DrawAreaIndex()
+TSGE_EventIndex::TSGE_EventIndex()
 {
 
 	this->nodes = 0;
@@ -22,7 +22,7 @@ AGE_DrawAreaIndex::AGE_DrawAreaIndex()
 
 }
 
-AGE_DrawAreaIndex::~AGE_DrawAreaIndex()
+TSGE_EventIndex::~TSGE_EventIndex()
 {
 
 	this->freeList();
@@ -32,9 +32,9 @@ AGE_DrawAreaIndex::~AGE_DrawAreaIndex()
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::createNode(string tag){
+int TSGE_EventIndex::createNode(string tag){
 
-	AGE_DrawArea* pointer = new AGE_DrawArea();
+	TSGE_Event* pointer = new TSGE_Event();
 	pointer->setTag(tag);
 
 	if (this->nodes == 0){
@@ -62,9 +62,9 @@ int AGE_DrawAreaIndex::createNode(string tag){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::freeNode(int ident){
+int TSGE_EventIndex::freeNode(int ident){
 
-	AGE_DrawArea* pointer = nullptr;
+	TSGE_Event* pointer = nullptr;
 	int result= -1;
 
 	pointer = this->getNode(ident);
@@ -83,10 +83,10 @@ int AGE_DrawAreaIndex::freeNode(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::getPrevious(int ident){
+int TSGE_EventIndex::getPrevious(int ident){
 
-	AGE_DrawArea* pointer = nullptr;
-	AGE_DrawArea* next = nullptr;
+	TSGE_Event* pointer = nullptr;
+	TSGE_Event* next = nullptr;
 	bool keep = true;
 	int result = -1;
 
@@ -128,9 +128,9 @@ int AGE_DrawAreaIndex::getPrevious(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::freeList(){
+int TSGE_EventIndex::freeList(){
 
-	AGE_DrawArea* pointer = nullptr;
+	TSGE_Event* pointer = nullptr;
 	int result= 0;
 
 	pointer = this->first;
@@ -150,11 +150,11 @@ int AGE_DrawAreaIndex::freeList(){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::deleteNode(int ident){
+int TSGE_EventIndex::deleteNode(int ident){
 
-	AGE_DrawArea* pointer = nullptr;
-	AGE_DrawArea* next = nullptr;
-	AGE_DrawArea* previous = nullptr;
+	TSGE_Event* pointer = nullptr;
+	TSGE_Event* next = nullptr;
+	TSGE_Event* previous = nullptr;
 	int previous_id = -1;
 	int result = -1;
 
@@ -195,9 +195,9 @@ int AGE_DrawAreaIndex::deleteNode(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::deleteList(){
+int TSGE_EventIndex::deleteList(){
 
-	AGE_DrawArea* pointer = nullptr;
+	TSGE_Event* pointer = nullptr;
 	int result = 0;
 
 	pointer = this->first;
@@ -222,9 +222,9 @@ int AGE_DrawAreaIndex::deleteList(){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::purge(){
+int TSGE_EventIndex::purge(){
 
-	AGE_DrawArea* pointer = nullptr;
+	TSGE_Event* pointer = nullptr;
 	int available_ident = -1;
 	int result = -1;
 
@@ -247,9 +247,9 @@ int AGE_DrawAreaIndex::purge(){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::searchAvailable(int limit){
+int TSGE_EventIndex::searchAvailable(int limit){
 
-	AGE_DrawArea* pointer = nullptr;
+	TSGE_Event* pointer = nullptr;
 	bool found = false;
 	int result = -1;
 	
@@ -276,7 +276,7 @@ int AGE_DrawAreaIndex::searchAvailable(int limit){
 
 //---------------------------------------------------------------------------
 
-AGE_DrawArea* AGE_DrawAreaIndex::getFirst(){
+TSGE_Event* TSGE_EventIndex::getFirst(){
 
 	return this->first;
 
@@ -285,10 +285,10 @@ AGE_DrawArea* AGE_DrawAreaIndex::getFirst(){
 
 //---------------------------------------------------------------------------
 
-AGE_DrawArea* AGE_DrawAreaIndex::getNode(int ident){
+TSGE_Event* TSGE_EventIndex::getNode(int ident){
 
-	AGE_DrawArea* result = nullptr;
-	AGE_DrawArea* pointer = nullptr;
+	TSGE_Event* result = nullptr;
+	TSGE_Event* pointer = nullptr;
 	
 	if (this->nodes > 0){
 	
@@ -313,21 +313,26 @@ AGE_DrawArea* AGE_DrawAreaIndex::getNode(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::setValues(int ident, int x, int y, int w, int h, bool solid, int window_id){
+int TSGE_EventIndex::setValues(int ident, Uint32 event, Uint32 device, int window, Uint32 timestamp, Uint32 state, int x, int y, int w, int h, Uint8 count, Uint16 mod){
 
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 	int result = -1;
 	
 	pointer = this->getNode(ident);
 	
 	if(pointer != nullptr){
 	
+		pointer->setEvent(event);
+		pointer->setDevice(device);
+		pointer->setWindow(window);
+		pointer->setTimestamp(timestamp);
+		pointer->setState(state);
 		pointer->setX(x);
 		pointer->setY(y);
 		pointer->setW(w);
 		pointer->setH(h);
-		pointer->setSolid(solid);
-		pointer->setWindow_id(window_id);
+		pointer->setCount(count);
+		pointer->setMod(mod);
 		result = pointer->getIdent();
 	
 	}
@@ -339,9 +344,9 @@ int AGE_DrawAreaIndex::setValues(int ident, int x, int y, int w, int h, bool sol
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::printNodes(){
+int TSGE_EventIndex::printNodes(){
 
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 	int result = 0;
 	
 	pointer = this->first;
@@ -367,10 +372,10 @@ int AGE_DrawAreaIndex::printNodes(){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::getIdent(int ident){
+int TSGE_EventIndex::getIdent(int ident){
 
 	int result = -1;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -390,10 +395,10 @@ int AGE_DrawAreaIndex::getIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-string AGE_DrawAreaIndex::getTag(int ident){
+string TSGE_EventIndex::getTag(int ident){
 
 	string result = "";
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -413,10 +418,10 @@ string AGE_DrawAreaIndex::getTag(int ident){
 
 //---------------------------------------------------------------------------
 
-bool AGE_DrawAreaIndex::getAvailable(int ident){
+bool TSGE_EventIndex::getAvailable(int ident){
 
 	bool result = false;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -436,10 +441,10 @@ bool AGE_DrawAreaIndex::getAvailable(int ident){
 
 //---------------------------------------------------------------------------
 
-AGE_DrawArea* AGE_DrawAreaIndex::getNext(int ident){
+TSGE_Event* TSGE_EventIndex::getNext(int ident){
 
-	AGE_DrawArea* result = nullptr;
-	AGE_DrawArea* pointer;
+	TSGE_Event* result = nullptr;
+	TSGE_Event* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -459,10 +464,125 @@ AGE_DrawArea* AGE_DrawAreaIndex::getNext(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::getX(int ident){
+Uint32 TSGE_EventIndex::getEvent(int ident){
+
+	Uint32 result = 0;
+	TSGE_Event* pointer;
+
+	pointer = this->getNode(ident);
+
+	if ((pointer == nullptr) || (ident < 0)){
+		result = 0;
+
+
+	}else{
+		result = pointer->getEvent();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+Uint32 TSGE_EventIndex::getDevice(int ident){
+
+	Uint32 result = 0;
+	TSGE_Event* pointer;
+
+	pointer = this->getNode(ident);
+
+	if ((pointer == nullptr) || (ident < 0)){
+		result = 0;
+
+
+	}else{
+		result = pointer->getDevice();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int TSGE_EventIndex::getWindow(int ident){
 
 	int result = -1;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
+
+	pointer = this->getNode(ident);
+
+	if ((pointer == nullptr) || (ident < 0)){
+		result = -1;
+
+
+	}else{
+		result = pointer->getWindow();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+Uint32 TSGE_EventIndex::getTimestamp(int ident){
+
+	Uint32 result = 0;
+	TSGE_Event* pointer;
+
+	pointer = this->getNode(ident);
+
+	if ((pointer == nullptr) || (ident < 0)){
+		result = 0;
+
+
+	}else{
+		result = pointer->getTimestamp();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+Uint32 TSGE_EventIndex::getState(int ident){
+
+	Uint32 result = 0;
+	TSGE_Event* pointer;
+
+	pointer = this->getNode(ident);
+
+	if ((pointer == nullptr) || (ident < 0)){
+		result = 0;
+
+
+	}else{
+		result = pointer->getState();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int TSGE_EventIndex::getX(int ident){
+
+	int result = -1;
+	TSGE_Event* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -482,10 +602,10 @@ int AGE_DrawAreaIndex::getX(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::getY(int ident){
+int TSGE_EventIndex::getY(int ident){
 
 	int result = -1;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -505,10 +625,10 @@ int AGE_DrawAreaIndex::getY(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::getW(int ident){
+int TSGE_EventIndex::getW(int ident){
 
 	int result = -1;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -528,10 +648,10 @@ int AGE_DrawAreaIndex::getW(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::getH(int ident){
+int TSGE_EventIndex::getH(int ident){
 
 	int result = -1;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -551,19 +671,19 @@ int AGE_DrawAreaIndex::getH(int ident){
 
 //---------------------------------------------------------------------------
 
-bool AGE_DrawAreaIndex::getSolid(int ident){
+Uint8 TSGE_EventIndex::getCount(int ident){
 
-	bool result = false;
-	AGE_DrawArea* pointer;
+	Uint8 result = 0;
+	TSGE_Event* pointer;
 
 	pointer = this->getNode(ident);
 
 	if ((pointer == nullptr) || (ident < 0)){
-		result = false;
+		result = 0;
 
 
 	}else{
-		result = pointer->getSolid();
+		result = pointer->getCount();
 
 	}
 
@@ -574,19 +694,19 @@ bool AGE_DrawAreaIndex::getSolid(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::getWindow_id(int ident){
+Uint16 TSGE_EventIndex::getMod(int ident){
 
-	int result = -1;
-	AGE_DrawArea* pointer;
+	Uint16 result = 0;
+	TSGE_Event* pointer;
 
 	pointer = this->getNode(ident);
 
 	if ((pointer == nullptr) || (ident < 0)){
-		result = -1;
+		result = 0;
 
 
 	}else{
-		result = pointer->getWindow_id();
+		result = pointer->getMod();
 
 	}
 
@@ -597,11 +717,11 @@ int AGE_DrawAreaIndex::getWindow_id(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::searchByIdent(int ident){
+int TSGE_EventIndex::searchByIdent(int ident){
 
 	int result = -1;
 	bool found = false;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -632,11 +752,11 @@ int AGE_DrawAreaIndex::searchByIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::searchByTag(string tag){
+int TSGE_EventIndex::searchByTag(string tag){
 
 	int result = -1;
 	bool found = false;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -667,11 +787,11 @@ int AGE_DrawAreaIndex::searchByTag(string tag){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::searchByAvailable(bool available){
+int TSGE_EventIndex::searchByAvailable(bool available){
 
 	int result = -1;
 	bool found = false;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -702,11 +822,11 @@ int AGE_DrawAreaIndex::searchByAvailable(bool available){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::searchByNext(AGE_DrawArea* next){
+int TSGE_EventIndex::searchByNext(TSGE_Event* next){
 
 	int result = -1;
 	bool found = false;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -737,11 +857,186 @@ int AGE_DrawAreaIndex::searchByNext(AGE_DrawArea* next){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::searchByX(int x){
+int TSGE_EventIndex::searchByEvent(Uint32 event){
 
 	int result = -1;
 	bool found = false;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
+
+	if (this->nodes == 0){
+		result = -1;
+
+	}else{
+
+		pointer = this->first;
+
+		while (! ((pointer == nullptr) || (found))){
+
+			if (event == pointer->getEvent()){
+
+				result = pointer->getIdent();
+				found = true;
+
+			}
+
+			pointer = pointer->getNext();
+
+		}
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int TSGE_EventIndex::searchByDevice(Uint32 device){
+
+	int result = -1;
+	bool found = false;
+	TSGE_Event* pointer;
+
+	if (this->nodes == 0){
+		result = -1;
+
+	}else{
+
+		pointer = this->first;
+
+		while (! ((pointer == nullptr) || (found))){
+
+			if (device == pointer->getDevice()){
+
+				result = pointer->getIdent();
+				found = true;
+
+			}
+
+			pointer = pointer->getNext();
+
+		}
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int TSGE_EventIndex::searchByWindow(int window){
+
+	int result = -1;
+	bool found = false;
+	TSGE_Event* pointer;
+
+	if (this->nodes == 0){
+		result = -1;
+
+	}else{
+
+		pointer = this->first;
+
+		while (! ((pointer == nullptr) || (found))){
+
+			if (window == pointer->getWindow()){
+
+				result = pointer->getIdent();
+				found = true;
+
+			}
+
+			pointer = pointer->getNext();
+
+		}
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int TSGE_EventIndex::searchByTimestamp(Uint32 timestamp){
+
+	int result = -1;
+	bool found = false;
+	TSGE_Event* pointer;
+
+	if (this->nodes == 0){
+		result = -1;
+
+	}else{
+
+		pointer = this->first;
+
+		while (! ((pointer == nullptr) || (found))){
+
+			if (timestamp == pointer->getTimestamp()){
+
+				result = pointer->getIdent();
+				found = true;
+
+			}
+
+			pointer = pointer->getNext();
+
+		}
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int TSGE_EventIndex::searchByState(Uint32 state){
+
+	int result = -1;
+	bool found = false;
+	TSGE_Event* pointer;
+
+	if (this->nodes == 0){
+		result = -1;
+
+	}else{
+
+		pointer = this->first;
+
+		while (! ((pointer == nullptr) || (found))){
+
+			if (state == pointer->getState()){
+
+				result = pointer->getIdent();
+				found = true;
+
+			}
+
+			pointer = pointer->getNext();
+
+		}
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int TSGE_EventIndex::searchByX(int x){
+
+	int result = -1;
+	bool found = false;
+	TSGE_Event* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -772,11 +1067,11 @@ int AGE_DrawAreaIndex::searchByX(int x){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::searchByY(int y){
+int TSGE_EventIndex::searchByY(int y){
 
 	int result = -1;
 	bool found = false;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -807,11 +1102,11 @@ int AGE_DrawAreaIndex::searchByY(int y){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::searchByW(int w){
+int TSGE_EventIndex::searchByW(int w){
 
 	int result = -1;
 	bool found = false;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -842,11 +1137,11 @@ int AGE_DrawAreaIndex::searchByW(int w){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::searchByH(int h){
+int TSGE_EventIndex::searchByH(int h){
 
 	int result = -1;
 	bool found = false;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -877,11 +1172,11 @@ int AGE_DrawAreaIndex::searchByH(int h){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::searchBySolid(bool solid){
+int TSGE_EventIndex::searchByCount(Uint8 count){
 
 	int result = -1;
 	bool found = false;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -892,7 +1187,7 @@ int AGE_DrawAreaIndex::searchBySolid(bool solid){
 
 		while (! ((pointer == nullptr) || (found))){
 
-			if (solid == pointer->getSolid()){
+			if (count == pointer->getCount()){
 
 				result = pointer->getIdent();
 				found = true;
@@ -912,11 +1207,11 @@ int AGE_DrawAreaIndex::searchBySolid(bool solid){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::searchByWindow_id(int window_id){
+int TSGE_EventIndex::searchByMod(Uint16 mod){
 
 	int result = -1;
 	bool found = false;
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -927,7 +1222,7 @@ int AGE_DrawAreaIndex::searchByWindow_id(int window_id){
 
 		while (! ((pointer == nullptr) || (found))){
 
-			if (window_id == pointer->getWindow_id()){
+			if (mod == pointer->getMod()){
 
 				result = pointer->getIdent();
 				found = true;
@@ -947,9 +1242,9 @@ int AGE_DrawAreaIndex::searchByWindow_id(int window_id){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::setTag(int ident, string tag){
+int TSGE_EventIndex::setTag(int ident, string tag){
 
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -968,9 +1263,9 @@ int AGE_DrawAreaIndex::setTag(int ident, string tag){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::setAvailable(int ident, bool available){
+int TSGE_EventIndex::setAvailable(int ident, bool available){
 
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -989,9 +1284,9 @@ int AGE_DrawAreaIndex::setAvailable(int ident, bool available){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::setNext(int ident, AGE_DrawArea* next){
+int TSGE_EventIndex::setNext(int ident, TSGE_Event* next){
 
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -1010,9 +1305,114 @@ int AGE_DrawAreaIndex::setNext(int ident, AGE_DrawArea* next){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::setX(int ident, int x){
+int TSGE_EventIndex::setEvent(int ident, Uint32 event){
 
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
+	int result = -1;
+
+	pointer = this->getNode(ident);
+
+	if (pointer != nullptr){
+
+		pointer->setEvent(event);
+		result = pointer->getIdent();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int TSGE_EventIndex::setDevice(int ident, Uint32 device){
+
+	TSGE_Event* pointer;
+	int result = -1;
+
+	pointer = this->getNode(ident);
+
+	if (pointer != nullptr){
+
+		pointer->setDevice(device);
+		result = pointer->getIdent();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int TSGE_EventIndex::setWindow(int ident, int window){
+
+	TSGE_Event* pointer;
+	int result = -1;
+
+	pointer = this->getNode(ident);
+
+	if (pointer != nullptr){
+
+		pointer->setWindow(window);
+		result = pointer->getIdent();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int TSGE_EventIndex::setTimestamp(int ident, Uint32 timestamp){
+
+	TSGE_Event* pointer;
+	int result = -1;
+
+	pointer = this->getNode(ident);
+
+	if (pointer != nullptr){
+
+		pointer->setTimestamp(timestamp);
+		result = pointer->getIdent();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int TSGE_EventIndex::setState(int ident, Uint32 state){
+
+	TSGE_Event* pointer;
+	int result = -1;
+
+	pointer = this->getNode(ident);
+
+	if (pointer != nullptr){
+
+		pointer->setState(state);
+		result = pointer->getIdent();
+
+	}
+
+	return result;
+
+}
+
+
+//---------------------------------------------------------------------------
+
+int TSGE_EventIndex::setX(int ident, int x){
+
+	TSGE_Event* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -1031,9 +1431,9 @@ int AGE_DrawAreaIndex::setX(int ident, int x){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::setY(int ident, int y){
+int TSGE_EventIndex::setY(int ident, int y){
 
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -1052,9 +1452,9 @@ int AGE_DrawAreaIndex::setY(int ident, int y){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::setW(int ident, int w){
+int TSGE_EventIndex::setW(int ident, int w){
 
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -1073,9 +1473,9 @@ int AGE_DrawAreaIndex::setW(int ident, int w){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::setH(int ident, int h){
+int TSGE_EventIndex::setH(int ident, int h){
 
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -1094,16 +1494,16 @@ int AGE_DrawAreaIndex::setH(int ident, int h){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::setSolid(int ident, bool solid){
+int TSGE_EventIndex::setCount(int ident, Uint8 count){
 
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
 
 	if (pointer != nullptr){
 
-		pointer->setSolid(solid);
+		pointer->setCount(count);
 		result = pointer->getIdent();
 
 	}
@@ -1115,16 +1515,16 @@ int AGE_DrawAreaIndex::setSolid(int ident, bool solid){
 
 //---------------------------------------------------------------------------
 
-int AGE_DrawAreaIndex::setWindow_id(int ident, int window_id){
+int TSGE_EventIndex::setMod(int ident, Uint16 mod){
 
-	AGE_DrawArea* pointer;
+	TSGE_Event* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
 
 	if (pointer != nullptr){
 
-		pointer->setWindow_id(window_id);
+		pointer->setMod(mod);
 		result = pointer->getIdent();
 
 	}

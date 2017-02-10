@@ -1,8 +1,8 @@
 /****************************************************************************
-* Created for: AGE v2
-* Dev line: AGE v2
+* Created for: TSGE v2
+* Dev line: TSGE v2
 * Creation date: 08/02/2016
-* Last change: 12/12/16
+* Last change: 09/02/17
 * Autogen: 1.1.2c
 ****************************************************************************/
 
@@ -18,21 +18,21 @@
 using namespace std;
 
 
-#ifndef AGE_IMAGE_H
-#define AGE_IMAGE_H
+#ifndef TSGE_IMAGE_H
+#define TSGE_IMAGE_H
 
 
-class AGE_Image
+class TSGE_Image
 {
 	public:
-		AGE_Image();
-		virtual ~AGE_Image();
+		TSGE_Image();
+		virtual ~TSGE_Image();
 
 		int printNode();
 		int getIdent();
 		string getTag();
 		bool getAvailable();
-		AGE_Image* getNext();
+		TSGE_Image* getNext();
 		string getSrc();
 		SDL_Surface* getSurface();
 		SDL_Texture* getTexture();
@@ -41,7 +41,7 @@ class AGE_Image
 		int setIdent(int ident);
 		int setTag(string tag);
 		int setAvailable(bool available);
-		int setNext(AGE_Image* next);
+		int setNext(TSGE_Image* next);
 		int setSrc(string src);
 		int setSurface(SDL_Surface* surface);
 		int setTexture(SDL_Texture* texture);
@@ -57,7 +57,7 @@ class AGE_Image
 		int ident;
 		string tag;
 		bool available;
-		AGE_Image* next;
+		TSGE_Image* next;
 		string src;
 		SDL_Surface* surface;
 		SDL_Texture* texture;
@@ -67,7 +67,7 @@ class AGE_Image
 };
 
 
-#endif // AGE_IMAGE_H
+#endif // TSGE_IMAGE_H
 
 
 

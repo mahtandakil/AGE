@@ -1,33 +1,30 @@
 /****************************************************************************
-* Created for: AGE v2
-* Dev line: AGE v2
+* Created for: TSGE v2
+* Dev line: TSGE v2
 * Creation date: 08/02/2016
-* Last change: 12/12/16
+* Last change: 09/02/17
 * Autogen: 1.1.2c
 ****************************************************************************/
 
 
-#include "AGE_Image.h"
+#include "TSGE_Window.h"
 
 
 //---------------------------------------------------------------------------
 
-AGE_Image::AGE_Image()
+TSGE_Window::TSGE_Window()
 {
 
 	this->ident = -1;
 	this->tag = "";
 	this->available = false;
 	this->next = nullptr;
-	this->src = "";
-	this->surface = nullptr;
-	this->texture = nullptr;
-	this->texture_h = -1;
-	this->texture_w = -1;
+	this->window = nullptr;
+	this->render = nullptr;
 
 }
 
-AGE_Image::~AGE_Image()
+TSGE_Window::~TSGE_Window()
 {
 	//dtor
 }
@@ -35,18 +32,15 @@ AGE_Image::~AGE_Image()
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::printNode(){
+int TSGE_Window::printNode(){
 
 	cout << "ID: " << this->ident << endl;
 	cout << "POINTER: " << this << endl;
 	cout << "TAG: " << this->tag << endl;
 	cout << "AVAILABLE: " << this->available << endl;
 	cout << "NEXT: " << this->next << endl;
-	cout << "SRC: " << this->src << endl;
-	cout << "SURFACE: " << this->surface << endl;
-	cout << "TEXTURE: " << this->texture << endl;
-	cout << "TEXTURE_H: " << this->texture_h << endl;
-	cout << "TEXTURE_W: " << this->texture_w << endl;
+	cout << "WINDOW: " << this->window << endl;
+	cout << "RENDER: " << this->render << endl;
 	cout << endl;
 	
 	return this->ident;
@@ -56,7 +50,7 @@ int AGE_Image::printNode(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setIdent(int ident){
+int TSGE_Window::setIdent(int ident){
 
 	this->ident = ident;
 	
@@ -67,7 +61,7 @@ int AGE_Image::setIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::getIdent(){
+int TSGE_Window::getIdent(){
 
 	return this->ident;
 
@@ -76,7 +70,7 @@ int AGE_Image::getIdent(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setTag(string tag){
+int TSGE_Window::setTag(string tag){
 
 	this->tag = tag;
 	
@@ -87,7 +81,7 @@ int AGE_Image::setTag(string tag){
 
 //---------------------------------------------------------------------------
 
-string AGE_Image::getTag(){
+string TSGE_Window::getTag(){
 
 	return this->tag;
 
@@ -96,7 +90,7 @@ string AGE_Image::getTag(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setAvailable(bool available){
+int TSGE_Window::setAvailable(bool available){
 
 	this->available = available;
 	
@@ -107,7 +101,7 @@ int AGE_Image::setAvailable(bool available){
 
 //---------------------------------------------------------------------------
 
-bool AGE_Image::getAvailable(){
+bool TSGE_Window::getAvailable(){
 
 	return this->available;
 
@@ -116,7 +110,7 @@ bool AGE_Image::getAvailable(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setNext(AGE_Image* next){
+int TSGE_Window::setNext(TSGE_Window* next){
 
 	this->next = next;
 	
@@ -127,7 +121,7 @@ int AGE_Image::setNext(AGE_Image* next){
 
 //---------------------------------------------------------------------------
 
-AGE_Image* AGE_Image::getNext(){
+TSGE_Window* TSGE_Window::getNext(){
 
 	return this->next;
 
@@ -136,9 +130,9 @@ AGE_Image* AGE_Image::getNext(){
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setSrc(string src){
+int TSGE_Window::setWindow(SDL_Window* window){
 
-	this->src = src;
+	this->window = window;
 	
 	return this->ident;
 
@@ -147,18 +141,18 @@ int AGE_Image::setSrc(string src){
 
 //---------------------------------------------------------------------------
 
-string AGE_Image::getSrc(){
+SDL_Window* TSGE_Window::getWindow(){
 
-	return this->src;
+	return this->window;
 
 }
 
 
 //---------------------------------------------------------------------------
 
-int AGE_Image::setSurface(SDL_Surface* surface){
+int TSGE_Window::setRender(SDL_Renderer* render){
 
-	this->surface = surface;
+	this->render = render;
 	
 	return this->ident;
 
@@ -167,69 +161,9 @@ int AGE_Image::setSurface(SDL_Surface* surface){
 
 //---------------------------------------------------------------------------
 
-SDL_Surface* AGE_Image::getSurface(){
+SDL_Renderer* TSGE_Window::getRender(){
 
-	return this->surface;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Image::setTexture(SDL_Texture* texture){
-
-	this->texture = texture;
-	
-	return this->ident;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-SDL_Texture* AGE_Image::getTexture(){
-
-	return this->texture;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Image::setTexture_h(int texture_h){
-
-	this->texture_h = texture_h;
-	
-	return this->ident;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Image::getTexture_h(){
-
-	return this->texture_h;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Image::setTexture_w(int texture_w){
-
-	this->texture_w = texture_w;
-	
-	return this->ident;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_Image::getTexture_w(){
-
-	return this->texture_w;
+	return this->render;
 
 }
 

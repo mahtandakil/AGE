@@ -1,18 +1,18 @@
 /****************************************************************************
-* Created for: AGE v2
-* Dev line: AGE v2
+* Created for: TSGE v2
+* Dev line: TSGE v2
 * Creation date: 08/02/2016
-* Last change: 12/12/16
+* Last change: 09/02/17
 * Autogen: 1.1.2c
 ****************************************************************************/
 
 
-#include "AGE_FontIndex.h"
+#include "TSGE_WindowIndex.h"
 
 
 //---------------------------------------------------------------------------
 
-AGE_FontIndex::AGE_FontIndex()
+TSGE_WindowIndex::TSGE_WindowIndex()
 {
 
 	this->nodes = 0;
@@ -22,7 +22,7 @@ AGE_FontIndex::AGE_FontIndex()
 
 }
 
-AGE_FontIndex::~AGE_FontIndex()
+TSGE_WindowIndex::~TSGE_WindowIndex()
 {
 
 	this->freeList();
@@ -32,9 +32,9 @@ AGE_FontIndex::~AGE_FontIndex()
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::createNode(string tag){
+int TSGE_WindowIndex::createNode(string tag){
 
-	AGE_Font* pointer = new AGE_Font();
+	TSGE_Window* pointer = new TSGE_Window();
 	pointer->setTag(tag);
 
 	if (this->nodes == 0){
@@ -62,9 +62,9 @@ int AGE_FontIndex::createNode(string tag){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::freeNode(int ident){
+int TSGE_WindowIndex::freeNode(int ident){
 
-	AGE_Font* pointer = nullptr;
+	TSGE_Window* pointer = nullptr;
 	int result= -1;
 
 	pointer = this->getNode(ident);
@@ -83,10 +83,10 @@ int AGE_FontIndex::freeNode(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::getPrevious(int ident){
+int TSGE_WindowIndex::getPrevious(int ident){
 
-	AGE_Font* pointer = nullptr;
-	AGE_Font* next = nullptr;
+	TSGE_Window* pointer = nullptr;
+	TSGE_Window* next = nullptr;
 	bool keep = true;
 	int result = -1;
 
@@ -128,9 +128,9 @@ int AGE_FontIndex::getPrevious(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::freeList(){
+int TSGE_WindowIndex::freeList(){
 
-	AGE_Font* pointer = nullptr;
+	TSGE_Window* pointer = nullptr;
 	int result= 0;
 
 	pointer = this->first;
@@ -150,11 +150,11 @@ int AGE_FontIndex::freeList(){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::deleteNode(int ident){
+int TSGE_WindowIndex::deleteNode(int ident){
 
-	AGE_Font* pointer = nullptr;
-	AGE_Font* next = nullptr;
-	AGE_Font* previous = nullptr;
+	TSGE_Window* pointer = nullptr;
+	TSGE_Window* next = nullptr;
+	TSGE_Window* previous = nullptr;
 	int previous_id = -1;
 	int result = -1;
 
@@ -195,9 +195,9 @@ int AGE_FontIndex::deleteNode(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::deleteList(){
+int TSGE_WindowIndex::deleteList(){
 
-	AGE_Font* pointer = nullptr;
+	TSGE_Window* pointer = nullptr;
 	int result = 0;
 
 	pointer = this->first;
@@ -222,9 +222,9 @@ int AGE_FontIndex::deleteList(){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::purge(){
+int TSGE_WindowIndex::purge(){
 
-	AGE_Font* pointer = nullptr;
+	TSGE_Window* pointer = nullptr;
 	int available_ident = -1;
 	int result = -1;
 
@@ -247,9 +247,9 @@ int AGE_FontIndex::purge(){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::searchAvailable(int limit){
+int TSGE_WindowIndex::searchAvailable(int limit){
 
-	AGE_Font* pointer = nullptr;
+	TSGE_Window* pointer = nullptr;
 	bool found = false;
 	int result = -1;
 	
@@ -276,7 +276,7 @@ int AGE_FontIndex::searchAvailable(int limit){
 
 //---------------------------------------------------------------------------
 
-AGE_Font* AGE_FontIndex::getFirst(){
+TSGE_Window* TSGE_WindowIndex::getFirst(){
 
 	return this->first;
 
@@ -285,10 +285,10 @@ AGE_Font* AGE_FontIndex::getFirst(){
 
 //---------------------------------------------------------------------------
 
-AGE_Font* AGE_FontIndex::getNode(int ident){
+TSGE_Window* TSGE_WindowIndex::getNode(int ident){
 
-	AGE_Font* result = nullptr;
-	AGE_Font* pointer = nullptr;
+	TSGE_Window* result = nullptr;
+	TSGE_Window* pointer = nullptr;
 	
 	if (this->nodes > 0){
 	
@@ -313,18 +313,17 @@ AGE_Font* AGE_FontIndex::getNode(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::setValues(int ident, TTF_Font* font, string src, int size){
+int TSGE_WindowIndex::setValues(int ident, SDL_Window* window, SDL_Renderer* render){
 
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 	int result = -1;
 	
 	pointer = this->getNode(ident);
 	
 	if(pointer != nullptr){
 	
-		pointer->setFont(font);
-		pointer->setSrc(src);
-		pointer->setSize(size);
+		pointer->setWindow(window);
+		pointer->setRender(render);
 		result = pointer->getIdent();
 	
 	}
@@ -336,9 +335,9 @@ int AGE_FontIndex::setValues(int ident, TTF_Font* font, string src, int size){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::printNodes(){
+int TSGE_WindowIndex::printNodes(){
 
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 	int result = 0;
 	
 	pointer = this->first;
@@ -364,10 +363,10 @@ int AGE_FontIndex::printNodes(){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::getIdent(int ident){
+int TSGE_WindowIndex::getIdent(int ident){
 
 	int result = -1;
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -387,10 +386,10 @@ int AGE_FontIndex::getIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-string AGE_FontIndex::getTag(int ident){
+string TSGE_WindowIndex::getTag(int ident){
 
 	string result = "";
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -410,10 +409,10 @@ string AGE_FontIndex::getTag(int ident){
 
 //---------------------------------------------------------------------------
 
-bool AGE_FontIndex::getAvailable(int ident){
+bool TSGE_WindowIndex::getAvailable(int ident){
 
 	bool result = false;
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -433,10 +432,10 @@ bool AGE_FontIndex::getAvailable(int ident){
 
 //---------------------------------------------------------------------------
 
-AGE_Font* AGE_FontIndex::getNext(int ident){
+TSGE_Window* TSGE_WindowIndex::getNext(int ident){
 
-	AGE_Font* result = nullptr;
-	AGE_Font* pointer;
+	TSGE_Window* result = nullptr;
+	TSGE_Window* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -456,10 +455,10 @@ AGE_Font* AGE_FontIndex::getNext(int ident){
 
 //---------------------------------------------------------------------------
 
-TTF_Font* AGE_FontIndex::getFont(int ident){
+SDL_Window* TSGE_WindowIndex::getWindow(int ident){
 
-	TTF_Font* result = nullptr;
-	AGE_Font* pointer;
+	SDL_Window* result = nullptr;
+	TSGE_Window* pointer;
 
 	pointer = this->getNode(ident);
 
@@ -468,7 +467,7 @@ TTF_Font* AGE_FontIndex::getFont(int ident){
 
 
 	}else{
-		result = pointer->getFont();
+		result = pointer->getWindow();
 
 	}
 
@@ -479,19 +478,19 @@ TTF_Font* AGE_FontIndex::getFont(int ident){
 
 //---------------------------------------------------------------------------
 
-string AGE_FontIndex::getSrc(int ident){
+SDL_Renderer* TSGE_WindowIndex::getRender(int ident){
 
-	string result = "";
-	AGE_Font* pointer;
+	SDL_Renderer* result = nullptr;
+	TSGE_Window* pointer;
 
 	pointer = this->getNode(ident);
 
 	if ((pointer == nullptr) || (ident < 0)){
-		result = "";
+		result = nullptr;
 
 
 	}else{
-		result = pointer->getSrc();
+		result = pointer->getRender();
 
 	}
 
@@ -502,34 +501,11 @@ string AGE_FontIndex::getSrc(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::getSize(int ident){
-
-	int result = -1;
-	AGE_Font* pointer;
-
-	pointer = this->getNode(ident);
-
-	if ((pointer == nullptr) || (ident < 0)){
-		result = -1;
-
-
-	}else{
-		result = pointer->getSize();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_FontIndex::searchByIdent(int ident){
+int TSGE_WindowIndex::searchByIdent(int ident){
 
 	int result = -1;
 	bool found = false;
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -560,11 +536,11 @@ int AGE_FontIndex::searchByIdent(int ident){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::searchByTag(string tag){
+int TSGE_WindowIndex::searchByTag(string tag){
 
 	int result = -1;
 	bool found = false;
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -595,11 +571,11 @@ int AGE_FontIndex::searchByTag(string tag){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::searchByAvailable(bool available){
+int TSGE_WindowIndex::searchByAvailable(bool available){
 
 	int result = -1;
 	bool found = false;
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -630,11 +606,11 @@ int AGE_FontIndex::searchByAvailable(bool available){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::searchByNext(AGE_Font* next){
+int TSGE_WindowIndex::searchByNext(TSGE_Window* next){
 
 	int result = -1;
 	bool found = false;
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -665,11 +641,11 @@ int AGE_FontIndex::searchByNext(AGE_Font* next){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::searchByFont(TTF_Font* font){
+int TSGE_WindowIndex::searchByWindow(SDL_Window* window){
 
 	int result = -1;
 	bool found = false;
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -680,7 +656,7 @@ int AGE_FontIndex::searchByFont(TTF_Font* font){
 
 		while (! ((pointer == nullptr) || (found))){
 
-			if (font == pointer->getFont()){
+			if (window == pointer->getWindow()){
 
 				result = pointer->getIdent();
 				found = true;
@@ -700,11 +676,11 @@ int AGE_FontIndex::searchByFont(TTF_Font* font){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::searchBySrc(string src){
+int TSGE_WindowIndex::searchByRender(SDL_Renderer* render){
 
 	int result = -1;
 	bool found = false;
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 
 	if (this->nodes == 0){
 		result = -1;
@@ -715,7 +691,7 @@ int AGE_FontIndex::searchBySrc(string src){
 
 		while (! ((pointer == nullptr) || (found))){
 
-			if (src == pointer->getSrc()){
+			if (render == pointer->getRender()){
 
 				result = pointer->getIdent();
 				found = true;
@@ -735,44 +711,9 @@ int AGE_FontIndex::searchBySrc(string src){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::searchBySize(int size){
+int TSGE_WindowIndex::setTag(int ident, string tag){
 
-	int result = -1;
-	bool found = false;
-	AGE_Font* pointer;
-
-	if (this->nodes == 0){
-		result = -1;
-
-	}else{
-
-		pointer = this->first;
-
-		while (! ((pointer == nullptr) || (found))){
-
-			if (size == pointer->getSize()){
-
-				result = pointer->getIdent();
-				found = true;
-
-			}
-
-			pointer = pointer->getNext();
-
-		}
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_FontIndex::setTag(int ident, string tag){
-
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -791,9 +732,9 @@ int AGE_FontIndex::setTag(int ident, string tag){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::setAvailable(int ident, bool available){
+int TSGE_WindowIndex::setAvailable(int ident, bool available){
 
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -812,9 +753,9 @@ int AGE_FontIndex::setAvailable(int ident, bool available){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::setNext(int ident, AGE_Font* next){
+int TSGE_WindowIndex::setNext(int ident, TSGE_Window* next){
 
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
@@ -833,16 +774,16 @@ int AGE_FontIndex::setNext(int ident, AGE_Font* next){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::setFont(int ident, TTF_Font* font){
+int TSGE_WindowIndex::setWindow(int ident, SDL_Window* window){
 
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
 
 	if (pointer != nullptr){
 
-		pointer->setFont(font);
+		pointer->setWindow(window);
 		result = pointer->getIdent();
 
 	}
@@ -854,37 +795,16 @@ int AGE_FontIndex::setFont(int ident, TTF_Font* font){
 
 //---------------------------------------------------------------------------
 
-int AGE_FontIndex::setSrc(int ident, string src){
+int TSGE_WindowIndex::setRender(int ident, SDL_Renderer* render){
 
-	AGE_Font* pointer;
+	TSGE_Window* pointer;
 	int result = -1;
 
 	pointer = this->getNode(ident);
 
 	if (pointer != nullptr){
 
-		pointer->setSrc(src);
-		result = pointer->getIdent();
-
-	}
-
-	return result;
-
-}
-
-
-//---------------------------------------------------------------------------
-
-int AGE_FontIndex::setSize(int ident, int size){
-
-	AGE_Font* pointer;
-	int result = -1;
-
-	pointer = this->getNode(ident);
-
-	if (pointer != nullptr){
-
-		pointer->setSize(size);
+		pointer->setRender(render);
 		result = pointer->getIdent();
 
 	}

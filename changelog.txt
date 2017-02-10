@@ -1,5 +1,7 @@
-r0.2.1
-- Fixed the age_image_tag_set name
+r0.2.2
+- Project name changed to TSGE
+- Improvements for compilation in linux environments
+
 
 r0.2.1
 - Fonts & labels support.

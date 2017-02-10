@@ -1,8 +1,8 @@
 /****************************************************************************
 * Created for: AGE v2
-* Dev line: AGE v2
+* Dev line: TSGE v2
 * Creation day: 08/02/2016
-* Last change: 10/12/2016
+* Last change: 09/02/2017
 ****************************************************************************/
 
 
@@ -15,7 +15,6 @@ DMOM::DMOM(){
 
     this->draw_area_index = nullptr;
 	this->event_index = nullptr;
-	this->font_index = nullptr;
 	this->image_index = nullptr;
 	this->window_index = nullptr;
 
@@ -27,7 +26,7 @@ DMOM::~DMOM(){
 
 //---------------------------------------------------------------------------
 
-AGE_DrawAreaIndex* DMOM::dmom_drawareaIndex_get()
+TSGE_DrawAreaIndex* DMOM::dmom_drawareaIndex_get()
 {
 	return this->draw_area_index;
 }
@@ -35,7 +34,7 @@ AGE_DrawAreaIndex* DMOM::dmom_drawareaIndex_get()
 
 //---------------------------------------------------------------------------
 
-bool DMOM::dmom_drawareaIndex_set(AGE_DrawAreaIndex* pointer)
+bool DMOM::dmom_drawareaIndex_set(TSGE_DrawAreaIndex* pointer)
 {
 	this->draw_area_index = pointer;
 	return true;
@@ -44,7 +43,7 @@ bool DMOM::dmom_drawareaIndex_set(AGE_DrawAreaIndex* pointer)
 
 //---------------------------------------------------------------------------
 
-AGE_EventIndex* DMOM::dmom_eventIndex_get()
+TSGE_EventIndex* DMOM::dmom_eventIndex_get()
 {
 	return this->event_index;
 }
@@ -52,7 +51,7 @@ AGE_EventIndex* DMOM::dmom_eventIndex_get()
 
 //---------------------------------------------------------------------------
 
-bool DMOM::dmom_eventIndex_set(AGE_EventIndex* pointer)
+bool DMOM::dmom_eventIndex_set(TSGE_EventIndex* pointer)
 {
 	this->event_index = pointer;
 	return true;
@@ -61,7 +60,7 @@ bool DMOM::dmom_eventIndex_set(AGE_EventIndex* pointer)
 
 //---------------------------------------------------------------------------
 
-AGE_FontIndex* DMOM::dmom_fontIndex_get()
+TSGE_FontIndex* DMOM::dmom_fontIndex_get()
 {
 	return this->font_index;
 }
@@ -69,7 +68,7 @@ AGE_FontIndex* DMOM::dmom_fontIndex_get()
 
 //---------------------------------------------------------------------------
 
-bool DMOM::dmom_fontIndex_set(AGE_FontIndex* pointer)
+bool DMOM::dmom_fontIndex_set(TSGE_FontIndex* pointer)
 {
 	this->font_index = pointer;
 	return true;
@@ -78,7 +77,7 @@ bool DMOM::dmom_fontIndex_set(AGE_FontIndex* pointer)
 
 //---------------------------------------------------------------------------
 
-AGE_ImageIndex * DMOM::dmom_imageIndex_get()
+TSGE_ImageIndex * DMOM::dmom_imageIndex_get()
 {
 	return this->image_index;
 }
@@ -86,7 +85,7 @@ AGE_ImageIndex * DMOM::dmom_imageIndex_get()
 
 //---------------------------------------------------------------------------
 
-bool DMOM::dmom_imageIndex_set(AGE_ImageIndex * pointer)
+bool DMOM::dmom_imageIndex_set(TSGE_ImageIndex * pointer)
 {
 	this->image_index = pointer;
 	return true;
@@ -95,7 +94,7 @@ bool DMOM::dmom_imageIndex_set(AGE_ImageIndex * pointer)
 
 //---------------------------------------------------------------------------
 
-AGE_WindowIndex * DMOM::dmom_windowIndex_get()
+TSGE_WindowIndex * DMOM::dmom_windowIndex_get()
 {
 	return this->window_index;
 }
@@ -103,7 +102,7 @@ AGE_WindowIndex * DMOM::dmom_windowIndex_get()
 
 //---------------------------------------------------------------------------
 
-bool DMOM::dmom_windowIndex_set(AGE_WindowIndex* pointer)
+bool DMOM::dmom_windowIndex_set(TSGE_WindowIndex* pointer)
 {
 	this->window_index = pointer;
 	return true;

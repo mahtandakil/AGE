@@ -1,13 +1,13 @@
 /****************************************************************************
-* Created for: AGE v2
-* Dev line: AGE v2
+* Created for: TSGE v2
+* Dev line: TSGE v2
 * Creation date: 08/02/2016
-* Last change: 12/12/16
+* Last change: 09/02/17
 * Autogen: 1.1.2c
 ****************************************************************************/
 
 
-#include "AGE_Image.h"
+#include "TSGE_Image.h"
 
 
 #include <iostream>
@@ -17,23 +17,23 @@
 using namespace std;
 
 
-#ifndef AGE_IMAGEINDEX_H
-#define AGE_IMAGEINDEX_H
+#ifndef TSGE_IMAGEINDEX_H
+#define TSGE_IMAGEINDEX_H
 
 
-class AGE_ImageIndex
+class TSGE_ImageIndex
 {
 	public:
-		AGE_ImageIndex();
-		virtual ~AGE_ImageIndex();
+		TSGE_ImageIndex();
+		virtual ~TSGE_ImageIndex();
 
 		int createNode(string tag="");
 		int freeNode(int ident);
 		int freeList();
 		int deleteNode(int ident);
 		int deleteList();
-		AGE_Image* getFirst();
-		AGE_Image* getNode(int id);
+		TSGE_Image* getFirst();
+		TSGE_Image* getNode(int id);
 		int getPrevious(int ident);
 		int printNodes();
 		int purge();
@@ -42,7 +42,7 @@ class AGE_ImageIndex
 		int getIdent(int id);
 		string getTag(int id);
 		bool getAvailable(int id);
-		AGE_Image* getNext(int id);
+		TSGE_Image* getNext(int id);
 		string getSrc(int id);
 		SDL_Surface* getSurface(int id);
 		SDL_Texture* getTexture(int id);
@@ -50,7 +50,7 @@ class AGE_ImageIndex
 		int getTexture_w(int id);
 		int setTag(int ident, string tag);
 		int setAvailable(int ident, bool available);
-		int setNext(int ident, AGE_Image* next);
+		int setNext(int ident, TSGE_Image* next);
 		int setSrc(int ident, string src);
 		int setSurface(int ident, SDL_Surface* surface);
 		int setTexture(int ident, SDL_Texture* texture);
@@ -59,7 +59,7 @@ class AGE_ImageIndex
 		int searchByIdent(int ident);
 		int searchByTag(string tag);
 		int searchByAvailable(bool available);
-		int searchByNext(AGE_Image* next);
+		int searchByNext(TSGE_Image* next);
 		int searchBySrc(string src);
 		int searchBySurface(SDL_Surface* surface);
 		int searchByTexture(SDL_Texture* texture);
@@ -74,12 +74,12 @@ class AGE_ImageIndex
 	private:
 		int nodes;
 		int next_ident;
-		AGE_Image* first;
-		AGE_Image* last;
+		TSGE_Image* first;
+		TSGE_Image* last;
 
 
 };
 
 
-#endif // AGE_IMAGEINDEX_H
+#endif // TSGE_IMAGEINDEX_H
 

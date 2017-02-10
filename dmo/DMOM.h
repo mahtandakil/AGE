@@ -1,16 +1,16 @@
 /****************************************************************************
 * Created for: AGE v2
-* Dev line: AGE v2
+* Dev line: TSGE v2
 * Creation day: 08/02/2016
-* Last change: 10/12/2016
+* Last change: 09/02/2017
 ****************************************************************************/
 
 
-#include "AGE_DrawAreaIndex.h"
-#include "AGE_EventIndex.h"
-#include "AGE_FontIndex.h"
-#include "AGE_ImageIndex.h"
-#include "AGE_WindowIndex.h"
+#include "TSGE_DrawAreaIndex.h"
+#include "TSGE_EventIndex.h"
+#include "TSGE_FontIndex.h"
+#include "TSGE_ImageIndex.h"
+#include "TSGE_WindowIndex.h"
 
 
 #ifndef DMOM_H
@@ -25,25 +25,25 @@ public:
 	DMOM();
 	~DMOM();
 
-	AGE_DrawAreaIndex* dmom_drawareaIndex_get();
-	bool dmom_drawareaIndex_set(AGE_DrawAreaIndex* pointer);
-	AGE_FontIndex* dmom_fontIndex_get();
-	bool dmom_fontIndex_set(AGE_FontIndex* pointer);
-	AGE_EventIndex* dmom_eventIndex_get();
-	bool dmom_eventIndex_set(AGE_EventIndex* pointer);
-	AGE_ImageIndex* dmom_imageIndex_get();
-	bool dmom_imageIndex_set(AGE_ImageIndex* pointer);
-	AGE_WindowIndex* dmom_windowIndex_get();
-	bool dmom_windowIndex_set(AGE_WindowIndex* pointer);
+	TSGE_DrawAreaIndex* dmom_drawareaIndex_get();
+	bool dmom_drawareaIndex_set(TSGE_DrawAreaIndex* pointer);
+	TSGE_FontIndex* dmom_fontIndex_get();
+	bool dmom_fontIndex_set(TSGE_FontIndex* pointer);
+	TSGE_EventIndex* dmom_eventIndex_get();
+	bool dmom_eventIndex_set(TSGE_EventIndex* pointer);
+	TSGE_ImageIndex* dmom_imageIndex_get();
+	bool dmom_imageIndex_set(TSGE_ImageIndex* pointer);
+	TSGE_WindowIndex* dmom_windowIndex_get();
+	bool dmom_windowIndex_set(TSGE_WindowIndex* pointer);
 
 
 private:
 
-	AGE_DrawAreaIndex* draw_area_index;
-	AGE_EventIndex* event_index;
-	AGE_FontIndex* font_index;
-	AGE_ImageIndex* image_index;
-	AGE_WindowIndex* window_index;
+	TSGE_DrawAreaIndex* draw_area_index;
+	TSGE_EventIndex* event_index;
+	TSGE_FontIndex* font_index;
+	TSGE_ImageIndex* image_index;
+	TSGE_WindowIndex* window_index;
 
 };
 

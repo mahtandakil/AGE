@@ -1,13 +1,13 @@
 /****************************************************************************
-* Created for: AGE v2
-* Dev line: AGE v2
+* Created for: TSGE v2
+* Dev line: TSGE v2
 * Creation date: 08/02/2016
-* Last change: 12/12/16
+* Last change: 09/02/17
 * Autogen: 1.1.2c
 ****************************************************************************/
 
 
-#include "AGE_Font.h"
+#include "TSGE_Font.h"
 
 
 #include <iostream>
@@ -17,23 +17,23 @@
 using namespace std;
 
 
-#ifndef AGE_FONTINDEX_H
-#define AGE_FONTINDEX_H
+#ifndef TSGE_FONTINDEX_H
+#define TSGE_FONTINDEX_H
 
 
-class AGE_FontIndex
+class TSGE_FontIndex
 {
 	public:
-		AGE_FontIndex();
-		virtual ~AGE_FontIndex();
+		TSGE_FontIndex();
+		virtual ~TSGE_FontIndex();
 
 		int createNode(string tag="");
 		int freeNode(int ident);
 		int freeList();
 		int deleteNode(int ident);
 		int deleteList();
-		AGE_Font* getFirst();
-		AGE_Font* getNode(int id);
+		TSGE_Font* getFirst();
+		TSGE_Font* getNode(int id);
 		int getPrevious(int ident);
 		int printNodes();
 		int purge();
@@ -42,20 +42,20 @@ class AGE_FontIndex
 		int getIdent(int id);
 		string getTag(int id);
 		bool getAvailable(int id);
-		AGE_Font* getNext(int id);
+		TSGE_Font* getNext(int id);
 		TTF_Font* getFont(int id);
 		string getSrc(int id);
 		int getSize(int id);
 		int setTag(int ident, string tag);
 		int setAvailable(int ident, bool available);
-		int setNext(int ident, AGE_Font* next);
+		int setNext(int ident, TSGE_Font* next);
 		int setFont(int ident, TTF_Font* font);
 		int setSrc(int ident, string src);
 		int setSize(int ident, int size);
 		int searchByIdent(int ident);
 		int searchByTag(string tag);
 		int searchByAvailable(bool available);
-		int searchByNext(AGE_Font* next);
+		int searchByNext(TSGE_Font* next);
 		int searchByFont(TTF_Font* font);
 		int searchBySrc(string src);
 		int searchBySize(int size);
@@ -68,12 +68,12 @@ class AGE_FontIndex
 	private:
 		int nodes;
 		int next_ident;
-		AGE_Font* first;
-		AGE_Font* last;
+		TSGE_Font* first;
+		TSGE_Font* last;
 
 
 };
 
 
-#endif // AGE_FONTINDEX_H
+#endif // TSGE_FONTINDEX_H
 
