@@ -1,7 +1,14 @@
+0.2.3
+- Updated SDL2 library from 2.0.4 to 2.0.8
+- Updated SDL2_gfx library from 1.0.1 to 1.0.4
+- Updated SDL_image library from 2.0.1 to 2.0.3
+- Function name changes:
+	* tsge_util_actos to tsge_util_tctos
+	* tsge_util_actsc to tsge_util_tctsc
+- Minor format changes
+
 r0.2.2
 - Project name changed to TSGE
-- Improvements for compilation in linux environments
-
 
 r0.2.1
 - Fonts & labels support.
